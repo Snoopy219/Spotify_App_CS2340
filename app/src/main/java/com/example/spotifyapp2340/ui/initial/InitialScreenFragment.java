@@ -1,4 +1,4 @@
-package com.example.spotifyapp2340.ui;
+package com.example.spotifyapp2340.ui.initial;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,14 +19,14 @@ public class InitialScreenFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        InitialScreenViewModel initialScreenViewModel =
+                new ViewModelProvider(this).get(InitialScreenViewModel.class);
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        initialScreenViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
