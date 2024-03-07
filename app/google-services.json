@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "606977195470",
-    "project_id": "fir-testing-b3210",
-    "storage_bucket": "fir-testing-b3210.appspot.com"
+    "project_number": "754865098071",
+    "project_id": "cs-2340-project-2---thuan-3",
+    "storage_bucket": "cs-2340-project-2---thuan-3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:606977195470:android:41be26d4f89ba4e78f7f9f",
+        "mobilesdk_app_id": "1:754865098071:android:cbf7d19549f2d964f04212",
         "android_client_info": {
-          "package_name": "com.example.firebasetesting"
+          "package_name": "com.example.spotifyapp2340"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAEfRpUXKyD7gpjzyz8QJ2nU2pfbhIwN-M"
+          "current_key": "AIzaSyDPQ7hngdT_-7mQT_nG_MXua5K6pnEMBVg"
         }
       ],
       "services": {
