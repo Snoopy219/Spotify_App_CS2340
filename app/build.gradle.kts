@@ -52,4 +52,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+
+    //Jackson
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.12.5")
 }
