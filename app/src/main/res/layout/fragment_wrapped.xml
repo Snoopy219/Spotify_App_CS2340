@@ -38,12 +38,13 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
-                android:src="@drawable/spotify_logo"/>
+                android:src="@drawable/spotify_logo"
+                android:contentDescription="@string/describe_image"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Top Songs"
+                android:text="@string/top_songs"
                 android:textSize="20sp"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="16dp"
@@ -59,7 +60,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Top Artists"
+                android:text="@string/top_artists"
                 android:textSize="20sp"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="16dp"
@@ -75,7 +76,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Spotify Wrapped Info"
+                android:text="@string/wrapped_summary"
                 android:textSize="20sp"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="16dp"
