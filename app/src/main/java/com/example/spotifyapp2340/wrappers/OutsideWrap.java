@@ -7,6 +7,9 @@ import org.json.JSONArray;
 import java.util.List;
 
 
+/**
+ * The type Outside wrap.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OutsideWrap {
     private List<WrappedItem> items;

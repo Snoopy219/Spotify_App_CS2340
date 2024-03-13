@@ -12,10 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.spotifyapp2340.databinding.FragmentHomeBinding;
 
+/**
+ * The type Home fragment.
+ */
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =

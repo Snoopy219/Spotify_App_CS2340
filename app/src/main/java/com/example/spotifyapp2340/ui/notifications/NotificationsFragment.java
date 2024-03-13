@@ -12,10 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.spotifyapp2340.databinding.FragmentNotificationsBinding;
 
+/**
+ * The type Notifications fragment.
+ */
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         NotificationsViewModel notificationsViewModel =
