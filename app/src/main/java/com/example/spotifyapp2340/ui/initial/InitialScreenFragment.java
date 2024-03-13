@@ -13,10 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.spotifyapp2340.databinding.FragmentNotificationsBinding;
 import com.example.spotifyapp2340.ui.notifications.NotificationsViewModel;
 
+/**
+ * The type Initial screen fragment.
+ */
 public class InitialScreenFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         InitialScreenViewModel initialScreenViewModel =

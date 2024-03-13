@@ -23,10 +23,11 @@ public class Wrapped {
         ArrayList<OutsideWrap> outsideWraps = new ArrayList<>();
         try {
 
-            outsideWraps = objectMapper.readValue(json, new TypeReference<ArrayList<OutsideWrap>>() {
-            });
+            outsideWraps = objectMapper.readValue(json,
+                    new TypeReference<ArrayList<OutsideWrap>>() {});
             for (OutsideWrap o : outsideWraps) {
-//                items.add(objectMapper.readValue(outsideWraps.get(0).getItems().toString(), new TypeReference<ArrayList<WrappedItem>>() {
+//                items.add(objectMapper.readValue(outsideWraps.get(0).getItems().toString(),
+//                new TypeReference<ArrayList<WrappedItem>>() {
 //                }));
 //                for (ArrayList<WrappedItem> i : items) {
 //                    for (WrappedItem j : i) {

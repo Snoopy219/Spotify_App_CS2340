@@ -202,17 +202,17 @@ public class WrappedItem {
 
     @Override
     public String toString() {
-        return "WrappedItem{" +
-                "followers=" + followers +
-                ", genres=" + Arrays.toString(genres) +
-                ", images=" + Arrays.toString(images) +
-                ", name='" + name + '\'' +
-                ", popularity=" + popularity +
-                ", type='" + type + '\'' +
-                ", album=" + album +
-                ", artists=" + Arrays.toString(artists) +
-                ", is_playable=" + is_playable +
-                ", preview_url='" + preview_url + '\'' +
-                '}';
+        return "WrappedItem{"
+                + "followers=" + followers
+                + ", genres=" + Arrays.toString(genres)
+                + ", images=" + Arrays.toString(images)
+                + ", name='" + name + '\''
+                + ", popularity=" + popularity
+                + ", type='" + type + '\''
+                + ", album=" + album
+                + ", artists=" + Arrays.toString(artists)
+                + ", is_playable=" + is_playable
+                + ", preview_url='" + preview_url + '\''
+                + '}';
     }
 }

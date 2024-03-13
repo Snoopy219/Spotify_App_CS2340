@@ -12,10 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.spotifyapp2340.databinding.FragmentDashboardBinding;
 
+/**
+ * The type Dashboard fragment.
+ */
 public class DashboardFragment extends Fragment {
 
     private FragmentDashboardBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         DashboardViewModel dashboardViewModel =

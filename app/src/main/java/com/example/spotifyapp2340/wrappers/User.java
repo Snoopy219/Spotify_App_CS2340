@@ -92,7 +92,8 @@ public class User {
             @Override
             public void onSuccess(Void unused) {
                 try {
-//                    wraps = objectMapper.readValue(returnStr[0], new TypeReference<ArrayList<Wrapped>>() {
+//                    wraps = objectMapper.readValue(returnStr[0],
+//                    new TypeReference<ArrayList<Wrapped>>() {
 //                    });
                     //System.out.println("RETURN" + returnStr[0]);
                     String[] newWraps = returnStr[0].split(MainActivity.SPLITTER);

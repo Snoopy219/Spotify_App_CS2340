@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.example.spotifyapp2340.databinding.ActivityMainBinding;
 import com.example.spotifyapp2340.wrappers.User;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -77,10 +78,12 @@ public class MainActivity extends AppCompatActivity {
      * @param s formatted string
      */
     public static void newUser(String s) {
+//        CollectionReference usersWrapped = db.collection("users");
+//        Map<String, String> user = new HashMap<>();
+//        user.put("prior_wrapped", s.substring(s.indexOf(";" + SPLITTER)));
+//        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
         CollectionReference usersWrapped = db.collection("users");
-        Map<String, String> user = new HashMap<>();
-        user.put("prior_wrapped", s.substring(s.indexOf(";" + SPLITTER)));
-        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
+        usersWrapped.document(s);
     }
 
 }
