@@ -7,11 +7,13 @@ import android.os.Bundle;
 import com.example.spotifyapp2340.databinding.ActivityMainBinding;
 import com.example.spotifyapp2340.wrappers.User;
 import com.example.spotifyapp2340.wrappers.Wrapped;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -21,6 +23,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.spotifyapp2340.databinding.ActivityMainBinding;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -79,11 +83,19 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void newUser(String s) {
 //        CollectionReference usersWrapped = db.collection("users");
-//        Map<String, String> user = new HashMap<>();
-//        user.put("prior_wrapped", s.substring(s.indexOf(";" + SPLITTER)));
+        Map<String, String> user = new HashMap<>();
+        user.put("prior_wrapped", "");
 //        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
         CollectionReference usersWrapped = db.collection("users");
-        usersWrapped.document(s);
+        usersWrapped.document("Name: " + s + "; ");
+    }
+
+    public static void updateUser(User user) {
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("prior_wrapped", user.getFormatWraps());
+//        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
+        CollectionReference usersWrapped = db.collection("users");
+        usersWrapped.document(user.getId()).set(userMap);
     }
 
 }

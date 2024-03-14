@@ -28,7 +28,28 @@ import java.util.concurrent.Executor;
 public class User {
     private String id;
     private ArrayList<Wrapped> wraps = new ArrayList<>();
+    /**
+     * The Fetch task.
+     */
     public static Task<DocumentSnapshot> fetchTask;
+
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * Instantiates a new User.
@@ -60,6 +81,11 @@ public class User {
         wraps.add(wrapped);
     }
 
+    /**
+     * Gets wraps.
+     *
+     * @return the wraps
+     */
     public ArrayList<Wrapped> getWraps() {
         return wraps;
     }
@@ -164,4 +190,13 @@ public class User {
 //
 //        }
 //    }
+
+    public String getFormatWraps() {
+        String s = "[";
+        for (Wrapped w : wraps) {
+            s += "{" + w.toString() + "},";
+        }
+        s += "]";
+        return s;
+    }
 }
