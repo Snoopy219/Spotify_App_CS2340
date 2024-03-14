@@ -36,6 +36,9 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    /**
+     * The constant SPLITTER.
+     */
     public static final String SPLITTER = "fdslakjflateuqoptretweroptu54289p495fjkdsa";
     /**
      * The constant db.
@@ -90,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
         usersWrapped.document("Name: " + s + "; ");
     }
 
+    /**
+     * Update user.
+     *
+     * @param user the user
+     */
     public static void updateUser(User user) {
         Map<String, String> userMap = new HashMap<>();
         userMap.put("prior_wrapped", user.getFormatWraps());

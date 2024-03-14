@@ -191,6 +191,11 @@ public class User {
 //        }
 //    }
 
+    /**
+     * Gets format wraps.
+     *
+     * @return the format wraps
+     */
     public String getFormatWraps() {
         String s = "[";
         for (Wrapped w : wraps) {
