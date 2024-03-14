@@ -1,6 +1,15 @@
 package com.example.spotifyapp2340;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+
+import com.example.spotifyapp2340.databinding.ActivityMainBinding;
+import com.example.spotifyapp2340.wrappers.User;
+import com.example.spotifyapp2340.wrappers.Wrapped;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +32,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    public static final String SPLITTER = "fdslakjflateuqoptretweroptu54289p495fjkdsa";
     /**
      * The constant db.
      */
@@ -44,40 +54,36 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        NavController navController = Navigation.findNavController(this,
+                R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+        User user = new User("User4");
+
+        Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
+        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                for (Wrapped w : user.getWraps()) {
+                    System.out.println("FINAL" + w);
+                }
+            }
+        });
     }
 
     /**
-     * Please pass in a formatted string in the following way:
-     * "Name: [username]; [{}] (JSON OBJECTS OF SERIALIZED SPOTIFY WRAPPED)
+     * Please pass in a formatted string in the following way.
+     * "Name: [username]; (JSON OBJECTS OF SERIALIZED SPOTIFY WRAPPED)
      *
      * @param s formatted string
      */
     public static void newUser(String s) {
+//        CollectionReference usersWrapped = db.collection("users");
+//        Map<String, String> user = new HashMap<>();
+//        user.put("prior_wrapped", s.substring(s.indexOf(";" + SPLITTER)));
+//        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
         CollectionReference usersWrapped = db.collection("users");
-        Map<String, String> user = new HashMap<>();
-        user.put("prior_wrapped", s.substring(s.indexOf("[")));
-        usersWrapped.document(s.substring(0, s.indexOf(";[{"))).set(user);
+        usersWrapped.document(s);
     }
-
-
-//    public static String getWrappedData(String user) {
-//        DocumentReference docRef = db.collection("users").document(user);
-//        final String[] returnStr = new String[1];
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        returnStr[0] = (String) document.getData().get("prior_wrapped");
-//                    }
-//                }
-//            }
-//        });
-//        throw new RuntimeException("Failed to retrieve past wrapped data");
-//    }
 
 }

@@ -1,4 +1,4 @@
-package com.example.spotifyapp2340.ui.dashboard;
+package com.example.spotifyapp2340.ui.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,26 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.spotifyapp2340.databinding.FragmentDashboardBinding;
+import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
 
 /**
- * The type Dashboard fragment.
+ * The type Settings fragment.
  */
-public class DashboardFragment extends Fragment {
+public class SettingsFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentSettingsBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        SettingsViewModel settingsViewModel =
+                new ViewModelProvider(this).get(SettingsViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 

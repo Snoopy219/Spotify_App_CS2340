@@ -1,8 +1,13 @@
 package com.example.spotifyapp2340.wrappers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Arrays;
+
 /**
  * The type Wrapped item.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WrappedItem {
     private Follower followers;
     private String[] genres;
@@ -195,6 +200,19 @@ public class WrappedItem {
         this.preview_url = preview_url;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "WrappedItem{"
+                + "followers=" + followers
+                + ", genres=" + Arrays.toString(genres)
+                + ", images=" + Arrays.toString(images)
+                + ", name='" + name + '\''
+                + ", popularity=" + popularity
+                + ", type='" + type + '\''
+                + ", album=" + album
+                + ", artists=" + Arrays.toString(artists)
+                + ", is_playable=" + is_playable
+                + ", preview_url='" + preview_url + '\''
+                + '}';
+    }
 }
