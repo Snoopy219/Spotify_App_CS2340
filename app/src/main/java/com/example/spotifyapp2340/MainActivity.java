@@ -17,6 +17,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.spotify.sdk.android.auth.AuthorizationClient;
+import com.spotify.sdk.android.auth.AuthorizationRequest;
+import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+
 /**
  * The type Main activity.
  */
@@ -55,6 +71,19 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param s formatted string
      */
+
+    public void getToken() {
+        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
+        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
+    }
+
+    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
+        return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
+                .setShowDialog(false)
+                .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
+                .setCampaign("your-campaign-token")
+                .build();
+    }
     public static void newUser(String s) {
         CollectionReference usersWrapped = db.collection("users");
         Map<String, String> user = new HashMap<>();

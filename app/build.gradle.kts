@@ -53,6 +53,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
 
+    //Spotify dependencies
+    implementation("com.spotify.android:auth:2.1.1")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
     //Jackson
     implementation("com.fasterxml.jackson.core:jackson-databind:2.12.5")
 }
