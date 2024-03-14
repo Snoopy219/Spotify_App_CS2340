@@ -1,10 +1,9 @@
 package com.example.spotifyapp2340;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import com.example.spotifyapp2340.databinding.ActivityMainBinding;
+import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.wrappers.User;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +22,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
+
+        play("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -86,4 +88,9 @@ public class MainActivity extends AppCompatActivity {
         usersWrapped.document(s);
     }
 
+    public static void play(String sourceURL) {
+        if (sourceURL == null) throw new IllegalArgumentException("SourceURL is null.");
+
+        AppPlayer player = new AppPlayer(sourceURL, true);
+    }
 }
