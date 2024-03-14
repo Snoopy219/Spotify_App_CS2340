@@ -12,10 +12,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
 
+/**
+ * The type Settings fragment.
+ */
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         SettingsViewModel settingsViewModel =
