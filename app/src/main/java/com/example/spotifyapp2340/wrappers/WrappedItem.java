@@ -200,6 +200,14 @@ public class WrappedItem {
         this.preview_url = preview_url;
     }
 
+    public ImageObject[] getImages() {
+        return images;
+    }
+
+    public void setImages(ImageObject[] images) {
+        this.images = images;
+    }
+
     @Override
     public String toString() {
         return "WrappedItem{"

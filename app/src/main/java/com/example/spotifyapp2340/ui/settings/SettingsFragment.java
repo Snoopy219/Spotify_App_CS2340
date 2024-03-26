@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
 
 /**

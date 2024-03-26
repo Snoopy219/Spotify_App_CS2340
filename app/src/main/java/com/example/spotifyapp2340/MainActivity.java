@@ -4,6 +4,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
+import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.wrappers.User;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.json.JSONObject;
 
 /**
  * The type Main activity.
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
      * The constant db.
      */
     public static FirebaseFirestore db;
+
+    public static User currUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,32 +71,33 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        User user = new User("User4");
+        User user = new User("User6", "Megan");
+        newUser(user);
 
-        Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
-        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                for (Wrapped w : user.getWraps()) {
-                    System.out.println("FINAL" + w);
-                }
-            }
-        });
+        //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
+//        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void unused) {
+//                for (Wrapped w : user.getWraps()) {
+//                    System.out.println("FINAL" + w);
+//                }
+//            }
+//        });
     }
 
     /**
      * Please pass in a formatted string in the following way.
      * "Name: [username]; (JSON OBJECTS OF SERIALIZED SPOTIFY WRAPPED)
      *
-     * @param s formatted string
+     * @param u User to add
      */
-    public static void newUser(String s) {
+    public static void newUser(User u) {
 //        CollectionReference usersWrapped = db.collection("users");
         Map<String, String> user = new HashMap<>();
-        user.put("prior_wrapped", "");
+        user.put("user_data", "");
 //        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
         CollectionReference usersWrapped = db.collection("users");
-        usersWrapped.document("Name: " + s + "; ");
+        usersWrapped.document(u.getId());
     }
 
     /**
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void updateUser(User user) {
         Map<String, String> userMap = new HashMap<>();
-        userMap.put("prior_wrapped", user.getFormatWraps());
+        userMap.put("user_data", HANDLE_JSON.exportUser(user).toString());
 //        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
         CollectionReference usersWrapped = db.collection("users");
         usersWrapped.document(user.getId()).set(userMap);

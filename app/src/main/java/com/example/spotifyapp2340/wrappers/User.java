@@ -28,6 +28,21 @@ import java.util.concurrent.Executor;
 public class User {
     private String id;
     private ArrayList<Wrapped> wraps = new ArrayList<>();
+    private String display_name;
+
+    public User(String id, String display_name) {
+        this.id = id;
+        this.display_name = display_name;
+    }
+
+    public String getDisplay_name() {
+        return display_name;
+    }
+
+    public void setDisplay_name(String display_name) {
+        this.display_name = display_name;
+    }
+
     /**
      * The Fetch task.
      */
@@ -60,16 +75,6 @@ public class User {
     public User(String id, ArrayList<Wrapped> wraps) {
         this.id = id;
         this.wraps = wraps;
-    }
-
-    /**
-     * Instantiates a new User.
-     *
-     * @param id the id
-     */
-    public User(String id) {
-        this.id = id;
-        getUserData();
     }
 
     /**
@@ -128,7 +133,7 @@ public class User {
 //                    }
                     for (int i = 1; i < newWraps.length; i++) {
                         System.out.println("WRAP" + newWraps[i]);
-                        wraps.add(new Wrapped(newWraps[i]));
+                       // wraps.add(new Wrapped(newWraps[i]));
                     }
                     for (Wrapped w : wraps) {
                         System.out.println("WRAPPED" + w);
