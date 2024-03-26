@@ -55,4 +55,7 @@ dependencies {
 
     //Jackson
     implementation("com.fasterxml.jackson.core:jackson-databind:2.12.5")
+
+    //JLayer - https://mvnrepository.com/artifact/javazoom/jlayer
+    implementation("javazoom:jlayer:1.0.1")
 }
