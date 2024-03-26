@@ -50,6 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
+        android:backgroundTint="@color/ocean_blue"
         android:fontFamily="@font/montserrat"
         android:text="Edit Info"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,12 +63,14 @@
         android:layout_width="63dp"
         android:layout_height="47dp"
         android:layout_marginBottom="80dp"
+        android:backgroundTint="@color/ocean_blue"
         app:icon="@android:drawable/ic_menu_delete"
         app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.425"
-        app:layout_constraintStart_toEndOf="@+id/edit_button" />
+        app:layout_constraintStart_toEndOf="@+id/edit_button"
+        />
 
     <TextView
         android:id="@+id/UsernameText"
@@ -85,8 +88,11 @@
         android:id="@+id/darkModeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableTint="@color/ocean_blue"
         android:fontFamily="@font/montserrat"
         android:text="Dark Mode"
+        android:textColorLink="@color/ocean_blue"
+        android:textCursorDrawable="@color/ocean_blue"
         app:layout_constraintBottom_toTopOf="@+id/edit_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
