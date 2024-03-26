@@ -5,7 +5,13 @@
     <string name="title_notifications">Notifications</string>
     <string name="top_songs">Your Top Songs</string>
     <string name="top_artists">Your Top Artists</string>
-    <string name="wrapped_summary">Your Spotify Wrapped Summary</string>
+    <string name="top_genres">Your Top Genres</string>
     <string name="describe_image">Spotify Logo</string>
+    <string name="artist_ranking">1</string>
+    <string name="artist_name">Taylor Swift</string>
+    <string name="song_ranking">1</string>
+    <string name="song_name">Love Story</string>
+    <string name="genre_ranking">1</string>
+    <string name="genre_name">Alternative Rock</string>
 
 </resources>
