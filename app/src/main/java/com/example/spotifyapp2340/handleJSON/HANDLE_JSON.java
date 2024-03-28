@@ -3,15 +3,11 @@ package com.example.spotifyapp2340.handleJSON;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.DATE;
 
-import com.example.spotifyapp2340.wrappers.Album;
-import com.example.spotifyapp2340.wrappers.Artist;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
-import com.example.spotifyapp2340.wrappers.Follower;
 import com.example.spotifyapp2340.wrappers.ImageObject;
 import com.example.spotifyapp2340.wrappers.TrackObject;
 import com.example.spotifyapp2340.wrappers.User;
 import com.example.spotifyapp2340.wrappers.Wrapped;
-import com.example.spotifyapp2340.wrappers.WrappedItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,8 +40,8 @@ public class HANDLE_JSON {
         }
     }
 
-    public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Calendar date, Calendar time) {
-        Wrapped wrapped = new Wrapped(date, time, JSONArtist, JSONTrack);
+    public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Calendar date) {
+        Wrapped wrapped = new Wrapped(date, JSONArtist, JSONTrack);
         try {
             JSONObject jsonObjectArt = new JSONObject(JSONArtist);
             JSONArray jsonArrayArt = new JSONArray(jsonObjectArt.get("items"));
@@ -112,14 +108,13 @@ public class HANDLE_JSON {
     }
 
     public static void updateWrappedFromJSON(String JSONArt, String JSONTrack, Wrapped wrapped) {
-        wrapped = createWrappedFromJSON(JSONArt, JSONTrack, wrapped.getDate(), wrapped.getTime());
+        wrapped = createWrappedFromJSON(JSONArt, JSONTrack, wrapped.getDate());
     }
 
     public static JSONObject exportWrapped(Wrapped wrapped) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("date", wrapped.getDate());
-            jsonObject.put("time", wrapped.getTime());
             jsonObject.put("artists", wrapped.getJSONArt());
             jsonObject.put("tracks", wrapped.getJSONTrack());
         } catch (JSONException e) {

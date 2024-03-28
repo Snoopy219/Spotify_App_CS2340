@@ -13,7 +13,6 @@ public class Wrapped {
     private ArrayList<ArtistObject> artists = new ArrayList<>();
     private ArrayList<TrackObject> tracks = new ArrayList<>();
     private Calendar date;
-    private Calendar time;
 
     private String JSONArt;
     private String JSONTrack;
@@ -26,13 +25,6 @@ public class Wrapped {
         this.date = date;
     }
 
-    public Calendar getTime() {
-        return time;
-    }
-
-    public void setTime(Calendar time) {
-        this.time = time;
-    }
 
     public String getJSONArt() {
         return JSONArt;
@@ -42,47 +34,11 @@ public class Wrapped {
         return JSONTrack;
     }
 
-    public Wrapped(Calendar date, Calendar time, String JSONArt, String JSONTrack) {
+    public Wrapped(Calendar date, String JSONArt, String JSONTrack) {
         this.date = date;
-        this.time = time;
         this.JSONArt = JSONArt;
         this.JSONTrack = JSONTrack;
     }
-
-//    public Wrapped(String json) {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        ArrayList<ArrayList<WrappedItem>> items = new ArrayList<>();
-//        ArrayList<OutsideWrap> outsideWraps = new ArrayList<>();
-//        try {
-//
-//            outsideWraps = objectMapper.readValue(json,
-//                    new TypeReference<ArrayList<OutsideWrap>>() {});
-//            for (OutsideWrap o : outsideWraps) {
-////                items.add(objectMapper.readValue(outsideWraps.get(0).getItems().toString(),
-////                new TypeReference<ArrayList<WrappedItem>>() {
-////                }));
-////                for (ArrayList<WrappedItem> i : items) {
-////                    for (WrappedItem j : i) {
-////                        if (j.getType().equals("artist")) {
-////                            artists.add(j);
-////                        } else {
-////                            tracks.add(j);
-////                        }
-////                    }
-////                }
-//                System.out.println(o.getItems());
-//                for (WrappedItem w : o.getItems()) {
-//                    System.out.println(w);
-//                    System.out.println(w.getType());
-//
-//                }
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Items" + e);
-//        }
-//    }
-
-    public Wrapped() {}
 
     public ArrayList<ArtistObject> getArtists() {
         return artists;
