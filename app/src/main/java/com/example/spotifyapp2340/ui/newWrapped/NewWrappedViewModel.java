@@ -1,22 +1,22 @@
-package com.example.spotifyapp2340.ui.home;
+package com.example.spotifyapp2340.ui.newWrapped;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 /**
- * The type Home view model.
+ * The type Dashboard view model.
  */
-public class HomeViewModel extends ViewModel {
+public class NewWrappedViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
     /**
-     * Instantiates a new Home view model.
+     * Instantiates a new Dashboard view model.
      */
-    public HomeViewModel() {
+    public NewWrappedViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is dashboard fragment");
     }
 
     /**

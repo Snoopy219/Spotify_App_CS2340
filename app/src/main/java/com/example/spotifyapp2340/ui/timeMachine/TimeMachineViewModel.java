@@ -1,22 +1,22 @@
-package com.example.spotifyapp2340.ui.dashboard;
+package com.example.spotifyapp2340.ui.timeMachine;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 /**
- * The type Dashboard view model.
+ * The type TimeMachine view model.
  */
-public class DashboardViewModel extends ViewModel {
+public class TimeMachineViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
     /**
-     * Instantiates a new Dashboard view model.
+     * Instantiates a new TimeMachine view model.
      */
-    public DashboardViewModel() {
+    public TimeMachineViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is Time Machine fragment");
     }
 
     /**

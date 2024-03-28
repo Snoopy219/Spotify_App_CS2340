@@ -15,6 +15,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders.clear()
+        manifestPlaceholders["redirectHostName"] = "auth"
+        manifestPlaceholders["redirectSchemeName"] = "spotifyapp2340"
     }
 
     buildTypes {
@@ -37,6 +40,8 @@ android {
 
 dependencies {
 
+    implementation("com.spotify.android:auth:2.1.1")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
