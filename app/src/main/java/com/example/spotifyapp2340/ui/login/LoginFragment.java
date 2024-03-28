@@ -1,4 +1,4 @@
-package com.example.spotifyapp2340.ui.home;
+package com.example.spotifyapp2340.ui.login;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,26 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.spotifyapp2340.databinding.FragmentHomeBinding;
+import com.example.spotifyapp2340.databinding.FragmentLoginBinding;
 
-/**
- * The type Home fragment.
- */
-public class HomeFragment extends Fragment {
+public class LoginFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentLoginBinding binding;
 
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        LoginViewModel loginViewModel =
+                new ViewModelProvider(this).get(LoginViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textLogin;
+        loginViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
