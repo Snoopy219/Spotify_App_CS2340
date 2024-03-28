@@ -7,12 +7,12 @@
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="16dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="10dp">
 
     <LinearLayout
         android:layout_width="192dp"
         android:layout_height="320dp"
-        android:background="@color/seafoam_blue"
+        android:background="@color/tinted_white"
         android:orientation="vertical"
         android:padding="8dp">
 
@@ -30,7 +30,7 @@
                 android:layout_marginBottom="99dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Date"
-                android:textColor="@color/black"
+                android:textColor="@color/seafoam_blue"
                 android:textSize="26sp"
                 app:layout_constraintBottom_toTopOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -41,17 +41,12 @@
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="142dp"
-                android:layout_marginBottom="61dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Top Songs"
-                android:textColor="@color/black"
+                android:textColor="@color/seafoam_blue"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView8"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toTopOf="parent" />
+                tools:layout_editor_absoluteX="99dp"
+                tools:layout_editor_absoluteY="139dp" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -62,7 +57,7 @@
                 android:layout_marginBottom="39dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Minutes Listened"
-                android:textColor="@color/black"
+                android:textColor="@color/seafoam_blue"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textView8"
@@ -76,23 +71,23 @@
                 android:layout_marginBottom="52dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Top Genre"
-                android:textColor="@color/black"
+                android:textColor="@color/seafoam_blue"
                 android:textSize="15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView7" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:text="Top Artists"
+                android:textColor="@color/seafoam_blue"
+                android:textSize="15sp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="139dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="19dp"
-        android:fontFamily="@font/montserrat_semibold"
-        android:text="Top Artists"
-        android:textColor="@color/black"
-        android:textSize="15sp" />
 
 </LinearLayout>

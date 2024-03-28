@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Spotify App 2340</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_timeMachine">Time Machine</string>
+    <string name="title_newWrapped">New Wrapped</string>
+    <string name="title_settings">Settings</string>
     <string name="top_songs">Your Top Songs</string>
     <string name="top_artists">Your Top Artists</string>
     <string name="wrapped_summary">Your Spotify Wrapped Summary</string>
