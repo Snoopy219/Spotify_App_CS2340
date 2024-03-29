@@ -16,7 +16,7 @@ public class NewWrappedViewModel extends ViewModel {
      */
     public NewWrappedViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("Create New Wrapped");
     }
 
     /**
