@@ -1,10 +1,14 @@
 package com.example.spotifyapp2340;
 
+import static com.example.spotifyapp2340.handleJSON.HANDLE_JSON.createUserFromJSON;
+
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public static FirebaseFirestore db;
 
+    private static JSONObject userJSON;
     public static User currUser;
+
+    private static Button profileBtn;
 
     public static final String CLIENT_ID = "5fc702c72e5d4c979c03685037ab737d";
     public static final String REDIRECT_URI = "spotifyapp2340://auth";
@@ -98,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         User user = new User("User6", "Megan");
         newUser(user);
         updateUser(user);
-        user.addWrapped(new Wrapped(Calendar.getInstance(),"{\n" +
+        user.addWrapped(new Wrapped(Calendar.getInstance(), "{\n" +
                 "  \"external_urls\": {\n" +
                 "    \"spotify\": \"string\"\n" +
                 "  },\n" +
@@ -214,14 +221,24 @@ public class MainActivity extends AppCompatActivity {
         updateUser(user);
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
-//        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void unused) {
-//                for (Wrapped w : user.getWraps()) {
-//                    System.out.println("FINAL" + w);
-//                }
-//            }
-//        });
+        //        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
+        //            @Override
+        //            public void onSuccess(Void unused) {
+        //                for (Wrapped w : user.getWraps()) {
+        //                    System.out.println("FINAL" + w);
+        //                }
+        //            }
+        //        });
+    }
+    public void setProfileBtn(Button button) {
+        profileBtn = button;
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onGetUserProfileClicked();
+                currUser = createUserFromJSON(userJSON.toString());
+                newUser(currUser);
+            }
+        });
     }
 
     /**
@@ -332,6 +349,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
+                    userJSON = jsonObject;
                     //setTextAsync(jsonObject.toString(3), profileTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
