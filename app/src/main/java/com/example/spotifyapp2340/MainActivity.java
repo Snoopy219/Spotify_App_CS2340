@@ -219,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 "  \"is_local\": false\n" +
                 "}"));
         updateUser(user);
+        setProfileBtn(findViewById(R.id.button))
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
         //        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
