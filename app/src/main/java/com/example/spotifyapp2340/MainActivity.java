@@ -362,15 +362,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Creates & returns a new Wrapped object.
+     *
+     * @return new Wrapped object.
+     */
     public Wrapped onNewWrapped() {
         if (mAccessToken == null) {
-            Toast.makeText(this, "Access token required. Please log in!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Access token required. Please log in!",
+                    Toast.LENGTH_SHORT).show();
             return null;
         }
 
         //Getting tracks
         final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .addHeader("Authorization",
+                        "Bearer " + mAccessToken)
                 .build();
 
         cancelCall();
@@ -380,7 +387,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+                Toast.makeText(MainActivity.this,
+                        "Failed to fetch data, watch Logcat for more details",
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -391,7 +399,8 @@ public class MainActivity extends AppCompatActivity {
                     //setTextAsync(jsonObject.toString(3), profileTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+                    Toast.makeText(MainActivity.this,
+                            "Failed to parse data, watch Logcat for more details",
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -409,7 +418,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+                Toast.makeText(MainActivity.this,
+                        "Failed to fetch data, watch Logcat for more details",
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -420,7 +430,8 @@ public class MainActivity extends AppCompatActivity {
                     //setTextAsync(jsonObject.toString(3), profileTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+                    Toast.makeText(MainActivity.this,
+                            "Failed to parse data, watch Logcat for more details",
                             Toast.LENGTH_SHORT).show();
                 }
             }
