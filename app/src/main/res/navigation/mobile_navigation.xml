@@ -26,5 +26,5 @@
         android:id="@+id/loginFragment"
         android:name="com.example.spotifyapp2340.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/activity_login" />
 </navigation>
