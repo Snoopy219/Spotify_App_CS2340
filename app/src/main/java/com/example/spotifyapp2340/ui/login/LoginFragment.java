@@ -4,13 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.databinding.FragmentLoginBinding;
+import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 
 public class LoginFragment extends Fragment {
 
@@ -27,19 +30,7 @@ public class LoginFragment extends Fragment {
         final TextView textView = binding.textLogin;
         loginViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-        setProfileBtn(root.findViewById(R.id.button));
         return root;
-    }
-
-    public void setProfileBtn(Button button) {
-        Button profileBtn = button;
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                MainActivity.onGetUserProfileClicked();
-                MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-                MainActivity.newUser(MainActivity.currUser);
-            }
-        });
     }
 
     @Override

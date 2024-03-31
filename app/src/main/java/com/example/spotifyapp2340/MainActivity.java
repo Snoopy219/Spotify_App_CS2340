@@ -221,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 "  \"is_local\": false\n" +
                 "}"));
         updateUser(user);
+        //setProfileBtn(findViewById(R.id.button))
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
         //        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -232,6 +233,17 @@ public class MainActivity extends AppCompatActivity {
         //            }
         //        });
     }
+    public void setProfileBtn(Button button) {
+        profileBtn = button;
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onGetUserProfileClicked();
+                currUser = createUserFromJSON(userJSON.toString());
+                newUser(currUser);
+            }
+        });
+    }
+
     /**
      * Please pass in a formatted string in the following way.
      * "Name: [username]; (JSON OBJECTS OF SERIALIZED SPOTIFY WRAPPED)
@@ -276,6 +288,18 @@ public class MainActivity extends AppCompatActivity {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
         AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
     }
+
+    /**
+     * Get code from Spotify
+     * This method will open the Spotify login activity and get the code
+     * What is code?
+     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
+     */
+    public void getCode() {
+        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
+        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_CODE_REQUEST_CODE, request);
+    }
+
 
     /**
      * When the app leaves this activity to momentarily get a token/code, this function
@@ -345,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
      * @return new Wrapped object.
      */
 
-    
+
     public Wrapped onNewWrapped() {
         if (mAccessToken == null) {
             Toast.makeText(this, "Access token required. Please log in!",
