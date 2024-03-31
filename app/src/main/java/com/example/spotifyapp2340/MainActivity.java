@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private String mAccessToken, mAccessCode;
     private Call mCall;
+    private static JSONObject tracks, artists;
 
 
     @Override
@@ -359,6 +360,84 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Creates & returns a new Wrapped object.
+     *
+     * @return new Wrapped object.
+     */
+    public Wrapped onNewWrapped() {
+        if (mAccessToken == null) {
+            Toast.makeText(this, "Access token required. Please log in!",
+                    Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        //Getting tracks
+        final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
+                .addHeader("Authorization",
+                        "Bearer " + mAccessToken)
+                .build();
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(req);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("HTTP", "Failed to fetch data: " + e);
+                Toast.makeText(MainActivity.this,
+                        "Failed to fetch data, watch Logcat for more details",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    tracks = new JSONObject(response.body().string());
+                    //setTextAsync(jsonObject.toString(3), profileTextView);
+                } catch (JSONException e) {
+                    Log.d("JSON", "Failed to parse data: " + e);
+                    Toast.makeText(MainActivity.this,
+                            "Failed to parse data, watch Logcat for more details",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        //Getting artists
+        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
+                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .build();
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(req2);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("HTTP", "Failed to fetch data: " + e);
+                Toast.makeText(MainActivity.this,
+                        "Failed to fetch data, watch Logcat for more details",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    artists = new JSONObject(response.body().string());
+                    //setTextAsync(jsonObject.toString(3), profileTextView);
+                } catch (JSONException e) {
+                    Log.d("JSON", "Failed to parse data: " + e);
+                    Toast.makeText(MainActivity.this,
+                            "Failed to parse data, watch Logcat for more details",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        return new Wrapped(Calendar.getInstance(), artists.toString(), tracks.toString());
     }
 
     /**
