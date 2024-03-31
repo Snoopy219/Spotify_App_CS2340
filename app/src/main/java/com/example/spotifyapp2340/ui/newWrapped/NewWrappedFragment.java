@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
 
 /**
@@ -30,6 +31,13 @@ public class NewWrappedFragment extends Fragment {
 
         final TextView textView = binding.createNewWrapped;
         newWrappedViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        binding.createNewWrapped.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.onNewWrapped();
+            }
+        });
         return root;
     }
 

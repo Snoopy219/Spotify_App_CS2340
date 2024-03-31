@@ -63,4 +63,7 @@ dependencies {
 
     //JLayer - https://mvnrepository.com/artifact/javazoom/jlayer
     implementation("javazoom:jlayer:1.0.1")
+
+    //Image loading
+    implementation("com.squareup.picasso:picasso:2.8")
 }
