@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private String mAccessToken, mAccessCode;
     private Call mCall;
+    private static JSONObject tracks, artists;
 
 
     @Override
@@ -361,15 +362,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void onNewWrapped() {
+    public Wrapped onNewWrapped() {
         if (mAccessToken == null) {
             Toast.makeText(this, "Access token required. Please log in!", Toast.LENGTH_SHORT).show();
-            return;
+            return null;
         }
 
-        JSONObject tracks;
-        JSONObject artists;
-
+        //Getting tracks
         final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
@@ -388,7 +387,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    final JSONObject tracks = new JSONObject(response.body().string());
+                    tracks = new JSONObject(response.body().string());
                     //setTextAsync(jsonObject.toString(3), profileTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
@@ -398,6 +397,36 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Getting artists
+        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
+                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .build();
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(req2);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("HTTP", "Failed to fetch data: " + e);
+                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    artists = new JSONObject(response.body().string());
+                    //setTextAsync(jsonObject.toString(3), profileTextView);
+                } catch (JSONException e) {
+                    Log.d("JSON", "Failed to parse data: " + e);
+                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        return new Wrapped(Calendar.getInstance(), artists.toString(), tracks.toString());
     }
 
     /**
