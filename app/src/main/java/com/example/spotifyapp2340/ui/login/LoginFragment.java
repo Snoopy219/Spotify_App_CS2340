@@ -26,7 +26,20 @@ public class LoginFragment extends Fragment {
 
         final TextView textView = binding.textLogin;
         loginViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        setProfileBtn(root.findViewById(R.id.button));
         return root;
+    }
+
+    public void setProfileBtn(Button button) {
+        Button profileBtn = button;
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                MainActivity.onGetUserProfileClicked();
+                MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+                MainActivity.newUser(MainActivity.currUser);
+            }
+        });
     }
 
     @Override
