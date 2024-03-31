@@ -60,11 +60,7 @@ public class HANDLE_JSON {
         }
         return wrapped;
     }
-    /*
-    things we need: artist name, artist picture
-    track name, track picture
-   top genre
-     */
+
     public static ArtistObject processArtistObject(JSONObject jsonObject) {
         ArtistObject artistObject;
         try {

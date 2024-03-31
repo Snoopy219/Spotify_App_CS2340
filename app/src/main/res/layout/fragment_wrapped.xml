@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -34,21 +33,21 @@
             android:padding="16dp">
 
             <ImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="204dp"
+                android:layout_height="140dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="16dp"
-                android:src="@drawable/spotify_logo"
-                android:contentDescription="@string/describe_image"/>
+                android:contentDescription="@string/describe_image"
+                android:src="@drawable/music_note" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/top_songs"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:background="#92C7CF"
+                android:text="@string/top_songs"
+                android:textSize="20sp" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -58,15 +57,14 @@
                 android:id="@+id/recyclerViewTopSongs"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_marginBottom="16dp"
-                android:background="#212121"/>
+                android:layout_marginBottom="16dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/top_artists"
                 android:textSize="20sp"
-                android:textColor="@android:color/white"
+                android:background="#92C7CF"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"/>
 
@@ -74,23 +72,21 @@
                 android:id="@+id/recyclerViewTopArtists"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_marginBottom="16dp"
-                android:background="#212121"/>
+                android:layout_marginBottom="16dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/top_genres"
                 android:textSize="20sp"
-                android:textColor="@android:color/white"
+                android:background="#92C7CF"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewTopGenres"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:background="#212121"/>
+                android:layout_height="120dp"/>
 
         </LinearLayout>
     </ScrollView>

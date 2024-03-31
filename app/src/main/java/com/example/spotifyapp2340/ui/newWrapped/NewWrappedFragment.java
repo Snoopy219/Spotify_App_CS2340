@@ -28,7 +28,7 @@ public class NewWrappedFragment extends Fragment {
         binding = FragmentNewWrappedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
+        final TextView textView = binding.createNewWrapped;
         newWrappedViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }

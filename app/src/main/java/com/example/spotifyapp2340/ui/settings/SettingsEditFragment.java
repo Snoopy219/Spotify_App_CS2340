@@ -1,31 +1,33 @@
-package com.example.spotifyapp2340.ui.login;
+package com.example.spotifyapp2340.ui.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.spotifyapp2340.databinding.FragmentLoginBinding;
+import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
 
-public class LoginFragment extends Fragment {
+/**
+ * The type Settings fragment.
+ */
+public class SettingsEditFragment extends Fragment {
 
-    private FragmentLoginBinding binding;
+    private FragmentSettingsBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        LoginViewModel loginViewModel =
-                new ViewModelProvider(this).get(LoginViewModel.class);
+        SettingsViewModel settingsViewModel =
+                new ViewModelProvider(this).get(SettingsViewModel.class);
 
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textLogin;
-        loginViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
         return root;
     }
 
