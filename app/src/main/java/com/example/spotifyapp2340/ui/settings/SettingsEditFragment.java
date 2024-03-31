@@ -4,19 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
 
 /**
  * The type Settings fragment.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsEditFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
 
