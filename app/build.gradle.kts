@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders.clear()
         manifestPlaceholders["redirectHostName"] = "auth"
-        manifestPlaceholders["redirectSchemeName"] = "spotifyapp2340"
+        manifestPlaceholders["redirectSchemeName"] = "com.example.spotifyapp2340"
     }
 
     buildTypes {

@@ -2,6 +2,8 @@ package com.example.spotifyapp2340;
 
 import static com.example.spotifyapp2340.handleJSON.HANDLE_JSON.createUserFromJSON;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -76,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int AUTH_CODE_REQUEST_CODE = 1;
 
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
-    private static String mAccessToken;
-    private String mAccessCode;
+    public static String mAccessToken;
+    public static String mAccessCode;
     private static Call mCall;
     private static JSONObject tracks, artists;
 
@@ -233,16 +235,6 @@ public class MainActivity extends AppCompatActivity {
         //            }
         //        });
     }
-    public void setProfileBtn(Button button) {
-        profileBtn = button;
-        profileBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onGetUserProfileClicked();
-                currUser = createUserFromJSON(userJSON.toString());
-                newUser(currUser);
-            }
-        });
-    }
 
     /**
      * Please pass in a formatted string in the following way.
@@ -284,9 +276,9 @@ public class MainActivity extends AppCompatActivity {
      * What is token?
      * https://developer.spotify.com/documentation/general/guides/authorization-guide/
      */
-    public void getToken() {
+    public static void getToken(Activity context) {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(context, AUTH_TOKEN_REQUEST_CODE, request);
     }
 
     /**
@@ -295,9 +287,9 @@ public class MainActivity extends AppCompatActivity {
      * What is code?
      * https://developer.spotify.com/documentation/general/guides/authorization-guide/
      */
-    public void getCode() {
+    public static void getCode(Activity context) {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_CODE_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(context, AUTH_CODE_REQUEST_CODE, request);
     }
 
 
@@ -327,6 +319,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void onGetUserProfileClicked() {
         if (mAccessToken == null) {
+//            getToken(activity);
+//            getCode(activity);
             //Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -460,7 +454,7 @@ public class MainActivity extends AppCompatActivity {
      * @param type the type of the request
      * @return the authentication request
      */
-    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
+    private static AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
                 .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
