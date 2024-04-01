@@ -65,6 +65,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
 
+    private Activity context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,24 +76,25 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        if (MainActivity.currUser != null) {
-            Intent myIntent = new Intent(this, MainActivity.class);
-            startActivity(myIntent);
-        }
+//        if (MainActivity.currUser != null) {
+//            Intent myIntent = new Intent(this, MainActivity.class);
+//            startActivity(myIntent);
+//        }
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //call login
                 System.out.println("here");
-                onGetUserProfileClicked();
+                //onGetUserProfileClicked();
                 System.out.println("here");
                 //if login successful
-                if(MainActivity.mAccessToken != null) {
-                    Intent myIntent = new Intent(v.getContext(), MainActivity.class);
-                    startActivity(myIntent);
-                }
+                getToken();
+                System.out.println(MainActivity.mAccessToken);
+//                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
+//                startActivity(myIntent);
             }
         });
+        context = this;
     }
 
     /**
@@ -129,6 +132,8 @@ public class LoginActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (MainActivity.AUTH_TOKEN_REQUEST_CODE == requestCode) {
             MainActivity.mAccessToken = response.getAccessToken();
+            Intent myIntent = new Intent(context, MainActivity.class);
+            startActivity(myIntent);
             //setTextAsync(mAccessToken, tokenTextView);
 
         } else if (MainActivity.AUTH_CODE_REQUEST_CODE == requestCode) {
@@ -145,43 +150,44 @@ public class LoginActivity extends AppCompatActivity {
         if (MainActivity.mAccessToken == null) {
             System.out.println("get code");
             getToken();
-            getCode();
+            //getCode();
             //Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
         }
 
+
         // Create a request to get the user profile
-        final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/me")
-                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(request);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-                //        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    System.out.println(response.body().string());
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    MainActivity.userJSON = jsonObject;
-                    MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-                    MainActivity.newUser(MainActivity.currUser);
-                    //setTextAsync(jsonObject.toString(3), profileTextView);
-                } catch (JSONException e) {
-                    Log.d("JSON", "Failed to parse data: " + e);
-                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-                    // Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        final Request request = new Request.Builder()
+//                .url("https://api.spotify.com/v1/me")
+//                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
+//                .build();
+//
+//        cancelCall();
+//        mCall = mOkHttpClient.newCall(request);
+//
+//        mCall.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.d("HTTP", "Failed to fetch data: " + e);
+//                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+//                //        Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                try {
+//                    System.out.println(response.body().string());
+//                    final JSONObject jsonObject = new JSONObject(response.body().string());
+//                    MainActivity.userJSON = jsonObject;
+//                    MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+//                    MainActivity.newUser(MainActivity.currUser);
+//                    //setTextAsync(jsonObject.toString(3), profileTextView);
+//                } catch (JSONException e) {
+//                    Log.d("JSON", "Failed to parse data: " + e);
+//                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+//                    // Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
     }
 
 
@@ -205,7 +211,7 @@ public class LoginActivity extends AppCompatActivity {
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(MainActivity.CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
+                .setScopes(new String[] { "user-read-email", "user-top-read" }) // <--- Change the scope of your requested token here
                 .setCampaign("your-campaign-token")
                 .build();
     }

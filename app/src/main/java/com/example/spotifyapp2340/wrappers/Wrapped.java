@@ -15,6 +15,15 @@ public class Wrapped {
     private Calendar date;
 
     private String JSONArt;
+
+    public void setJSONArt(String JSONArt) {
+        this.JSONArt = JSONArt;
+    }
+
+    public void setJSONTrack(String JSONTrack) {
+        this.JSONTrack = JSONTrack;
+    }
+
     private String JSONTrack;
 
     public Calendar getDate() {
@@ -38,6 +47,10 @@ public class Wrapped {
         this.date = date;
         this.JSONArt = JSONArt;
         this.JSONTrack = JSONTrack;
+    }
+
+    public Wrapped(Calendar date) {
+        this.date = date;
     }
 
     public ArrayList<ArtistObject> getArtists() {

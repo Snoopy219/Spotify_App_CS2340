@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
+import com.example.spotifyapp2340.ui.wrapped.SongAdapter;
+import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.User;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -81,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
     public static String mAccessToken;
     public static String mAccessCode;
     private static Call mCall;
-    private static JSONObject tracks, artists;
+    public static JSONObject tracks;
+    public static JSONObject artists;
 
 
     @Override
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        onGetUserProfileClicked();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -320,11 +324,9 @@ public class MainActivity extends AppCompatActivity {
      */
 
 
-    public static Wrapped onNewWrapped() {
-        if (mAccessToken == null) {
-            return null;
-        }
-
+    public void onNewWrapped(WrappedFragment fragment) {
+        Wrapped wrapped = new Wrapped(Calendar.getInstance());
+        MainActivity.currUser.addWrapped(wrapped);
         //Getting tracks
         final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
                 .addHeader("Authorization",
@@ -342,12 +344,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    tracks = new JSONObject(response.body().string());
-                    //setTextAsync(jsonObject.toString(3), profileTextView);
-                } catch (JSONException e) {
-                    Log.d("JSON", "Failed to parse data: " + e);
-                }
+                String track = response.body().string();
+                System.out.println(track);
+                wrapped.setJSONTrack(track);
+                fragment.notifyTrack();
+                //setTextAsync(jsonObject.toString(3), profileTextView);
             }
         });
 
@@ -367,21 +368,56 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    artists = new JSONObject(response.body().string());
-                    //setTextAsync(jsonObject.toString(3), profileTextView);
-                } catch (JSONException e) {
-                    Log.d("JSON", "Failed to parse data: " + e);
-                }
+                String art = response.body().string();
+                System.out.println(art);
+                wrapped.setJSONArt(art);
+                fragment.notifyArt();
+                //setTextAsync(jsonObject.toString(3), profileTextView);
+
             }
         });
 
-        Wrapped newWrap = new Wrapped(Calendar.getInstance(), artists.toString(), tracks.toString());
-        currUser.addWrapped(newWrap);
-        updateUser(currUser);
+        //navigate to new wrap screen
+        MainActivity.updateUser(MainActivity.currUser);
+    }
 
-        //navigate to wrapped screen
-        return newWrap;
+    public void onGetUserProfileClicked() {
+
+
+//         Create a request to get the user profile
+        final Request request = new Request.Builder()
+                .url("https://api.spotify.com/v1/me")
+                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
+                .build();
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(request);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("HTTP", "Failed to fetch data: " + e);
+                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+                //        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    String responseStre = response.body().string();
+                    System.out.println(responseStre);
+                    final JSONObject jsonObject = new JSONObject(responseStre);
+                    MainActivity.userJSON = jsonObject;
+                    MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+                    MainActivity.newUser(MainActivity.currUser);
+                    //setTextAsync(jsonObject.toString(3), profileTextView);
+                } catch (JSONException e) {
+                    Log.d("JSON", "Failed to parse data: " + e);
+                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+                    // Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /**

@@ -30,6 +30,7 @@ public class SettingsFragment extends Fragment {
 
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
 
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override

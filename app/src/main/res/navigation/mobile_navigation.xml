@@ -15,7 +15,11 @@
         android:id="@+id/navigation_newWrapped"
         android:name="com.example.spotifyapp2340.ui.newWrapped.NewWrappedFragment"
         android:label="@string/title_newWrapped"
-        tools:layout="@layout/fragment_new_wrapped" />
+        tools:layout="@layout/fragment_new_wrapped" >
+        <action
+            android:id="@+id/action_navigation_newWrapped_to_wrap"
+            app:destination="@id/wrap" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
@@ -31,4 +35,10 @@
         android:name="com.example.spotifyapp2340.ui.settings.SettingsEditFragment"
         android:label="fragment_settingsEditPage"
         tools:layout="@layout/fragment_settings_editpage" />
+
+    <fragment
+        android:id="@+id/wrap"
+        android:name="com.example.spotifyapp2340.ui.wrapped.WrappedFragment"
+        android:label="fragment_settingsEditPage"
+        tools:layout="@layout/fragment_wrapped" />
 </navigation>
