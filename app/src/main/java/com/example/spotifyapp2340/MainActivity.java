@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        User user = new User("User6", "Megan");
+        User user = new User("User6", "Megan", "example@example.com");
         newUser(user);
         updateUser(user);
         user.addWrapped(new Wrapped(Calendar.getInstance(), "{\n" +

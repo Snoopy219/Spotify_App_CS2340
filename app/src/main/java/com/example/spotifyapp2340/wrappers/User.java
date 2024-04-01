@@ -30,9 +30,20 @@ public class User {
     private ArrayList<Wrapped> wraps = new ArrayList<>();
     private String display_name;
 
-    public User(String id, String display_name) {
+    private String email;
+
+    public User(String id, String display_name, String email) {
         this.id = id;
         this.display_name = display_name;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDisplay_name() {

@@ -23,7 +23,7 @@ public class HANDLE_JSON {
         User user;
         try {
             JSONObject jsonObject = new JSONObject(JSON);
-            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"));
+            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("email"));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
