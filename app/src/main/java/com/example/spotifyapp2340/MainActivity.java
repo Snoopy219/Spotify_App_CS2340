@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
     public static void newUser(User u) {
 //        CollectionReference usersWrapped = db.collection("users");
         Map<String, String> user = new HashMap<>();
-        user.put("user_data", "");
+        user.put("user_data", HANDLE_JSON.exportUser(u).toString());
 //        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
         CollectionReference usersWrapped = db.collection("users");
         usersWrapped.document(u.getId()).set(user);
@@ -410,6 +410,7 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.userJSON = jsonObject;
                     MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
                     MainActivity.newUser(MainActivity.currUser);
+                    //MainActivity.updateUser(MainActivity.currUser);
                     //setTextAsync(jsonObject.toString(3), profileTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);

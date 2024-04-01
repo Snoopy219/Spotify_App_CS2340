@@ -124,6 +124,7 @@ public class HANDLE_JSON {
         try {
             jsonObject.put("id", user.getId());
             jsonObject.put("display_name", user.getDisplay_name());
+            jsonObject.put("spotify_account", user.getEmail());
             JSONArray jsonArray = new JSONArray();
             ArrayList<Wrapped> wraps = user.getWraps();
             for (int i = 0; i < wraps.size(); i++) {
