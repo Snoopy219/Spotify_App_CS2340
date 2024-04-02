@@ -7,6 +7,23 @@ on:
     branches: [ "main" ]
 
 jobs:
+  checkstyle:
+      name: runner / checkstyle
+      runs-on: ubuntu-latest
+      permissions:
+        checks: write
+        contents: write
+        issues: write
+        pull-requests: write
+      steps:
+        - uses: actions/checkout@v4
+        - uses: dbelyaev/action-checkstyle@master
+          with:
+            github_token: ${{ secrets.github_token }}
+            reporter: github-pr-review
+            level: error
+            checkstyle_config: checkstyle.xml
+
   build:
 
     runs-on: ubuntu-latest
@@ -24,20 +41,3 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-      
-  checkstyle:
-    name: runner / checkstyle
-    runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      contents: write
-      issues: write
-      pull-requests: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dbelyaev/action-checkstyle@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          level: error
-          checkstyle_config: checkstyle.xml
