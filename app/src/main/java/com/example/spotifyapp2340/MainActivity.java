@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     public static JSONObject tracks;
     public static JSONObject artists;
 
+    public static SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,15 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        onGetUserProfileClicked();
+        sharedPreferences = LoginActivity.sharedPreferences;
+        if (!sharedPreferences.getString("user", "").equals("")) {
+            //get from document with shared prefs
+            newUser(sharedPreferences.getString("user", ""));
+            //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(sharedPreferences.getString("user", ""));
+        } else {
+            //check if user exists in firestore or get new user
+            onGetUserProfileClicked();
+        }
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -111,123 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        User user = new User("User6", "Megan", "example@example.com", "fdsa");
-        newUser(user);
-        updateUser(user);
-        user.addWrapped(new Wrapped(Calendar.getInstance(), "{\n" +
-                "  \"external_urls\": {\n" +
-                "    \"spotify\": \"string\"\n" +
-                "  },\n" +
-                "  \"followers\": {\n" +
-                "    \"href\": \"string\",\n" +
-                "    \"total\": 0\n" +
-                "  },\n" +
-                "  \"genres\": [\"Prog rock\", \"Grunge\"],\n" +
-                "  \"href\": \"string\",\n" +
-                "  \"id\": \"string\",\n" +
-                "  \"images\": [\n" +
-                "    {\n" +
-                "      \"url\": \"https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\",\n" +
-                "      \"height\": 300,\n" +
-                "      \"width\": 300\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"name\": \"string\",\n" +
-                "  \"popularity\": 0,\n" +
-                "  \"type\": \"artist\",\n" +
-                "  \"uri\": \"string\"\n" +
-                "}", "{\n" +
-                "  \"album\": {\n" +
-                "    \"album_type\": \"compilation\",\n" +
-                "    \"total_tracks\": 9,\n" +
-                "    \"available_markets\": [\"CA\", \"BR\", \"IT\"],\n" +
-                "    \"external_urls\": {\n" +
-                "      \"spotify\": \"string\"\n" +
-                "    },\n" +
-                "    \"href\": \"string\",\n" +
-                "    \"id\": \"2up3OPMp9Tb4dAKM2erWXQ\",\n" +
-                "    \"images\": [\n" +
-                "      {\n" +
-                "        \"url\": \"https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\",\n" +
-                "        \"height\": 300,\n" +
-                "        \"width\": 300\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"name\": \"string\",\n" +
-                "    \"release_date\": \"1981-12\",\n" +
-                "    \"release_date_precision\": \"year\",\n" +
-                "    \"restrictions\": {\n" +
-                "      \"reason\": \"market\"\n" +
-                "    },\n" +
-                "    \"type\": \"album\",\n" +
-                "    \"uri\": \"spotify:album:2up3OPMp9Tb4dAKM2erWXQ\",\n" +
-                "    \"artists\": [\n" +
-                "      {\n" +
-                "        \"external_urls\": {\n" +
-                "          \"spotify\": \"string\"\n" +
-                "        },\n" +
-                "        \"href\": \"string\",\n" +
-                "        \"id\": \"string\",\n" +
-                "        \"name\": \"string\",\n" +
-                "        \"type\": \"artist\",\n" +
-                "        \"uri\": \"string\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  },\n" +
-                "  \"artists\": [\n" +
-                "    {\n" +
-                "      \"external_urls\": {\n" +
-                "        \"spotify\": \"string\"\n" +
-                "      },\n" +
-                "      \"followers\": {\n" +
-                "        \"href\": \"string\",\n" +
-                "        \"total\": 0\n" +
-                "      },\n" +
-                "      \"genres\": [\"Prog rock\", \"Grunge\"],\n" +
-                "      \"href\": \"string\",\n" +
-                "      \"id\": \"string\",\n" +
-                "      \"images\": [\n" +
-                "        {\n" +
-                "          \"url\": \"https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228\",\n" +
-                "          \"height\": 300,\n" +
-                "          \"width\": 300\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"name\": \"string\",\n" +
-                "      \"popularity\": 0,\n" +
-                "      \"type\": \"artist\",\n" +
-                "      \"uri\": \"string\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"available_markets\": [\"string\"],\n" +
-                "  \"disc_number\": 0,\n" +
-                "  \"duration_ms\": 0,\n" +
-                "  \"explicit\": false,\n" +
-                "  \"external_ids\": {\n" +
-                "    \"isrc\": \"string\",\n" +
-                "    \"ean\": \"string\",\n" +
-                "    \"upc\": \"string\"\n" +
-                "  },\n" +
-                "  \"external_urls\": {\n" +
-                "    \"spotify\": \"string\"\n" +
-                "  },\n" +
-                "  \"href\": \"string\",\n" +
-                "  \"id\": \"string\",\n" +
-                "  \"is_playable\": false,\n" +
-                "  \"linked_from\": {\n" +
-                "  },\n" +
-                "  \"restrictions\": {\n" +
-                "    \"reason\": \"string\"\n" +
-                "  },\n" +
-                "  \"name\": \"string\",\n" +
-                "  \"popularity\": 0,\n" +
-                "  \"preview_url\": \"string\",\n" +
-                "  \"track_number\": 0,\n" +
-                "  \"type\": \"track\",\n" +
-                "  \"uri\": \"string\",\n" +
-                "  \"is_local\": false\n" +
-                "}"));
-        updateUser(user);
         //setProfileBtn(findViewById(R.id.button))
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
@@ -245,15 +138,39 @@ public class MainActivity extends AppCompatActivity {
      * Please pass in a formatted string in the following way.
      * "Name: [username]; (JSON OBJECTS OF SERIALIZED SPOTIFY WRAPPED)
      *
-     * @param u User to add
+     * @param id User to add
      */
-    public static void newUser(User u) {
-//        CollectionReference usersWrapped = db.collection("users");
-        Map<String, String> user = new HashMap<>();
-        user.put("user_data", HANDLE_JSON.exportUser(u).toString());
+    public static void newUser(String id) {
+        DocumentReference docRef = MainActivity.db.collection("users").document(id);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        System.out.println(document.getData().toString().substring(11));
+                        MainActivity.currUser = HANDLE_JSON.createUserFromFirestore(document.getData().toString().substring(11));
+                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+                    } else {
+                        //make new user
+                        MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+                        Map<String, String> user = new HashMap<>();
+                        user.put("user_data", HANDLE_JSON.exportUser(MainActivity.currUser).toString());
 //        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
-        CollectionReference usersWrapped = db.collection("users");
-        usersWrapped.document(u.getId()).set(user);
+                        CollectionReference usersWrapped = db.collection("users");
+                        usersWrapped.document(id).set(user);
+                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+
+                    }
+                } else {
+                    System.out.println("unsuccessful");
+                }
+            }
+        });
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("user", id);
+        editor.commit();
+//        CollectionReference usersWrapped = db.collection("users");
     }
 
     /**
@@ -384,7 +301,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onGetUserProfileClicked() {
 
-
 //         Create a request to get the user profile
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/me")
@@ -409,10 +325,11 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(responseStre);
                     final JSONObject jsonObject = new JSONObject(responseStre);
                     MainActivity.userJSON = jsonObject;
-                    MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-                    MainActivity.newUser(MainActivity.currUser);
-                    //MainActivity.updateUser(MainActivity.currUser);
-                    //setTextAsync(jsonObject.toString(3), profileTextView);
+                    MainActivity.newUser(jsonObject.getString("id"));
+                    //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+
+                    //check if user in database
+                    //MainActivity.newUser(MainActivity.currUser);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
