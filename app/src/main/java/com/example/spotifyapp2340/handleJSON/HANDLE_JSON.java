@@ -31,6 +31,17 @@ public class HANDLE_JSON {
         return user;
     }
 
+    public static User createUserFromFirestore(String JSON) {
+        User user;
+        try {
+            JSONObject jsonObject = new JSONObject(JSON);
+            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("spotify_account"), jsonObject.getString("access_token"));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
+    }
+
     public static void updateUserFromJSON(String JSON, User user) {
         try {
             JSONObject jsonObject = new JSONObject(JSON);

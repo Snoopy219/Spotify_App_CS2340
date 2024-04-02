@@ -69,8 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Activity context;
 
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
+    public static SharedPreferences sharedPreferences;
 
 
     @Override
@@ -87,7 +86,14 @@ public class LoginActivity extends AppCompatActivity {
 //        }
 
         sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("user", "");
+//        editor.commit();
+        if (!sharedPreferences.getString("user", "").equals("")) {
+            //get user with that name from firebase
+            Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(myIntent);
+        }
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,8 +146,6 @@ public class LoginActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (MainActivity.AUTH_TOKEN_REQUEST_CODE == requestCode) {
             MainActivity.mAccessToken = response.getAccessToken();
-            editor.putString("accessToken", MainActivity.mAccessToken);
-            editor.apply();
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);
             //setTextAsync(mAccessToken, tokenTextView);

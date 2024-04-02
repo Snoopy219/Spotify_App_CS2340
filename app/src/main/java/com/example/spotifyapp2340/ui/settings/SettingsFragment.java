@@ -1,6 +1,7 @@
 package com.example.spotifyapp2340.ui.settings;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,9 +55,12 @@ public class SettingsFragment extends Fragment {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                MainActivity.currUser = null;
+                                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                                editor.putString("user", "");
+                                editor.commit();
                                 Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
                                 startActivity(myIntent);
-                                MainActivity.currUser = null;
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
