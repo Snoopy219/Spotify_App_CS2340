@@ -13,9 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.spotifyapp2340.LoginActivity;
 import com.example.spotifyapp2340.MainActivity;
+import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,6 +53,14 @@ public class SettingsFragment extends Fragment {
         binding.textView6.setText(MainActivity.currUser.getId());
         binding.spotifyAccountPlaceHolder.setText(MainActivity.currUser.getEmail());
 
+        binding.editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //navigate to edit
+                NavController navController = MainActivity.navController;
+                navController.navigate(R.id.settingsEditPage);
+            }
+        });
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

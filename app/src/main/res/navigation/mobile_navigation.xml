@@ -34,7 +34,7 @@
         android:id="@+id/settingsEditPage"
         android:name="com.example.spotifyapp2340.ui.settings.SettingsEditFragment"
         android:label="fragment_settingsEditPage"
-        tools:layout="@layout/fragment_settings_editpage" >
+        tools:layout="@layout/fragment_settings_edit" >
         <action
             android:id="@+id/action_settingsEditPage_to_navigation_settings"
             app:destination="@id/navigation_settings" />
