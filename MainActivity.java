@@ -2,23 +2,17 @@ package com.example.spotifyapp2340;
 
 import static com.example.spotifyapp2340.handleJSON.HANDLE_JSON.createUserFromJSON;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
-import com.example.spotifyapp2340.ui.wrapped.SongAdapter;
-import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.User;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,23 +63,19 @@ public class MainActivity extends AppCompatActivity {
      */
     public static FirebaseFirestore db;
 
-    public static JSONObject userJSON;
     public static User currUser;
 
-    private static Button profileBtn;
-
     public static final String CLIENT_ID = "5fc702c72e5d4c979c03685037ab737d";
-    public static final String REDIRECT_URI = "com.example.spotifyapp2340://auth";
+    public static final String REDIRECT_URI = "spotifyapp2340://auth";
 
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
     public static final int AUTH_CODE_REQUEST_CODE = 1;
 
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
-    public static String mAccessToken;
-    public static String mAccessCode;
+    private static String mAccessToken, mAccessCode;
     private static Call mCall;
-    public static JSONObject tracks;
-    public static JSONObject artists;
+
+    private JSONObject userJSON;
 
 
     @Override
@@ -100,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        onGetUserProfileClicked();
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -111,10 +100,10 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        User user = new User("User6", "Megan", "example@example.com", "fdsa");
+        User user = new User("User6", "Megan");
         newUser(user);
         updateUser(user);
-        user.addWrapped(new Wrapped(Calendar.getInstance(), "{\n" +
+        user.addWrapped(new Wrapped(Calendar.getInstance(),"{\n" +
                 "  \"external_urls\": {\n" +
                 "    \"spotify\": \"string\"\n" +
                 "  },\n" +
@@ -228,17 +217,25 @@ public class MainActivity extends AppCompatActivity {
                 "  \"is_local\": false\n" +
                 "}"));
         updateUser(user);
-        //setProfileBtn(findViewById(R.id.button))
+
+        Button profileBtn = (Button) findViewById(R.id.button);
+
+        // Set the click listeners for the buttons
+        profileBtn.setOnClickListener((v) -> {
+            onGetUserProfileClicked();
+            currUser = createUserFromJSON(userJSON.toString());
+            newUser(currUser);
+        });
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
-        //        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
-        //            @Override
-        //            public void onSuccess(Void unused) {
-        //                for (Wrapped w : user.getWraps()) {
-        //                    System.out.println("FINAL" + w);
-        //                }
-        //            }
-        //        });
+//        getWrapped.addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void unused) {
+//                for (Wrapped w : user.getWraps()) {
+//                    System.out.println("FINAL" + w);
+//                }
+//            }
+//        });
     }
 
     /**
@@ -250,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
     public static void newUser(User u) {
 //        CollectionReference usersWrapped = db.collection("users");
         Map<String, String> user = new HashMap<>();
-        user.put("user_data", HANDLE_JSON.exportUser(u).toString());
+        user.put("user_data", "");
 //        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
         CollectionReference usersWrapped = db.collection("users");
         usersWrapped.document(u.getId()).set(user);
@@ -281,9 +278,9 @@ public class MainActivity extends AppCompatActivity {
      * What is token?
      * https://developer.spotify.com/documentation/general/guides/authorization-guide/
      */
-    public static void getToken(Activity context) {
+    public void getToken() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        AuthorizationClient.openLoginActivity(context, AUTH_TOKEN_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
     }
 
     /**
@@ -292,9 +289,9 @@ public class MainActivity extends AppCompatActivity {
      * What is code?
      * https://developer.spotify.com/documentation/general/guides/authorization-guide/
      */
-    public static void getCode(Activity context) {
+    public void getCode() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(context, AUTH_CODE_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_CODE_REQUEST_CODE, request);
     }
 
 
@@ -319,76 +316,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates & returns a new Wrapped object.
-     *
-     * @return new Wrapped object.
+     * Get user profile
+     * This method will get the user profile using the token
      */
-
-
-    public void onNewWrapped(WrappedFragment fragment) {
-        Wrapped wrapped = new Wrapped(Calendar.getInstance());
-        MainActivity.currUser.addWrapped(wrapped);
-        //Getting tracks
-        final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization",
-                        "Bearer " + mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(req);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String track = response.body().string();
-                System.out.println(track);
-                wrapped.setJSONTrack(track);
-                fragment.notifyTrack();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-            }
-        });
-
-        //Getting artists
-        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization", "Bearer " + mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(req2);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String art = response.body().string();
-                System.out.println(art);
-                wrapped.setJSONArt(art);
-                fragment.notifyArt();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-
-            }
-        });
-
-        //navigate to new wrap screen
-        MainActivity.updateUser(MainActivity.currUser);
-    }
-
     public void onGetUserProfileClicked() {
+        if (mAccessToken == null) {
+            Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-
-//         Create a request to get the user profile
+        // Create a request to get the user profile
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/me")
-                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
+                .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
 
         cancelCall();
@@ -398,25 +338,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-                //        Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    String responseStre = response.body().string();
-                    System.out.println(responseStre);
-                    final JSONObject jsonObject = new JSONObject(responseStre);
-                    MainActivity.userJSON = jsonObject;
-                    MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-                    MainActivity.newUser(MainActivity.currUser);
-                    //MainActivity.updateUser(MainActivity.currUser);
+                    final JSONObject jsonObject = new JSONObject(response.body().string());
+                    userJSON = jsonObject;
                     //setTextAsync(jsonObject.toString(3), profileTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-                    // Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -439,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
      * @param type the type of the request
      * @return the authentication request
      */
-    private static AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
+    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
                 .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
@@ -452,11 +387,11 @@ public class MainActivity extends AppCompatActivity {
      *
      * @return redirect Uri object
      */
-    private static Uri getRedirectUri() {
+    private Uri getRedirectUri() {
         return Uri.parse(REDIRECT_URI);
     }
 
-    private static void cancelCall() {
+    private void cancelCall() {
         if (mCall != null) {
             mCall.cancel();
         }

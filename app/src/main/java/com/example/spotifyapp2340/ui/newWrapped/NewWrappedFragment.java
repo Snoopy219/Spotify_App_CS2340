@@ -9,8 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.spotifyapp2340.MainActivity;
+import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
+import com.example.spotifyapp2340.wrappers.Wrapped;
+
+import java.util.Calendar;
 
 /**
  * The type Dashboard fragment.
@@ -30,6 +36,13 @@ public class NewWrappedFragment extends Fragment {
 
         final TextView textView = binding.createNewWrapped;
         newWrappedViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+
+        binding.createNewWrapped.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(NewWrappedFragment.this).navigate(R.id.action_navigation_newWrapped_to_wrap);
+            }
+        });
         return root;
     }
 

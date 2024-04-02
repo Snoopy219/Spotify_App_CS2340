@@ -17,7 +17,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders.clear()
         manifestPlaceholders["redirectHostName"] = "auth"
-        manifestPlaceholders["redirectSchemeName"] = "spotifyapp2340"
+        manifestPlaceholders["redirectSchemeName"] = "com.example.spotifyapp2340"
     }
 
     buildTypes {
@@ -63,4 +63,7 @@ dependencies {
 
     //JLayer - https://mvnrepository.com/artifact/javazoom/jlayer
     implementation("javazoom:jlayer:1.0.1")
+
+    //Image loading
+    implementation("com.squareup.picasso:picasso:2.8")
 }
