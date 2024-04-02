@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     public static String mAccessToken;
     public static String mAccessCode;
     private static Call mCall;
+    private static Call mCall2;
     public static JSONObject tracks;
     public static JSONObject artists;
 
@@ -319,12 +320,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates & returns a new Wrapped object.
-     *
-     * @return new Wrapped object.
+     * Creates a new Wrapped object.
      */
-
-
     public void onNewWrapped(WrappedFragment fragment) {
         Wrapped wrapped = new Wrapped(Calendar.getInstance());
         MainActivity.currUser.addWrapped(wrapped);
@@ -358,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
 
-        cancelCall();
+        cancelCall2();
         mCall = mOkHttpClient.newCall(req2);
 
         mCall.enqueue(new Callback() {
@@ -374,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
                 wrapped.setJSONArt(art);
                 fragment.notifyArt();
                 //setTextAsync(jsonObject.toString(3), profileTextView);
-
             }
         });
 
@@ -383,8 +379,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onGetUserProfileClicked() {
-
-
 //         Create a request to get the user profile
         final Request request = new Request.Builder()
                 .url("https://api.spotify.com/v1/me")
@@ -458,6 +452,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static void cancelCall() {
         if (mCall != null) {
+            mCall.cancel();
+        }
+    }
+
+    private static void cancelCall2() {
+        if (mCall2 != null) {
             mCall.cancel();
         }
     }
