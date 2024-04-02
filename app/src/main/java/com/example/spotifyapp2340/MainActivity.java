@@ -89,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences sharedPreferences;
 
+    public static NavController navController;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_timeMachine, R.id.navigation_newWrapped, R.id.navigation_settings)
                 .build();
-        NavController navController = Navigation.findNavController(this,
+        navController = Navigation.findNavController(this,
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
