@@ -74,6 +74,17 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        binding.logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                editor.putString("user", "");
+                editor.commit();
+                Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
         return root;
     }
 

@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     if (document.exists()) {
                         System.out.println(document.getData().toString().substring(11));
                         MainActivity.currUser = HANDLE_JSON.createUserFromFirestore(document.getData().toString().substring(11));
+                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
                     } else {
                         //make new user
                         MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
 //        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
                         CollectionReference usersWrapped = db.collection("users");
                         usersWrapped.document(id).set(user);
+                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
 
                     }
                 } else {
