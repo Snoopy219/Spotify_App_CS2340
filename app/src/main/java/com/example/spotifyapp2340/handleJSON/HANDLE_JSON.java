@@ -36,6 +36,15 @@ public class HANDLE_JSON {
         try {
             JSONObject jsonObject = new JSONObject(JSON);
             user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("spotify_account"), jsonObject.getString("access_token"));
+            JSONArray jsonArray = jsonObject.getJSONArray("wraps");
+            ArrayList<Wrapped> wrappeds = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                String JSONArt = jsonObject1.getString("artists");
+                String JSONTrack = jsonObject1.getString("tracks");
+                Calendar date = (Calendar) jsonObject1.get("date");
+                wrappeds.add(createWrappedFromJSON(JSONArt, JSONTrack, date));
+            }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

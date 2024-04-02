@@ -20,6 +20,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.Executor;
 
 /**
@@ -38,6 +39,10 @@ public class User {
         this.display_name = display_name;
         this.email = email;
         this.accessToken = accessToken;
+    }
+
+    public void setWraps(ArrayList<Wrapped> wraps) {
+        this.wraps = wraps;
     }
 
     public String getAccessToken() {
