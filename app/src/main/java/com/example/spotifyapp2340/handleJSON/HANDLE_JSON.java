@@ -3,6 +3,7 @@ package com.example.spotifyapp2340.handleJSON;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.DATE;
 
+import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
 import com.example.spotifyapp2340.wrappers.ImageObject;
 import com.example.spotifyapp2340.wrappers.TrackObject;
@@ -23,7 +24,7 @@ public class HANDLE_JSON {
         User user;
         try {
             JSONObject jsonObject = new JSONObject(JSON);
-            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("email"));
+            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("email"), MainActivity.mAccessToken);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -125,6 +126,7 @@ public class HANDLE_JSON {
             jsonObject.put("id", user.getId());
             jsonObject.put("display_name", user.getDisplay_name());
             jsonObject.put("spotify_account", user.getEmail());
+            jsonObject.put("access_token", user.getAccessToken());
             JSONArray jsonArray = new JSONArray();
             ArrayList<Wrapped> wraps = user.getWraps();
             for (int i = 0; i < wraps.size(); i++) {

@@ -31,11 +31,21 @@ public class User {
     private String display_name;
 
     private String email;
+    private String accessToken;
 
-    public User(String id, String display_name, String email) {
+    public User(String id, String display_name, String email, String accessToken) {
         this.id = id;
         this.display_name = display_name;
         this.email = email;
+        this.accessToken = accessToken;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     public String getEmail() {

@@ -5,6 +5,7 @@ import static com.example.spotifyapp2340.handleJSON.HANDLE_JSON.createUserFromJS
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        User user = new User("User6", "Megan", "example@example.com");
+        User user = new User("User6", "Megan", "example@example.com", "fdsa");
         newUser(user);
         updateUser(user);
         user.addWrapped(new Wrapped(Calendar.getInstance(), "{\n" +

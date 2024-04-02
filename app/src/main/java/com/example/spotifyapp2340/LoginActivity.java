@@ -3,7 +3,9 @@ package com.example.spotifyapp2340;
 import static com.example.spotifyapp2340.handleJSON.HANDLE_JSON.createUserFromJSON;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -67,6 +69,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private Activity context;
 
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +85,9 @@ public class LoginActivity extends AppCompatActivity {
 //            Intent myIntent = new Intent(this, MainActivity.class);
 //            startActivity(myIntent);
 //        }
+
+        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (MainActivity.AUTH_TOKEN_REQUEST_CODE == requestCode) {
             MainActivity.mAccessToken = response.getAccessToken();
+            editor.putString("accessToken", MainActivity.mAccessToken);
+            editor.apply();
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);
             //setTextAsync(mAccessToken, tokenTextView);

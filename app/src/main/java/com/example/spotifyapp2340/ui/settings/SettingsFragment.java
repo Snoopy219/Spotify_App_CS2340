@@ -35,11 +35,16 @@ public class SettingsFragment extends Fragment {
         View root = binding.getRoot();
 
         //need to firgure out how to do this so no null pointer exception
-        if (MainActivity.currUser != null) {
-            binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
-            binding.textView6.setText(MainActivity.currUser.getId());
-            binding.spotifyAccountPlaceHolder.setText(MainActivity.currUser.getEmail());
+        while (MainActivity.currUser == null) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
+        binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
+        binding.textView6.setText(MainActivity.currUser.getId());
+        binding.spotifyAccountPlaceHolder.setText(MainActivity.currUser.getEmail());
 
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
