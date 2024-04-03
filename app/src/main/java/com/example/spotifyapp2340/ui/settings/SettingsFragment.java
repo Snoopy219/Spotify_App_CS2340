@@ -29,7 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 public class SettingsFragment extends Fragment {
 
 
-    private FragmentSettingsBinding binding;
+    private static FragmentSettingsBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -42,16 +42,18 @@ public class SettingsFragment extends Fragment {
         View root = binding.getRoot();
 
         //need to firgure out how to do this so no null pointer exception
-        while (MainActivity.currUser == null) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//        while (MainActivity.currUser == null) {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+        if (binding != null) {
+            binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
+            binding.textView6.setText(MainActivity.currUser.getId());
+            binding.spotifyAccountPlaceHolder.setText(MainActivity.currUser.getEmail());
         }
-        binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
-        binding.textView6.setText(MainActivity.currUser.getId());
-        binding.spotifyAccountPlaceHolder.setText(MainActivity.currUser.getEmail());
 
         binding.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +99,14 @@ public class SettingsFragment extends Fragment {
         });
 
         return root;
+    }
+
+    public static void onCallback() {
+        if (binding != null) {
+            binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
+            binding.textView6.setText(MainActivity.currUser.getId());
+            binding.spotifyAccountPlaceHolder.setText(MainActivity.currUser.getEmail());
+        }
     }
 
     @Override

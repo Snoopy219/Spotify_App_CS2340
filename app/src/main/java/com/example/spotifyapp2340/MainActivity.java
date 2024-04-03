@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
+import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.wrapped.SongAdapter;
 import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.User;
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println(document.getData().toString().substring(11));
                         MainActivity.currUser = HANDLE_JSON.createUserFromFirestore(document.getData().toString().substring(11));
                         MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+                        SettingsFragment.onCallback();
                     } else {
                         //make new user
                         MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                         CollectionReference usersWrapped = db.collection("users");
                         usersWrapped.document(id).set(user);
                         MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+                        SettingsFragment.onCallback();
 
                     }
                 } else {
