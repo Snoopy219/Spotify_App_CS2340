@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.databinding.ActivityMainBinding;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
@@ -65,8 +66,6 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private Call mCall;
 
-    private final OkHttpClient mOkHttpClient = new OkHttpClient();
-
     private Activity context;
 
     public static SharedPreferences sharedPreferences;
@@ -102,35 +101,13 @@ public class LoginActivity extends AppCompatActivity {
                 //onGetUserProfileClicked();
                 System.out.println("here");
                 //if login successful
-                getToken();
+                SpotifyCalls.getToken(LoginActivity.this);
                 System.out.println(MainActivity.mAccessToken);
 //                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
 //                startActivity(myIntent);
             }
         });
         context = this;
-    }
-
-    /**
-     * Get token from Spotify
-     * This method will open the Spotify login activity and get the token
-     * What is token?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public void getToken() {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        AuthorizationClient.openLoginActivity(LoginActivity.this, MainActivity.AUTH_TOKEN_REQUEST_CODE, request);
-    }
-
-    /**
-     * Get code from Spotify
-     * This method will open the Spotify login activity and get the code
-     * What is code?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public void getCode() {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(LoginActivity.this, MainActivity.AUTH_CODE_REQUEST_CODE, request);
     }
 
 
@@ -156,41 +133,6 @@ public class LoginActivity extends AppCompatActivity {
             MainActivity.mAccessCode = response.getCode();
             //setTextAsync(mAccessCode, codeTextView);
         }
-    }
-
-
-    /**
-     * Creates a UI thread to update a TextView in the background
-     * Reduces UI latency and makes the system perform more consistently
-     *
-     * @param text the text to set
-     * @param textView TextView object to update
-     */
-//    private void setTextAsync(final String text, TextView textView) {
-//        runOnUiThread(() -> textView.setText(text));
-//    }
-
-    /**
-     * Get authentication request
-     *
-     * @param type the type of the request
-     * @return the authentication request
-     */
-    private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
-        return new AuthorizationRequest.Builder(MainActivity.CLIENT_ID, type, getRedirectUri().toString())
-                .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email", "user-top-read" }) // <--- Change the scope of your requested token here
-                .setCampaign("your-campaign-token")
-                .build();
-    }
-
-    /**
-     * Gets the redirect Uri for Spotify
-     *
-     * @return redirect Uri object
-     */
-    private Uri getRedirectUri() {
-        return Uri.parse(MainActivity.REDIRECT_URI);
     }
 
     private void cancelCall() {
