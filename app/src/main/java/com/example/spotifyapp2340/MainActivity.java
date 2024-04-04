@@ -198,28 +198,6 @@ public class MainActivity extends AppCompatActivity {
         AppPlayer player = new AppPlayer(sourceURL, true);
     }
 
-    /**
-     * Get token from Spotify
-     * This method will open the Spotify login activity and get the token
-     * What is token?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public static void getToken(Activity context) {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        AuthorizationClient.openLoginActivity(context, AUTH_TOKEN_REQUEST_CODE, request);
-    }
-
-    /**
-     * Get code from Spotify
-     * This method will open the Spotify login activity and get the code
-     * What is code?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public static void getCode(Activity context) {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(context, AUTH_CODE_REQUEST_CODE, request);
-    }
-
 
     /**
      * When the app leaves this activity to momentarily get a token/code, this function

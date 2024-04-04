@@ -49,6 +49,7 @@ public class WrappedFragment extends Fragment {
     public static ArtistAdapter artistAdapter;
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private static Call mCall;
+    private static Call mCall2;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -57,16 +58,16 @@ public class WrappedFragment extends Fragment {
         binding = FragmentWrappedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                Wrapped wrapped = new Wrapped(Calendar.getInstance());
-                MainActivity.currUser.addWrapped(wrapped);
-                onNewWrapped(wrapped);
-                getArtistWrapped(wrapped);
-            }
-        };
-        thread.start();
+//        Thread thread = new Thread() {
+//            @Override
+//            public void run() {
+//                Wrapped wrapped = new Wrapped(Calendar.getInstance());
+//                MainActivity.currUser.addWrapped(wrapped);
+//                onNewWrapped(wrapped);
+//                getArtistWrapped(wrapped);
+//            }
+//        };
+//        thread.start();
 
         //int index = WrappedFragmentArgs.fromBundle(getArguments()).getIndex();
 //        int index = MainActivity.currUser.getWraps().size();
@@ -129,7 +130,7 @@ public class WrappedFragment extends Fragment {
                         "Bearer " + MainActivity.mAccessToken)
                 .build();
 
-        cancelCall();
+        cancelCall(mCall);
         mCall = mOkHttpClient.newCall(req);
 
         mCall.enqueue(new Callback() {
@@ -159,10 +160,10 @@ public class WrappedFragment extends Fragment {
                 .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
                 .build();
 
-        cancelCall();
-        mCall = mOkHttpClient.newCall(req2);
+        cancelCall(mCall2);
+        mCall2 = mOkHttpClient.newCall(req2);
 
-        mCall.enqueue(new Callback() {
+        mCall2.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
@@ -185,26 +186,9 @@ public class WrappedFragment extends Fragment {
         });
     }
 
-    private static AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
-        return new AuthorizationRequest.Builder(MainActivity.CLIENT_ID, type, getRedirectUri().toString())
-                .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
-                .setCampaign("your-campaign-token")
-                .build();
-    }
-
-    /**
-     * Gets the redirect Uri for Spotify
-     *
-     * @return redirect Uri object
-     */
-    private static Uri getRedirectUri() {
-        return Uri.parse(MainActivity.REDIRECT_URI);
-    }
-
-    private static void cancelCall() {
-        if (mCall != null) {
-            mCall.cancel();
+    private static void cancelCall(Call call) {
+        if (call != null) {
+            call.cancel();
         }
     }
 }
