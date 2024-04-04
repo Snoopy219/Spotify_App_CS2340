@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
+import com.example.spotifyapp2340.ui.newWrapped.NewWrappedFragment;
 import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.wrapped.SongAdapter;
 import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
@@ -47,7 +48,6 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,7 +64,6 @@ import okhttp3.Call;
  * The type Main activity.
  */
 public class MainActivity extends AppCompatActivity {
-
     private ActivityMainBinding binding;
     /**
      * The constant db.
@@ -81,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
     public static final int AUTH_CODE_REQUEST_CODE = 1;
-
-    private static final OkHttpClient mOkHttpClient = new OkHttpClient();
+    public static final OkHttpClient mOkHttpClient = new OkHttpClient();
     public static String mAccessToken;
     public static String mAccessCode;
     private static Call mCall;
@@ -217,70 +215,6 @@ public class MainActivity extends AppCompatActivity {
             mAccessCode = response.getCode();
             //setTextAsync(mAccessCode, codeTextView);
         }
-    }
-
-    /**
-     * Creates & returns a new Wrapped object.
-     *
-     * @return new Wrapped object.
-     */
-
-
-    public void onNewWrapped(WrappedFragment fragment) {
-        Wrapped wrapped = new Wrapped(new Date());
-        MainActivity.currUser.addWrapped(wrapped);
-        //Getting tracks
-        final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization",
-                        "Bearer " + mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(req);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String track = response.body().string();
-                System.out.println(track);
-                wrapped.setJSONTrack(track);
-                fragment.notifyTrack();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-            }
-        });
-
-        //Getting artists
-        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization", "Bearer " + mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(req2);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String art = response.body().string();
-                System.out.println(art);
-                wrapped.setJSONArt(art);
-                fragment.notifyArt();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-
-            }
-        });
-
-        //navigate to new wrap screen
-        MainActivity.updateUser(MainActivity.currUser);
     }
 
     public void onGetUserProfileClicked() {
