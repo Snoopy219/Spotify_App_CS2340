@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * The type Wrapped.
@@ -12,7 +13,7 @@ import java.util.Calendar;
 public class Wrapped {
     private ArrayList<ArtistObject> artists = new ArrayList<>();
     private ArrayList<TrackObject> tracks = new ArrayList<>();
-    private Calendar date;
+    private Date date;
 
     private String JSONArt;
 
@@ -26,14 +27,13 @@ public class Wrapped {
 
     private String JSONTrack;
 
-    public Calendar getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Calendar date) {
+    public void setDate(Date date) {
         this.date = date;
     }
-
 
     public String getJSONArt() {
         return JSONArt;
@@ -43,13 +43,13 @@ public class Wrapped {
         return JSONTrack;
     }
 
-    public Wrapped(Calendar date, String JSONArt, String JSONTrack) {
+    public Wrapped(Date date, String JSONArt, String JSONTrack) {
         this.date = date;
         this.JSONArt = JSONArt;
         this.JSONTrack = JSONTrack;
     }
 
-    public Wrapped(Calendar date) {
+    public Wrapped(Date date) {
         this.date = date;
     }
 

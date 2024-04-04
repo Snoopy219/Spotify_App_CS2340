@@ -1,5 +1,6 @@
 package com.example.spotifyapp2340.asyncTasks;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,12 +9,14 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.ui.newWrapped.NewWrappedFragment;
 import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,16 +36,19 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     NavController controller;
     Wrapped wrapped;
 
+    Activity activity;
+
     /**
      * Constructor that takes in a controller.
      *
      * @param controller controller used to navigate to next screen
      */
-    public NewWrappedAsync(NavController controller) {
+    public NewWrappedAsync(NavController controller, Activity activity) {
         if (controller == null) {
             throw new NullPointerException("NavController is null.");
         }
         this.controller = controller;
+        this.activity = activity;
     }
 
     /**
@@ -53,8 +59,12 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected Void doInBackground(Void... params) {
-        wrapped = new Wrapped(Calendar.getInstance());
-        MainActivity.currUser.addWrapped(wrapped);
+//        wrapped = new Wrapped(new Date());
+        final Wrapped[] wrapped = new Wrapped[1];
+        final String[] JSONTrack = new String[1];
+        final String[] JSONArt = new String[1];
+        final int[] numGot = {0};
+//        MainActivity.currUser.addWrapped(wrapped);
         Log.d("Test", "This is a test to check if doInBackground is working.");
         //Getting tracks
         final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
@@ -73,15 +83,28 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String track = response.body().string();
-                System.out.println(track);
-                wrapped.setJSONTrack(track);
+                System.out.println("Track" + track);
+                numGot[0]++;
+                JSONTrack[0] = track;
+                if (numGot[0] == 2) {
+                    wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
+                    System.out.println(wrapped[0].getArtists().size());
+                    MainActivity.currUser.addWrapped(wrapped[0]);
+                    MainActivity.updateUser(MainActivity.currUser);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            navigateToNew();
+                        }
+                    });
+                }
                 //fragment.notifyTrack();
                 //setTextAsync(jsonObject.toString(3), profileTextView);
             }
         });
 
         //Getting artists
-        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
+        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists")
                 .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
                 .build();
 
@@ -96,13 +119,24 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String art = response.body().string();
-                System.out.println(art);
-                wrapped.setJSONArt(art);
+                System.out.println("ART" + art);
+                numGot[0]++;
+                JSONArt[0] = art;
+                if (numGot[0] == 2) {
+                    wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
+                    MainActivity.currUser.addWrapped(wrapped[0]);
+                    MainActivity.updateUser(MainActivity.currUser);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            navigateToNew();
+                        }
+                    });
+                }
                 //fragment.notifyArt();
                 //setTextAsync(jsonObject.toString(3), profileTextView);
             }
         });
-        MainActivity.updateUser(MainActivity.currUser);
         return null;
     }
 
@@ -113,6 +147,10 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     @Override
     protected void onPostExecute(Void result) {
         MainActivity.updateUser(MainActivity.currUser);
+        System.out.println("here it is");
+    }
+
+    private void navigateToNew() {
         controller.navigate(R.id.action_navigation_newWrapped_to_wrap);
     }
 }

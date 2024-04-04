@@ -42,7 +42,7 @@ public class NewWrappedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.createNewWrapped.setText("Loading...");
-                new NewWrappedAsync(NavHostFragment.findNavController(NewWrappedFragment.this)).execute();
+                new NewWrappedAsync(NavHostFragment.findNavController(NewWrappedFragment.this), getActivity()).execute();
             }
         });
         return root;

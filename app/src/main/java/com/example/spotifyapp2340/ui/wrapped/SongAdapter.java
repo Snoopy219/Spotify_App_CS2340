@@ -37,7 +37,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         TrackObject model = trackList.get(position);
         holder.songName.setText(model.getName());
         Picasso.get().load(model.getImages()[0].getUrl()).into(holder.songImage);
-        holder.songRating.setText(position + 1);
+        holder.songRating.setText(Integer.toString(position + 1));
     }
 
     @Override
