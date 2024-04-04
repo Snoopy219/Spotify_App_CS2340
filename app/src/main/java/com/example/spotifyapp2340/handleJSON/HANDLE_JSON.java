@@ -15,9 +15,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class HANDLE_JSON {
     public static User createUserFromJSON(String JSON) {
@@ -42,10 +45,12 @@ public class HANDLE_JSON {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                 String JSONArt = jsonObject1.getString("artists");
                 String JSONTrack = jsonObject1.getString("tracks");
-                Calendar date = (Calendar) jsonObject1.get("date");
+                String JSONCalendar = jsonObject1.getString("date");
+                SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy", Locale.ENGLISH);
+                Date date = formatter.parse(JSONCalendar);
                 wrappeds.add(createWrappedFromJSON(JSONArt, JSONTrack, date));
             }
-        } catch (JSONException e) {
+        } catch (JSONException | ParseException e) {
             throw new RuntimeException(e);
         }
         return user;
@@ -61,7 +66,7 @@ public class HANDLE_JSON {
         }
     }
 
-    public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Calendar date) {
+    public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Date date) {
         Wrapped wrapped = new Wrapped(date, JSONArtist, JSONTrack);
         try {
             JSONObject jsonObjectArt = new JSONObject(JSONArtist);
@@ -131,7 +136,7 @@ public class HANDLE_JSON {
     public static JSONObject exportWrapped(Wrapped wrapped) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("date", wrapped.getDate());
+            jsonObject.put("date", wrapped.getDate().toString());
             jsonObject.put("artists", wrapped.getJSONArt());
             jsonObject.put("tracks", wrapped.getJSONTrack());
         } catch (JSONException e) {

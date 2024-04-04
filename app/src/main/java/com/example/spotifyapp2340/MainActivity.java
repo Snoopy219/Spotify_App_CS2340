@@ -47,6 +47,7 @@ import com.spotify.sdk.android.auth.AuthorizationResponse;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onNewWrapped(WrappedFragment fragment) {
-        Wrapped wrapped = new Wrapped(Calendar.getInstance());
+        Wrapped wrapped = new Wrapped(new Date());
         MainActivity.currUser.addWrapped(wrapped);
         //Getting tracks
         final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
