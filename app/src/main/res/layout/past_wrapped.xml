@@ -27,143 +27,192 @@
                 android:id="@+id/dateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="113dp"
+                android:layout_marginBottom="86dp"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Date"
                 android:textColor="@color/seafoam_blue"
-                android:textSize="26sp" />
+                android:textSize="26sp"
+                app:layout_constraintBottom_toTopOf="@+id/topArtistTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="128dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Top Songs"
                 android:textColor="@color/seafoam_blue"
                 android:textSize="15sp"
-                tools:layout_editor_absoluteX="99dp"
-                tools:layout_editor_absoluteY="140dp" />
+                app:layout_constraintBottom_toTopOf="@+id/song1TextView"
+                app:layout_constraintStart_toEndOf="@+id/topArtistTextView"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="50dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Top Genre"
                 android:textColor="@color/seafoam_blue"
                 android:textSize="15sp"
-                tools:layout_editor_absoluteX="52dp"
-                tools:layout_editor_absoluteY="243dp" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/song5TextView" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/topArtistTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="97dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="17dp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:text="Top Artists"
                 android:textColor="@color/seafoam_blue"
                 android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintBottom_toTopOf="@+id/artist1TextView"
+                app:layout_constraintEnd_toStartOf="@+id/textView6"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/artist1TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="90dp"
                 android:text="1."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="164dp" />
+                app:layout_constraintEnd_toStartOf="@+id/song1TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topArtistTextView" />
 
             <TextView
                 android:id="@+id/artist2TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="90dp"
                 android:text="2."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="178dp" />
+                app:layout_constraintEnd_toStartOf="@+id/song2TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/artist1TextView" />
 
             <TextView
                 android:id="@+id/artist3TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="90dp"
                 android:text="3."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="192dp" />
+                app:layout_constraintEnd_toStartOf="@+id/song3TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/artist2TextView" />
 
             <TextView
                 android:id="@+id/artist4TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="90dp"
                 android:text="4."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="206dp" />
+                app:layout_constraintEnd_toStartOf="@+id/song4TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/artist3TextView" />
 
             <TextView
                 android:id="@+id/artist5TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="90dp"
                 android:text="5."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="1dp"
-                tools:layout_editor_absoluteY="220dp" />
+                app:layout_constraintEnd_toStartOf="@+id/song5TextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/artist4TextView" />
 
             <TextView
                 android:id="@+id/song1TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
                 android:text="1."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="99dp"
-                tools:layout_editor_absoluteY="164dp" />
+                app:layout_constraintBottom_toTopOf="@+id/song2TextView"
+                app:layout_constraintStart_toEndOf="@+id/artist1TextView"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
             <TextView
                 android:id="@+id/song2TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
                 android:text="2."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="99dp"
-                tools:layout_editor_absoluteY="178dp" />
+                app:layout_constraintBottom_toTopOf="@+id/song3TextView"
+                app:layout_constraintStart_toEndOf="@+id/artist2TextView"
+                app:layout_constraintTop_toBottomOf="@+id/song1TextView" />
 
             <TextView
                 android:id="@+id/song3TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
+                android:layout_marginBottom="1dp"
                 android:text="3."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="99dp"
-                tools:layout_editor_absoluteY="192dp" />
+                app:layout_constraintBottom_toTopOf="@+id/song4TextView"
+                app:layout_constraintStart_toEndOf="@+id/artist3TextView"
+                app:layout_constraintTop_toBottomOf="@+id/song2TextView" />
 
             <TextView
                 android:id="@+id/song4TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
                 android:text="4."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="99dp"
-                tools:layout_editor_absoluteY="206dp" />
+                app:layout_constraintBottom_toTopOf="@+id/song5TextView"
+                app:layout_constraintStart_toEndOf="@+id/artist4TextView"
+                app:layout_constraintTop_toBottomOf="@+id/song3TextView" />
 
             <TextView
                 android:id="@+id/song5TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="90dp"
+                android:layout_marginBottom="24dp"
                 android:text="5."
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="99dp"
-                tools:layout_editor_absoluteY="220dp" />
+                app:layout_constraintBottom_toTopOf="@+id/textView8"
+                app:layout_constraintStart_toEndOf="@+id/artist5TextView"
+                app:layout_constraintTop_toBottomOf="@+id/song4TextView" />
 
             <TextView
                 android:id="@+id/topGenreTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="75dp"
+                android:layout_marginEnd="77dp"
+                android:layout_marginBottom="16dp"
                 android:text="blank"
                 android:textSize="10sp"
-                tools:layout_editor_absoluteX="68dp"
-                tools:layout_editor_absoluteY="267dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
