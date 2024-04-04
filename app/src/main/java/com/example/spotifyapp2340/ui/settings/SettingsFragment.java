@@ -49,7 +49,8 @@ public class SettingsFragment extends Fragment {
 //                throw new RuntimeException(e);
 //            }
 //        }
-        if (binding != null) {
+        if (binding != null && MainActivity.currUser != null) {
+            System.out.println(MainActivity.currUser);
             binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
             binding.textView6.setText(MainActivity.currUser.getId());
             binding.spotifyAccountPlaceHolder.setText(MainActivity.currUser.getEmail());

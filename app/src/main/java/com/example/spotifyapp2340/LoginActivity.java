@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //call login
                 System.out.println("here");
-                //onGetUserProfileClicked();
+//                onGetUserProfileClicked();
                 System.out.println("here");
                 //if login successful
                 getToken();
