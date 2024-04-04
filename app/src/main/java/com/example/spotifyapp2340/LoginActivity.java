@@ -143,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         final AuthorizationResponse response = AuthorizationClient.getResponse(resultCode, data);
 
+        Log.d("debug", "This is a test");
+
         // Check which request code is present (if any)
         if (MainActivity.AUTH_TOKEN_REQUEST_CODE == requestCode) {
             MainActivity.mAccessToken = response.getAccessToken();
@@ -154,54 +156,6 @@ public class LoginActivity extends AppCompatActivity {
             MainActivity.mAccessCode = response.getCode();
             //setTextAsync(mAccessCode, codeTextView);
         }
-    }
-
-    /**
-     * Get user profile
-     * This method will get the user profile using the token
-     */
-    public void onGetUserProfileClicked() {
-        if (MainActivity.mAccessToken == null) {
-            System.out.println("get code");
-            getToken();
-            //getCode();
-            //Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
-        }
-
-
-        // Create a request to get the user profile
-//        final Request request = new Request.Builder()
-//                .url("https://api.spotify.com/v1/me")
-//                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
-//                .build();
-//
-//        cancelCall();
-//        mCall = mOkHttpClient.newCall(request);
-//
-//        mCall.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.d("HTTP", "Failed to fetch data: " + e);
-//                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-//                //        Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                try {
-//                    System.out.println(response.body().string());
-//                    final JSONObject jsonObject = new JSONObject(response.body().string());
-//                    MainActivity.userJSON = jsonObject;
-//                    MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-//                    MainActivity.newUser(MainActivity.currUser);
-//                    //setTextAsync(jsonObject.toString(3), profileTextView);
-//                } catch (JSONException e) {
-//                    Log.d("JSON", "Failed to parse data: " + e);
-//                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-//                    // Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
     }
 
 
