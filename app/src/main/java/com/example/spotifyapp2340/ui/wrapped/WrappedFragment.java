@@ -20,6 +20,7 @@ import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
 import com.example.spotifyapp2340.databinding.FragmentWrappedBinding;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.ui.newWrapped.NewWrappedViewModel;
+import com.example.spotifyapp2340.wrappers.ArtistObject;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -70,125 +71,27 @@ public class WrappedFragment extends Fragment {
 //        thread.start();
 
         //int index = WrappedFragmentArgs.fromBundle(getArguments()).getIndex();
-//        int index = MainActivity.currUser.getWraps().size();
-//        thisWrap = MainActivity.currUser.getWraps().get(index);
+        System.out.println("im in wrapped");
+        int index = MainActivity.currUser.getWraps().size() - 1;
+        thisWrap = MainActivity.currUser.getWraps().get(index);
+        System.out.println(thisWrap.getArtists().size());
 
         //setup songs
-//        RecyclerView trackCards = root.findViewById(R.id.recyclerViewTopSongs);
-//        songAdapter = new SongAdapter(getContext(), thisWrap.getTracks());
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//        trackCards.setLayoutManager(linearLayoutManager);
-//        trackCards.setAdapter(songAdapter);
-
-        //setup artists
-//        RecyclerView artistCards = root.findViewById(R.id.recyclerViewTopArtists);
-//        artistAdapter = new ArtistAdapter(getContext(), thisWrap.getArtists());
-//        LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//        artistCards.setLayoutManager(linearLayoutManagerArtist);
-//        artistCards.setAdapter(artistAdapter);
-        return root;
-    }
-
-    public void notifyArt() {
-        //artistAdapter.notifyDataSetChanged();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("here at art");
-                RecyclerView artistCards = binding.getRoot().findViewById(R.id.recyclerViewTopArtists);
-                artistAdapter = new ArtistAdapter(getContext(), MainActivity.currUser.getWraps().get(0).getArtists());
-                LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                artistCards.setLayoutManager(linearLayoutManagerArtist);
-                artistCards.setAdapter(artistAdapter);
-            }
-        });
-
-    }
-
-    public void notifyTrack() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                RecyclerView trackCards = binding.getRoot().findViewById(R.id.recyclerViewTopSongs);
-                songAdapter = new SongAdapter(getContext(), MainActivity.currUser.getWraps().get(0).getTracks());
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                trackCards.setLayoutManager(linearLayoutManager);
-                trackCards.setAdapter(songAdapter);
-            }
-        });
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    public void onNewWrapped(Wrapped wrapped) {
-        //Getting tracks
-        final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization",
-                        "Bearer " + MainActivity.mAccessToken)
-                .build();
-
-        cancelCall(mCall);
-        mCall = mOkHttpClient.newCall(req);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String track = response.body().string();
-                System.out.println("TRACK" + track);
-                wrapped.setJSONTrack(track);
-                notifyTrack();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-            }
-        });
-
-        //Getting artists
-
-        //navigate to new wrap screen
-        MainActivity.updateUser(MainActivity.currUser);
-    }
-
-    public void getArtistWrapped(Wrapped wrapped) {
-        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
-                .build();
-
-        cancelCall(mCall2);
-        mCall2 = mOkHttpClient.newCall(req2);
-
-        mCall2.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String art = response.body().string();
-                System.out.println("ART" + art);
-//                try {
-//                    MainActivity.currUser.getWraps().get(0).setArtists(HANDLE_JSON.createWrappedFromJSON()));
-//                } catch (JSONException e) {
-//                    throw new RuntimeException(e);
-//                }
-                wrapped.setJSONArt(art);
-                notifyArt();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-
-            }
-        });
-    }
-
-    private static void cancelCall(Call call) {
-        if (call != null) {
-            call.cancel();
+        for (ArtistObject a : thisWrap.getArtists()) {
+            System.out.println(a.getName());
         }
+        RecyclerView trackCards = root.findViewById(R.id.recyclerViewTopSongs);
+        songAdapter = new SongAdapter(getContext(), thisWrap.getTracks());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        trackCards.setLayoutManager(linearLayoutManager);
+        trackCards.setAdapter(songAdapter);
+
+//        setup artists
+        RecyclerView artistCards = root.findViewById(R.id.recyclerViewTopArtists);
+        artistAdapter = new ArtistAdapter(getContext(), thisWrap.getArtists());
+        LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        artistCards.setLayoutManager(linearLayoutManagerArtist);
+        artistCards.setAdapter(artistAdapter);
+        return root;
     }
 }
