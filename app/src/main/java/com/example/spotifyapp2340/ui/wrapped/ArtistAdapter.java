@@ -37,7 +37,7 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
         ArtistObject model = artistList.get(position);
         holder.artName.setText(model.getName());
         Picasso.get().load(model.getImages()[0].getUrl()).into(holder.artImage);
-        holder.artRating.setText(position + 1);
+        holder.artRating.setText(Integer.toString(position + 1));
     }
 
     @Override

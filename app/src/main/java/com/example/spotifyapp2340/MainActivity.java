@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
+import com.example.spotifyapp2340.ui.newWrapped.NewWrappedFragment;
 import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.wrapped.SongAdapter;
 import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
@@ -63,7 +64,6 @@ import okhttp3.Call;
  * The type Main activity.
  */
 public class MainActivity extends AppCompatActivity {
-
     private ActivityMainBinding binding;
     /**
      * The constant db.
@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
     public static final int AUTH_CODE_REQUEST_CODE = 1;
-
-    private static final OkHttpClient mOkHttpClient = new OkHttpClient();
+    public static final OkHttpClient mOkHttpClient = new OkHttpClient();
     public static String mAccessToken;
     public static String mAccessCode;
     private static Call mCall;
@@ -199,29 +198,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Get token from Spotify
-     * This method will open the Spotify login activity and get the token
-     * What is token?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public static void getToken(Activity context) {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        AuthorizationClient.openLoginActivity(context, AUTH_TOKEN_REQUEST_CODE, request);
-    }
-
-    /**
-     * Get code from Spotify
-     * This method will open the Spotify login activity and get the code
-     * What is code?
-     * https://developer.spotify.com/documentation/general/guides/authorization-guide/
-     */
-    public static void getCode(Activity context) {
-        final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(context, AUTH_CODE_REQUEST_CODE, request);
-    }
-
-
-    /**
      * When the app leaves this activity to momentarily get a token/code, this function
      * fetches the result of that external activity to get the response from Spotify
      */
@@ -239,70 +215,6 @@ public class MainActivity extends AppCompatActivity {
             mAccessCode = response.getCode();
             //setTextAsync(mAccessCode, codeTextView);
         }
-    }
-
-    /**
-     * Creates & returns a new Wrapped object.
-     *
-     * @return new Wrapped object.
-     */
-
-
-    public void onNewWrapped(WrappedFragment fragment) {
-        Wrapped wrapped = new Wrapped(Calendar.getInstance());
-        MainActivity.currUser.addWrapped(wrapped);
-        //Getting tracks
-        final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization",
-                        "Bearer " + mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(req);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String track = response.body().string();
-                System.out.println(track);
-                wrapped.setJSONTrack(track);
-                fragment.notifyTrack();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-            }
-        });
-
-        //Getting artists
-        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization", "Bearer " + mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(req2);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String art = response.body().string();
-                System.out.println(art);
-                wrapped.setJSONArt(art);
-                fragment.notifyArt();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
-
-            }
-        });
-
-        //navigate to new wrap screen
-        MainActivity.updateUser(MainActivity.currUser);
     }
 
     public void onGetUserProfileClicked() {
@@ -343,40 +255,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    /**
-     * Creates a UI thread to update a TextView in the background
-     * Reduces UI latency and makes the system perform more consistently
-     *
-     * @param text the text to set
-     * @param textView TextView object to update
-     */
-//    private void setTextAsync(final String text, TextView textView) {
-//        runOnUiThread(() -> textView.setText(text));
-//    }
-
-    /**
-     * Get authentication request
-     *
-     * @param type the type of the request
-     * @return the authentication request
-     */
-    private static AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
-        return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
-                .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email" }) // <--- Change the scope of your requested token here
-                .setCampaign("your-campaign-token")
-                .build();
-    }
-
-    /**
-     * Gets the redirect Uri for Spotify
-     *
-     * @return redirect Uri object
-     */
-    private static Uri getRedirectUri() {
-        return Uri.parse(REDIRECT_URI);
     }
 
     private static void cancelCall() {

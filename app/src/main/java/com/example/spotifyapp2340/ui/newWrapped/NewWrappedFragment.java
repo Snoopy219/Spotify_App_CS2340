@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
 import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 
@@ -40,7 +41,8 @@ public class NewWrappedFragment extends Fragment {
         binding.createNewWrapped.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavHostFragment.findNavController(NewWrappedFragment.this).navigate(R.id.action_navigation_newWrapped_to_wrap);
+                binding.createNewWrapped.setText("Loading...");
+                new NewWrappedAsync(NavHostFragment.findNavController(NewWrappedFragment.this), getActivity()).execute();
             }
         });
         return root;
