@@ -15,8 +15,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
+import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
+import com.example.spotifyapp2340.storage.FIRESTORE;
 import com.example.spotifyapp2340.ui.newWrapped.NewWrappedFragment;
 import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.wrapped.SongAdapter;
@@ -91,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static NavController navController;
 
+    public static MainActivity currActivity;
+
 
 
     @Override
@@ -108,11 +113,11 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = LoginActivity.sharedPreferences;
         if (!sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
-            newUser(sharedPreferences.getString("user", ""));
+            FIRESTORE.newUser(sharedPreferences.getString("user", ""));
             //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(sharedPreferences.getString("user", ""));
         } else {
             //check if user exists in firestore or get new user
-            onGetUserProfileClicked();
+            new GetUserAsync().execute();
         }
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -124,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+        currActivity = this;
         //setProfileBtn(findViewById(R.id.button))
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
@@ -137,59 +143,59 @@ public class MainActivity extends AppCompatActivity {
         //        });
     }
 
-    /**
-     * Please pass in a formatted string in the following way.
-     * "Name: [username]; (JSON OBJECTS OF SERIALIZED SPOTIFY WRAPPED)
-     *
-     * @param id User to add
-     */
-    public static void newUser(String id) {
-        DocumentReference docRef = MainActivity.db.collection("users").document(id);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        System.out.println(document.getData().toString().substring(11));
-                        MainActivity.currUser = HANDLE_JSON.createUserFromFirestore(document.getData().toString().substring(11));
-                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
-                        SettingsFragment.onCallback();
-                    } else {
-                        //make new user
-                        MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-                        Map<String, String> user = new HashMap<>();
-                        user.put("user_data", HANDLE_JSON.exportUser(MainActivity.currUser).toString());
-//        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
-                        CollectionReference usersWrapped = db.collection("users");
-                        usersWrapped.document(id).set(user);
-                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
-                        SettingsFragment.onCallback();
-
-                    }
-                } else {
-                    System.out.println("unsuccessful");
-                }
-            }
-        });
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("user", id);
-        editor.commit();
+//    /**
+//     * Please pass in a formatted string in the following way.
+//     * "Name: [username]; (JSON OBJECTS OF SERIALIZED SPOTIFY WRAPPED)
+//     *
+//     * @param id User to add
+//     */
+//    public static void newUser(String id) {
+//        DocumentReference docRef = MainActivity.db.collection("users").document(id);
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        System.out.println(document.getData().toString().substring(11));
+//                        MainActivity.currUser = HANDLE_JSON.createUserFromFirestore(document.getData().toString().substring(11));
+//                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+//                        SettingsFragment.onCallback();
+//                    } else {
+//                        //make new user
+//                        MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+//                        Map<String, String> user = new HashMap<>();
+//                        user.put("user_data", HANDLE_JSON.exportUser(MainActivity.currUser).toString());
+////        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
+//                        CollectionReference usersWrapped = db.collection("users");
+//                        usersWrapped.document(id).set(user);
+//                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+//                        SettingsFragment.onCallback();
+//
+//                    }
+//                } else {
+//                    System.out.println("unsuccessful");
+//                }
+//            }
+//        });
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("user", id);
+//        editor.commit();
+////        CollectionReference usersWrapped = db.collection("users");
+//    }
+//
+//    /**
+//     * Update user.
+//     *
+//     * @param user the user
+//     */
+//    public static void updateUser(User user) {
+//        Map<String, String> userMap = new HashMap<>();
+//        userMap.put("user_data", HANDLE_JSON.exportUser(user).toString());
+////        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
 //        CollectionReference usersWrapped = db.collection("users");
-    }
-
-    /**
-     * Update user.
-     *
-     * @param user the user
-     */
-    public static void updateUser(User user) {
-        Map<String, String> userMap = new HashMap<>();
-        userMap.put("user_data", HANDLE_JSON.exportUser(user).toString());
-//        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
-        CollectionReference usersWrapped = db.collection("users");
-        usersWrapped.document(user.getId()).set(userMap);
-    }
+//        usersWrapped.document(user.getId()).set(userMap);
+//    }
 
     public static void play(String sourceURL) {
         if (sourceURL == null) throw new IllegalArgumentException("SourceURL is null.");
@@ -217,55 +223,60 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onGetUserProfileClicked() {
+//    public static void onGetUserProfileClicked() {
+//
+////         Create a request to get the user profile
+//        final Request request = new Request.Builder()
+//                .url("https://api.spotify.com/v1/me")
+//                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
+//                .build();
+//
+//        cancelCall();
+//        mCall = mOkHttpClient.newCall(request);
+//
+//        mCall.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.d("HTTP", "Failed to fetch data: " + e);
+//                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+//                //        Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                try {
+//                    String responseStre = response.body().string();
+//                    if (responseStre.contains("401")) {
+//                        SpotifyCalls.getToken(currActivity);
+//                        onGetUserProfileClicked();
+//                    } else {
+//                        System.out.println(responseStre);
+//                        final JSONObject jsonObject = new JSONObject(responseStre);
+//                        MainActivity.userJSON = jsonObject;
+//                        MainActivity.newUser(jsonObject.getString("id"));
+//                    }
+//                    //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+//
+//                    //check if user in database
+//                    //MainActivity.newUser(MainActivity.currUser);
+//                } catch (JSONException e) {
+//                    Log.d("JSON", "Failed to parse data: " + e);
+//                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+//                    // Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//    }
 
-//         Create a request to get the user profile
-        final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/me")
-                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
-                .build();
-
-        cancelCall();
-        mCall = mOkHttpClient.newCall(request);
-
-        mCall.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.d("HTTP", "Failed to fetch data: " + e);
-                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-                //        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                try {
-                    String responseStre = response.body().string();
-                    System.out.println(responseStre);
-                    final JSONObject jsonObject = new JSONObject(responseStre);
-                    MainActivity.userJSON = jsonObject;
-                    MainActivity.newUser(jsonObject.getString("id"));
-                    //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-
-                    //check if user in database
-                    //MainActivity.newUser(MainActivity.currUser);
-                } catch (JSONException e) {
-                    Log.d("JSON", "Failed to parse data: " + e);
-                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-                    // Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private static void cancelCall() {
-        if (mCall != null) {
-            mCall.cancel();
-        }
-    }
+//    private static void cancelCall() {
+//        if (mCall != null) {
+//            mCall.cancel();
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
-        cancelCall();
+//        cancelCall();
         super.onDestroy();
     }
 }

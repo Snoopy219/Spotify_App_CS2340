@@ -13,6 +13,7 @@ import androidx.navigation.NavController;
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
 import com.example.spotifyapp2340.databinding.FragmentSettingsEditBinding;
+import com.example.spotifyapp2340.storage.FIRESTORE;
 
 /**
  * The type Settings fragment.
@@ -34,7 +35,7 @@ public class SettingsEditFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MainActivity.currUser.setDisplay_name(binding.editName.getText().toString());
-                MainActivity.updateUser(MainActivity.currUser);
+                FIRESTORE.updateUser(MainActivity.currUser);
 
                 //navigate back
                 MainActivity.navController.popBackStack();

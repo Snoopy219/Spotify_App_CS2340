@@ -50,6 +50,7 @@ public class HANDLE_JSON {
                 Date date = formatter.parse(JSONCalendar);
                 wrappeds.add(createWrappedFromJSON(JSONArt, JSONTrack, date));
             }
+            user.setWraps(wrappeds);
         } catch (JSONException | ParseException e) {
             throw new RuntimeException(e);
         }
