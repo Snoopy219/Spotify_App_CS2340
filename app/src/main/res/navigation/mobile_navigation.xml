@@ -57,5 +57,9 @@
         android:id="@+id/wrap"
         android:name="com.example.spotifyapp2340.ui.wrapped.WrappedFragment"
         android:label="Spotify Wrapped"
-        tools:layout="@layout/fragment_wrapped" />
+        tools:layout="@layout/fragment_wrapped" >
+        <action
+            android:id="@+id/action_wrap_to_navigation_newWrapped"
+            app:destination="@id/navigation_newWrapped" />
+    </fragment>
 </navigation>

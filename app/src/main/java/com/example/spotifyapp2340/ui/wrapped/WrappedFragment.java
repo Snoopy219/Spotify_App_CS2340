@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -84,6 +85,7 @@ public class WrappedFragment extends Fragment {
 //        int index = MainActivity.currUser.getWraps().size() - 1;
         thisWrap = MainActivity.currUser.getWraps().get(index);
         System.out.println(thisWrap.getArtists().size());
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         //setup songs
         for (ArtistObject a : thisWrap.getArtists()) {
@@ -165,6 +167,7 @@ public class WrappedFragment extends Fragment {
             }
             playSong.interrupt();
         }
+//        MainActivity.navController.popBackStack();
         onWrapped = false;
         super.onDestroy();
     }
