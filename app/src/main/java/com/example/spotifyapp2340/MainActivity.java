@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setNavView(View.GONE);
         setContentView(binding.getRoot());
         currActivity = this;
         sharedPreferences = LoginActivity.sharedPreferences;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
     }
 
     /**
@@ -172,5 +173,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void setNavView(int visibility) {
+        if (binding != null) {
+            binding.navView.setVisibility(visibility);
+        }
+    }
+
+    public void setBackVisible(boolean visible) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(visible);
     }
 }

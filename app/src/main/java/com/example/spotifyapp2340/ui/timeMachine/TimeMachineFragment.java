@@ -73,9 +73,6 @@ public class TimeMachineFragment extends Fragment {
             binding.recyclerviewTimemachine.setVisibility(View.INVISIBLE);
         }
 
-
-        final TextView textView = binding.textTimeMachine;
-        timeMachineViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         if (MainActivity.currUser != null) {
             System.out.println(MainActivity.currUser.getWraps().size());
         }

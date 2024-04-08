@@ -67,6 +67,8 @@ public class WrappedFragment extends Fragment {
 
         binding = FragmentWrappedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        ((MainActivity) getActivity()).setNavView(View.GONE);
+        ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
 
 //        Thread thread = new Thread() {
@@ -169,6 +171,8 @@ public class WrappedFragment extends Fragment {
         }
 //        MainActivity.navController.popBackStack();
         onWrapped = false;
+        ((MainActivity) getActivity()).setNavView(View.VISIBLE);
+        ((MainActivity) getActivity()).setBackVisible(false);
         super.onDestroy();
     }
 }

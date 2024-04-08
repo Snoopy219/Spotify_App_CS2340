@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.example.spotifyapp2340.ui.settings.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="Settings"
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/action_navigation_notifications_to_settingsEditPage"
@@ -50,7 +50,7 @@
     <fragment
         android:id="@+id/settingsEditPage"
         android:name="com.example.spotifyapp2340.ui.settings.SettingsEditFragment"
-        android:label="fragment_settingsEditPage"
+        android:label="Edit Settings"
         tools:layout="@layout/fragment_settings_edit" >
         <action
             android:id="@+id/action_settingsEditPage_to_navigation_settings"

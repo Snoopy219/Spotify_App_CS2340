@@ -44,13 +44,13 @@ public class WaitingFragment extends Fragment {
         binding = FragmentWaitingBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        ((MainActivity) getActivity()).setNavView(View.VISIBLE);
         binding = null;
     }
 }
