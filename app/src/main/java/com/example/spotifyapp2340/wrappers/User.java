@@ -34,6 +34,7 @@ public class User {
     private String email;
     private String accessToken;
 
+
     public User(String id, String display_name, String email, String accessToken) {
         this.id = id;
         this.display_name = display_name;

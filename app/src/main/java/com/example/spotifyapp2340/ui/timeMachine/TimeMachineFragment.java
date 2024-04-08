@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.databinding.FragmentTimeMachineBinding;
 
 /**
@@ -17,7 +18,7 @@ import com.example.spotifyapp2340.databinding.FragmentTimeMachineBinding;
  */
 public class TimeMachineFragment extends Fragment {
 
-    private FragmentTimeMachineBinding binding;
+    private static FragmentTimeMachineBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -30,6 +31,10 @@ public class TimeMachineFragment extends Fragment {
 
         final TextView textView = binding.textTimeMachine;
         timeMachineViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        if (MainActivity.currUser != null) {
+            System.out.println(MainActivity.currUser.getWraps().size());
+        }
+
         return root;
     }
 
@@ -37,5 +42,12 @@ public class TimeMachineFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public static void updateUser() {
+        System.out.println("UPDATING TIME FRAG");
+        if (MainActivity.currUser != null) {
+            System.out.println(MainActivity.currUser.getWraps().size());
+        }
     }
 }

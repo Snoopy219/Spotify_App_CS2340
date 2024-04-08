@@ -9,7 +9,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
+import com.example.spotifyapp2340.storage.FIRESTORE;
 import com.example.spotifyapp2340.ui.newWrapped.NewWrappedFragment;
 import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.Wrapped;
@@ -72,6 +74,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                         "Bearer " + MainActivity.mAccessToken)
                 .build();
 
+        cancelCall(mCall1);
         mCall1 = MainActivity.mOkHttpClient.newCall(req);
 
         mCall1.enqueue(new Callback() {
@@ -83,30 +86,38 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String track = response.body().string();
-                System.out.println("Track" + track);
-                numGot[0]++;
-                JSONTrack[0] = track;
-                if (numGot[0] == 2) {
-                    wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
-                    System.out.println(wrapped[0].getArtists().size());
-                    MainActivity.currUser.addWrapped(wrapped[0]);
-                    MainActivity.updateUser(MainActivity.currUser);
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            navigateToNew();
-                        }
-                    });
+                if (track.contains("\"status\": 401,")) {
+                    System.out.println("TRACK FAIL" + track);
+                    MainActivity.FAILED_CALL = true;
+                    SpotifyCalls.getToken(MainActivity.currActivity);
+                } else {
+                    System.out.println("Track" + track);
+                    numGot[0]++;
+                    JSONTrack[0] = track;
+                    if (numGot[0] == 2) {
+                        wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
+                        System.out.println(wrapped[0].getArtists().size());
+                        MainActivity.currUser.addWrapped(wrapped[0]);
+                        System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
+                        FIRESTORE.updateUser(MainActivity.currUser);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                navigateToNew();
+                            }
+                        });
+                    }
                 }
+            }
                 //fragment.notifyTrack();
                 //setTextAsync(jsonObject.toString(3), profileTextView);
-            }
         });
 
         //Getting artists
         final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists")
                 .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
                 .build();
+        cancelCall(mCall2);
 
         mCall2 = MainActivity.mOkHttpClient.newCall(req2);
 
@@ -119,22 +130,29 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String art = response.body().string();
-                System.out.println("ART" + art);
-                numGot[0]++;
-                JSONArt[0] = art;
-                if (numGot[0] == 2) {
-                    wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
-                    MainActivity.currUser.addWrapped(wrapped[0]);
-                    MainActivity.updateUser(MainActivity.currUser);
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            navigateToNew();
-                        }
-                    });
+                if (art.contains("\"status\": 401,")) {
+                    System.out.println("ART FAIL" + art);
+                    MainActivity.FAILED_CALL = true;
+                    SpotifyCalls.getToken(MainActivity.currActivity);
+                } else {
+                    System.out.println("ART" + art);
+                    numGot[0]++;
+                    JSONArt[0] = art;
+                    if (numGot[0] == 2) {
+                        wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
+                        MainActivity.currUser.addWrapped(wrapped[0]);
+                        System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
+                        FIRESTORE.updateUser(MainActivity.currUser);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                navigateToNew();
+                            }
+                        });
+                    }
+                    //fragment.notifyArt();
+                    //setTextAsync(jsonObject.toString(3), profileTextView);
                 }
-                //fragment.notifyArt();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
             }
         });
         return null;
@@ -146,11 +164,17 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected void onPostExecute(Void result) {
-        MainActivity.updateUser(MainActivity.currUser);
+        FIRESTORE.updateUser(MainActivity.currUser);
         System.out.println("here it is");
     }
 
     private void navigateToNew() {
         controller.navigate(R.id.action_navigation_newWrapped_to_wrap);
+    }
+
+    private void cancelCall(Call mCall) {
+        if (mCall != null) {
+            mCall.cancel();
+        }
     }
 }

@@ -41,6 +41,7 @@ public class HANDLE_JSON {
             user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("spotify_account"), jsonObject.getString("access_token"));
             JSONArray jsonArray = jsonObject.getJSONArray("wraps");
             ArrayList<Wrapped> wrappeds = new ArrayList<>();
+            System.out.println("GETTING THIS MANY WRAPS" + jsonArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                 String JSONArt = jsonObject1.getString("artists");
@@ -50,6 +51,7 @@ public class HANDLE_JSON {
                 Date date = formatter.parse(JSONCalendar);
                 wrappeds.add(createWrappedFromJSON(JSONArt, JSONTrack, date));
             }
+            user.setWraps(wrappeds);
         } catch (JSONException | ParseException e) {
             throw new RuntimeException(e);
         }
@@ -96,11 +98,23 @@ public class HANDLE_JSON {
         ArtistObject artistObject;
         try {
             System.out.println(jsonObject.toString());
-            artistObject = new ArtistObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONArray("images")));
+            artistObject = new ArtistObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONArray("images")), processGenres(jsonObject.getJSONArray("genres")));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
         return artistObject;
+    }
+
+    public static String[] processGenres(JSONArray jsonArray) {
+        String[] str = new String[jsonArray.length()];
+        for (int i = 0; i < str.length; i++) {
+            try {
+                str[i] = jsonArray.getString(i);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return str;
     }
 
     public static ImageObject[] processImageArray(JSONArray jsonArray) {
@@ -121,7 +135,7 @@ public class HANDLE_JSON {
     public static TrackObject processTrackObject(JSONObject jsonObject) {
         TrackObject trackObject;
         try {
-            trackObject = new TrackObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONObject("album").getJSONArray("images")));
+            trackObject = new TrackObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONObject("album").getJSONArray("images")), jsonObject.getString("preview_url"));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -165,6 +179,7 @@ public class HANDLE_JSON {
             jsonObject.put("access_token", user.getAccessToken());
             JSONArray jsonArray = new JSONArray();
             ArrayList<Wrapped> wraps = user.getWraps();
+            System.out.println("NUM WRAPS ADDING" + wraps.size());
             for (int i = 0; i < wraps.size(); i++) {
                 jsonArray.put(i, exportWrapped(wraps.get(i)));
             }

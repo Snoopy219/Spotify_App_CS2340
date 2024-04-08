@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
 import com.example.spotifyapp2340.databinding.FragmentWrappedBinding;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.ui.newWrapped.NewWrappedViewModel;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
+import com.example.spotifyapp2340.wrappers.TrackObject;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -48,9 +50,13 @@ public class WrappedFragment extends Fragment {
     public static SongAdapter songAdapter;
 
     public static ArtistAdapter artistAdapter;
+    public static GenreAdapter genreAdapter;
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
-    private static Call mCall;
-    private static Call mCall2;
+    private Thread playSong;
+
+    private final static AppPlayer player = new AppPlayer();
+
+    private static boolean onWrapped = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,6 +64,7 @@ public class WrappedFragment extends Fragment {
 
         binding = FragmentWrappedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        onWrapped = true;
 
 //        Thread thread = new Thread() {
 //            @Override
@@ -92,6 +99,71 @@ public class WrappedFragment extends Fragment {
         LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         artistCards.setLayoutManager(linearLayoutManagerArtist);
         artistCards.setAdapter(artistAdapter);
+
+        //        setup genre
+        RecyclerView genreCards = root.findViewById(R.id.recyclerViewTopGenres);
+        genreAdapter = new GenreAdapter(getContext(), thisWrap.getTopGenres());
+        LinearLayoutManager linearLayoutManagerGenre = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        genreCards.setLayoutManager(linearLayoutManagerGenre);
+        genreCards.setAdapter(genreAdapter);
+
+        playSong = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (Thread.interrupted()) {
+                    if (player != null) {
+                        player.stop();
+                    }
+                    return;
+                }
+                int count = 0;
+                while (onWrapped) {
+                    if (Thread.interrupted()) {
+                        if (player != null) {
+                            player.stop();
+                            System.out.println("interuppted here");
+                        }
+                        return;
+                    } else {
+                        TrackObject currTrack = thisWrap.getTracks().get(count);
+                        while (currTrack.getUrl().equals("null")) {
+                            count = (count + 1) % thisWrap.getTracks().size();
+                            currTrack = thisWrap.getTracks().get(count);
+                        }
+                        if (!Thread.interrupted() && onWrapped) {
+                            player.play(currTrack.getUrl());
+                        }
+                        try {
+                            for (int i = 0; i < 300; i++) {
+                                Thread.sleep(100);
+                                if (!onWrapped) {
+                                    player.stop();
+                                    return;
+                                }
+                            }
+                        } catch (InterruptedException e) {
+                            System.out.println("interuppted");
+                        }
+                        count = (count + 1) % thisWrap.getTracks().size();
+                    }
+                }
+            }
+        });
+        playSong.start();
         return root;
+    }
+
+    @Override
+    public void onDestroy() {
+        if (playSong != null) {
+            if (player != null) {
+                System.out.println("destroying");
+                player.stop();
+                System.out.println(player);
+            }
+            playSong.interrupt();
+        }
+        onWrapped = false;
+        super.onDestroy();
     }
 }

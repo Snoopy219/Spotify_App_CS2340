@@ -3,9 +3,13 @@ package com.example.spotifyapp2340.wrappers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * The type Wrapped.
@@ -67,6 +71,32 @@ public class Wrapped {
 
     public void setTracks(ArrayList<TrackObject> tracks) {
         this.tracks = tracks;
+    }
+
+    public ArrayList<String> getTopGenres() {
+        HashMap<String, Integer> freq = new HashMap<>();
+        for (int i = 0; i < artists.size(); i++) {
+            ArtistObject currArt = artists.get(i);
+            String[] currGenres = currArt.getGenres();
+            for (int j = 0; j < currGenres.length; j++) {
+                Integer currCount = freq.getOrDefault(currGenres[j], 0);
+                freq.put(currGenres[j], currCount + 1);
+            }
+        }
+        LinkedList<String>[] buckets = new LinkedList[artists.size()];
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = new LinkedList<>();
+        }
+        for (Map.Entry<String, Integer> e : freq.entrySet()) {
+            buckets[e.getValue()].add(e.getKey());
+        }
+        ArrayList<String> endGenre = new ArrayList<>();
+        for (int i = buckets.length - 1; i >= 0; i--) {
+            while (!buckets[i].isEmpty()) {
+                endGenre.add(buckets[i].remove());
+            }
+        }
+        return endGenre;
     }
 
     @Override
