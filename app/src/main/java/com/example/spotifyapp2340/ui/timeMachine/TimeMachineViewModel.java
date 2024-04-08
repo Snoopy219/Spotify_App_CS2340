@@ -16,7 +16,7 @@ public class TimeMachineViewModel extends ViewModel {
      */
     public TimeMachineViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Time Machine fragment");
+        mText.setValue("");
     }
 
     /**
