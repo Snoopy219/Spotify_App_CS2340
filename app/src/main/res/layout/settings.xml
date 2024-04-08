@@ -36,12 +36,12 @@
         android:id="@+id/AccountInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/montserrat"
         android:text="Account Information"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,28 +49,27 @@
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="140dp"
         android:backgroundTint="@color/ocean_blue"
         android:fontFamily="@font/montserrat"
         android:text="Edit Info"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
+        app:layout_constraintHorizontal_bias="0.309"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/delete_button"
         android:layout_width="63dp"
         android:layout_height="47dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="136dp"
         android:backgroundTint="@color/ocean_blue"
         app:icon="@android:drawable/ic_menu_delete"
         app:iconTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.425"
-        app:layout_constraintStart_toEndOf="@+id/edit_button"
-        />
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toEndOf="@+id/edit_button" />
 
     <TextView
         android:id="@+id/UsernameText"
@@ -83,20 +82,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/namePlaceHolder" />
-
-    <Switch
-        android:id="@+id/darkModeSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTint="@color/ocean_blue"
-        android:fontFamily="@font/montserrat"
-        android:text="Dark Mode"
-        android:textColorLink="@color/ocean_blue"
-        android:textCursorDrawable="@color/ocean_blue"
-        app:layout_constraintBottom_toTopOf="@+id/edit_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spotifyAccountPlaceHolder" />
 
     <TextView
         android:id="@+id/namePlaceHolder"
@@ -131,5 +116,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SpotifyAccountText" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="457dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
