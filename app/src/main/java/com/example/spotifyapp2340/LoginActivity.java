@@ -65,7 +65,6 @@ import okhttp3.Call;
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
-    private Call mCall;
 
     private static Activity context;
 
@@ -80,12 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         MainActivity.tokenTime = 3600000000l;
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-//        if (MainActivity.currUser != null) {
-//            Intent myIntent = new Intent(this, MainActivity.class);
-//            startActivity(myIntent);
-//        }
 
         System.out.println("SHARE PREF" + sharedPreferences);
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -100,15 +93,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //call login
-                System.out.println("here");
-//                onGetUserProfileClicked();
-                System.out.println("here");
                 //if login successful
                 SpotifyCalls.getToken(LoginActivity.this);
-//                new GetTokenAndRefreshToken().execute();
                 System.out.println(MainActivity.mAccessToken);
-//                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
-//                startActivity(myIntent);
             }
         });
         context = this;
@@ -131,27 +118,17 @@ public class LoginActivity extends AppCompatActivity {
             String str = response.toString();
             System.out.println(str);
             MainActivity.mAccessToken = response.getAccessToken();
-//            MainActivity.tokenTime = System.currentTimeMillis();
             MainActivity.tokenTime = 3600000 + 9;
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);
-            //setTextAsync(mAccessToken, tokenTextView);
 
         } else if (MainActivity.AUTH_CODE_REQUEST_CODE == requestCode) {
             MainActivity.mAccessCode = response.getCode();
-            //setTextAsync(mAccessCode, codeTextView);
-        }
-    }
-
-    private void cancelCall() {
-        if (mCall != null) {
-            mCall.cancel();
         }
     }
 
     @Override
     protected void onDestroy() {
-        cancelCall();
         super.onDestroy();
     }
 

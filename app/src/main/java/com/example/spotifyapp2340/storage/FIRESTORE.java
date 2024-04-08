@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
 import com.example.spotifyapp2340.MainActivity;
+import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.timeMachine.TimeMachineFragment;
@@ -41,6 +42,8 @@ public class FIRESTORE {
                         MainActivity.currActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                System.out.println("MOVING");
+                                MainActivity.navController.navigate(R.id.navigation_newWrapped);
                                 TimeMachineFragment.updateUser();
                                 SettingsFragment.updateUser();
                             }
@@ -57,6 +60,8 @@ public class FIRESTORE {
                         MainActivity.currActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                System.out.println("MOVING");
+                                MainActivity.navController.navigate(R.id.navigation_newWrapped);
                                 TimeMachineFragment.updateUser();
                                 SettingsFragment.updateUser();
                             }

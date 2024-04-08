@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_newWrapped">
+    app:startDestination="@id/navigation_waiting">
 
     <fragment
         android:id="@+id/navigation_timeMachine"
@@ -13,6 +13,16 @@
         <action
             android:id="@+id/action_navigation_timeMachine_to_wrap"
             app:destination="@id/wrap" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_waiting"
+        android:name="com.example.spotifyapp2340.ui.waiting.WaitingFragment"
+        android:label="Loading"
+        tools:layout="@layout/fragment_waiting" >
+        <action
+            android:id="@+id/action_navigation_waiting_to_navigation_newWrapped"
+            app:destination="@id/navigation_newWrapped" />
     </fragment>
 
     <fragment
