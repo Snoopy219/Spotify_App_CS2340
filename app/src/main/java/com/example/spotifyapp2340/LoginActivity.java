@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
+import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.databinding.ActivityMainBinding;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private Call mCall;
 
-    private Activity context;
+    private static Activity context;
 
     public static SharedPreferences sharedPreferences;
 
@@ -75,6 +76,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        MainActivity.tokenTime = 3600000000l;
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         // Passing each menu ID as a set of Ids because each
@@ -84,10 +87,10 @@ public class LoginActivity extends AppCompatActivity {
 //            startActivity(myIntent);
 //        }
 
-        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("user", "");
-        editor.commit();
+        System.out.println("SHARE PREF" + sharedPreferences);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("user", "");
+//        editor.commit();
         if (!sharedPreferences.getString("user", "").equals("")) {
             //get user with that name from firebase
             Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -102,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("here");
                 //if login successful
                 SpotifyCalls.getToken(LoginActivity.this);
+//                new GetTokenAndRefreshToken().execute();
                 System.out.println(MainActivity.mAccessToken);
 //                Intent myIntent = new Intent(v.getContext(), MainActivity.class);
 //                startActivity(myIntent);
@@ -124,7 +128,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check which request code is present (if any)
         if (MainActivity.AUTH_TOKEN_REQUEST_CODE == requestCode) {
+            String str = response.toString();
+            System.out.println(str);
             MainActivity.mAccessToken = response.getAccessToken();
+//            MainActivity.tokenTime = System.currentTimeMillis();
+            MainActivity.tokenTime = 3600000 + 9;
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);
             //setTextAsync(mAccessToken, tokenTextView);
@@ -147,4 +155,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public static void onCallback() {
+        Intent myIntent = new Intent(context, MainActivity.class);
+        context.startActivity(myIntent);
+    }
 }

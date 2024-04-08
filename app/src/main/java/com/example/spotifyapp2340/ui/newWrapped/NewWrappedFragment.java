@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
 import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
 import com.example.spotifyapp2340.wrappers.Wrapped;

@@ -35,7 +35,9 @@ public class FIRESTORE {
                     if (document.exists()) {
                         System.out.println(document.getData().toString().substring(11));
                         MainActivity.currUser = HANDLE_JSON.createUserFromFirestore(document.getData().toString().substring(11));
-                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+                        if (MainActivity.mAccessToken == null) {
+                            MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+                        }
                         MainActivity.currActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

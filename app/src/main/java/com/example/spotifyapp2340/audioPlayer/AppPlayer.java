@@ -24,19 +24,20 @@ public class AppPlayer {
      * @param sourceURL URL for mp3 file.
      * @param toPlay if it should be played.
      */
-    public AppPlayer(String sourceURL, boolean toPlay) {
-        if (sourceURL == null) throw new IllegalArgumentException("sourceURL is null; Preview not available.");
+    public AppPlayer() {
+//        if (sourceURL == null) throw new IllegalArgumentException("sourceURL is null; Preview not available.");
         player = new MediaPlayer();
-        try {
-            player.setDataSource(sourceURL);
-            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            if (toPlay) {
-                player.prepare();
-                player.start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            player.setDataSource(sourceURL);
+//            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//            if (toPlay) {
+//                player.prepare();
+//                player.start();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
     }
 
     /**
@@ -44,7 +45,7 @@ public class AppPlayer {
      *
      * @return if audio was succesfully played.
      */
-    public boolean play() {
+    public boolean play(String sourceURL) {
         player = new MediaPlayer();
         try {
             player.setDataSource(sourceURL);
@@ -56,5 +57,15 @@ public class AppPlayer {
             return false;
         }
         return true;
+    }
+
+    public void stop() {
+        if (player != null) {
+            player.stop();
+            System.out.println(player.isPlaying());
+            player.release();
+            player = null;
+            System.out.println("stopped");
+        }
     }
 }

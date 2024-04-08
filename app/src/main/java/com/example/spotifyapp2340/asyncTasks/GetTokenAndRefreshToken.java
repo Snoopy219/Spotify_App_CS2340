@@ -1,12 +1,16 @@
 package com.example.spotifyapp2340.asyncTasks;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.spotifyapp2340.LoginActivity;
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
@@ -32,7 +36,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
+public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
     Call mCall;
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
 
@@ -46,16 +50,18 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
     @Override
     protected Void doInBackground(Void... params) {
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/me")
-                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
+                .url("https://api.spotify.com/api/token")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
         cancelCall();
+        System.out.println("let");
         mCall = mOkHttpClient.newCall(request);
 
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                System.out.println("here654");
                 Log.d("HTTP", "Failed to fetch data: " + e);
                 //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
                 //        Toast.LENGTH_SHORT).show();
@@ -65,16 +71,16 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println("USER" + responseStre);
-//                    if (responseStre.contains("401")) {
-//                        System.out.println("fail");
-//                        SpotifyCalls.getToken(MainActivity.currActivity);
-//                    } else {
+                    System.out.println(responseStre);
+                    if (responseStre.contains("401")) {
+                        System.out.println("fail");
+                    } else {
                         System.out.println(responseStre);
                         final JSONObject jsonObject = new JSONObject(responseStre);
-                        MainActivity.userJSON = jsonObject;
-                        FIRESTORE.newUser(jsonObject.getString("id"));
-//                    }
+                        MainActivity.mAccessToken = jsonObject.getString("access_token");
+                        MainActivity.refreshToken = jsonObject.getString("refresh_token");
+                        LoginActivity.onCallback();
+                    }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 
                     //check if user in database

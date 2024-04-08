@@ -4,9 +4,20 @@ public class TrackObject {
     private String name;
     private ImageObject[] images;
 
-    public TrackObject(String name, ImageObject[] images) {
+    private String url;
+
+    public TrackObject(String name, ImageObject[] images, String url) {
         this.name = name;
         this.images = images;
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getName() {

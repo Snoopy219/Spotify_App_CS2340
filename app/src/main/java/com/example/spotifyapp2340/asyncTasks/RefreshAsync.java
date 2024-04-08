@@ -32,7 +32,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
+public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
     Call mCall;
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
 
@@ -65,16 +65,14 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println("USER" + responseStre);
-//                    if (responseStre.contains("401")) {
-//                        System.out.println("fail");
-//                        SpotifyCalls.getToken(MainActivity.currActivity);
-//                    } else {
+                    if (responseStre.contains("401")) {
+                        System.out.println("fail");
+                    } else {
                         System.out.println(responseStre);
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.userJSON = jsonObject;
                         FIRESTORE.newUser(jsonObject.getString("id"));
-//                    }
+                    }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 
                     //check if user in database

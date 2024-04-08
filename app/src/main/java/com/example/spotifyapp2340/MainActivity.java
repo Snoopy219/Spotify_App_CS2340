@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
+import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.storage.FIRESTORE;
@@ -96,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity currActivity;
 
+    public static long tokenTime;
+
+    public static boolean FAILED_CALL = false;
+
+    public static String refreshToken;
+
 
 
     @Override
@@ -105,16 +112,20 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
 
-        play("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+//        play("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        currActivity = this;
         sharedPreferences = LoginActivity.sharedPreferences;
         if (!sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
             FIRESTORE.newUser(sharedPreferences.getString("user", ""));
-            //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(sharedPreferences.getString("user", ""));
+//            System.currentTimeMillis() - MainActivity.tokenTime >= 3600000
+            if (MainActivity.tokenTime >= 3600000) {
+                SpotifyCalls.getToken(MainActivity.currActivity);
+            }
+//            MainActivity.currUser = HANDLE_JSON.createUserFromJSON(sharedPreferences.getString("user", ""));
         } else {
             //check if user exists in firestore or get new user
             new GetUserAsync().execute();
@@ -129,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        currActivity = this;
         //setProfileBtn(findViewById(R.id.button))
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
@@ -200,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     public static void play(String sourceURL) {
         if (sourceURL == null) throw new IllegalArgumentException("SourceURL is null.");
 
-        AppPlayer player = new AppPlayer(sourceURL, true);
+//        AppPlayer player = new AppPlayer(sourceURL, true);
     }
 
     /**
@@ -215,6 +225,10 @@ public class MainActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
+            if (FAILED_CALL) {
+                FAILED_CALL = false;
+                onCallback();
+            }
             //setTextAsync(mAccessToken, tokenTextView);
 
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
@@ -274,6 +288,9 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //    }
 
+    public static void onCallback() {
+        new NewWrappedAsync(navController, currActivity).execute();
+    }
     @Override
     protected void onDestroy() {
 //        cancelCall();

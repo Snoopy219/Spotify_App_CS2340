@@ -74,6 +74,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                         "Bearer " + MainActivity.mAccessToken)
                 .build();
 
+        cancelCall(mCall1);
         mCall1 = MainActivity.mOkHttpClient.newCall(req);
 
         mCall1.enqueue(new Callback() {
@@ -85,8 +86,9 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String track = response.body().string();
-                if (track.contains("\"status\" : 401,")) {
+                if (track.contains("\"status\": 401,")) {
                     System.out.println("TRACK FAIL" + track);
+                    MainActivity.FAILED_CALL = true;
                     SpotifyCalls.getToken(MainActivity.currActivity);
                 } else {
                     System.out.println("Track" + track);
@@ -96,6 +98,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                         wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
                         System.out.println(wrapped[0].getArtists().size());
                         MainActivity.currUser.addWrapped(wrapped[0]);
+                        System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
                         FIRESTORE.updateUser(MainActivity.currUser);
                         activity.runOnUiThread(new Runnable() {
                             @Override
@@ -114,6 +117,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
         final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists")
                 .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
                 .build();
+        cancelCall(mCall2);
 
         mCall2 = MainActivity.mOkHttpClient.newCall(req2);
 
@@ -126,8 +130,9 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String art = response.body().string();
-                if (art.contains("\"status\" : 401,")) {
+                if (art.contains("\"status\": 401,")) {
                     System.out.println("ART FAIL" + art);
+                    MainActivity.FAILED_CALL = true;
                     SpotifyCalls.getToken(MainActivity.currActivity);
                 } else {
                     System.out.println("ART" + art);
@@ -136,6 +141,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                     if (numGot[0] == 2) {
                         wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
                         MainActivity.currUser.addWrapped(wrapped[0]);
+                        System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
                         FIRESTORE.updateUser(MainActivity.currUser);
                         activity.runOnUiThread(new Runnable() {
                             @Override
@@ -164,5 +170,11 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
 
     private void navigateToNew() {
         controller.navigate(R.id.action_navigation_newWrapped_to_wrap);
+    }
+
+    private void cancelCall(Call mCall) {
+        if (mCall != null) {
+            mCall.cancel();
+        }
     }
 }
