@@ -16,5 +16,6 @@
     <string name="new_wrapped">New Wrapped</string>
     <string name="time_machine">Time Machine</string>
     <string name="settings">Settings</string>
+    <string name="date">Date</string>
 
 </resources>

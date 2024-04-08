@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //setProfileBtn(findViewById(R.id.button))
 
         //Task<Void> getWrapped = Tasks.whenAll(User.fetchTask);
@@ -295,5 +296,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
 //        cancelCall();
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

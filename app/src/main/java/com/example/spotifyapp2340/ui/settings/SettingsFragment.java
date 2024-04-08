@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.spotifyapp2340.LoginActivity;
@@ -66,6 +67,7 @@ public class SettingsFragment extends Fragment {
                                 SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
                                 editor.putString("user", "");
                                 editor.commit();
+                                MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
                                 Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
                                 startActivity(myIntent);
                             }
@@ -84,6 +86,7 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
                 editor.putString("user", "");
                 editor.commit();
+                MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
                 Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
                 startActivity(myIntent);
             }

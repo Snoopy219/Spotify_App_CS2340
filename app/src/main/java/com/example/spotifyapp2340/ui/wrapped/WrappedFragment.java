@@ -58,6 +58,8 @@ public class WrappedFragment extends Fragment {
 
     private static boolean onWrapped = false;
 
+    public static int index = 0;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -79,7 +81,7 @@ public class WrappedFragment extends Fragment {
 
         //int index = WrappedFragmentArgs.fromBundle(getArguments()).getIndex();
         System.out.println("im in wrapped");
-        int index = MainActivity.currUser.getWraps().size() - 1;
+//        int index = MainActivity.currUser.getWraps().size() - 1;
         thisWrap = MainActivity.currUser.getWraps().get(index);
         System.out.println(thisWrap.getArtists().size());
 
@@ -130,7 +132,7 @@ public class WrappedFragment extends Fragment {
                             count = (count + 1) % thisWrap.getTracks().size();
                             currTrack = thisWrap.getTracks().get(count);
                         }
-                        if (!Thread.interrupted() && onWrapped) {
+                        if (!Thread.interrupted() && onWrapped && player != null) {
                             player.play(currTrack.getUrl());
                         }
                         try {
