@@ -32,6 +32,7 @@
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/genreImage"
             android:text="@string/genre_name"
+            android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />
