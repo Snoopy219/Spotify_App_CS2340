@@ -2,7 +2,7 @@
 <resources>
     //light mode colors
     <color name="ocean_blue">#92C7CF</color>
-    <color name="seafoam_blue">#AAD7D9</color>
+    <color name="seafoam_blue">#D5F3F4</color>
     <color name="tinted_white">#FBF9F1</color>
     <color name="light_beige">#E5E1DA</color>
     //dark mode colors
