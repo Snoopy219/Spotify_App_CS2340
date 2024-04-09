@@ -21,8 +21,14 @@ import com.example.spotifyapp2340.LoginActivity;
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.databinding.FragmentSettingsBinding;
+import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
+import com.example.spotifyapp2340.ui.timeMachine.TimeMachineFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * The type Settings fragment.
@@ -63,13 +69,31 @@ public class SettingsFragment extends Fragment {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                MainActivity.currUser = null;
+                                System.out.println("deleting");
                                 SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
                                 editor.putString("user", "");
                                 editor.commit();
-                                MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
-                                Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
-                                startActivity(myIntent);
+                                SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
+                                editor2.putString("user", "");
+                                editor2.commit();
+                                MainActivity.db.collection("/users/" + MainActivity.currUser.getId() + "/wraps")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        document.getReference().delete();
+                                                    }
+                                                    MainActivity.currUser = null;
+                                                    MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
+                                                    Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
+                                                    startActivity(myIntent);
+                                                } else {
+                                                    System.out.println("failed");
+                                                }
+                                            }
+                                        });
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -86,6 +110,9 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
                 editor.putString("user", "");
                 editor.commit();
+                SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
+                editor2.putString("user", "");
+                editor2.commit();
                 MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
                 Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
                 startActivity(myIntent);

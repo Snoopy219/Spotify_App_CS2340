@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         setNavView(View.GONE);
         setContentView(binding.getRoot());
         currActivity = this;
-        sharedPreferences = LoginActivity.sharedPreferences;
+        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
         if (!sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
             FIRESTORE.newUser(sharedPreferences.getString("user", ""));
