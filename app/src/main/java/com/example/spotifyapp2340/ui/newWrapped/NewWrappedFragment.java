@@ -16,6 +16,7 @@ import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
 import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
+import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 
 import java.util.Calendar;
@@ -43,6 +44,7 @@ public class NewWrappedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.createNewWrapped.setText("Loading...");
+                WrappedFragment.index = MainActivity.currUser.getWraps().size();
                 new NewWrappedAsync(NavHostFragment.findNavController(NewWrappedFragment.this), getActivity()).execute();
             }
         });

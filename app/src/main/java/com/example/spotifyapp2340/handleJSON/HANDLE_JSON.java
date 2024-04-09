@@ -58,6 +58,47 @@ public class HANDLE_JSON {
         return user;
     }
 
+    public static void addWrappedFromJSON(User user, String JSON, String date) {
+        JSONArray jsonArrayArt;
+        String artStr;
+        JSONArray jsonArrayTrack;
+        String trackStr;
+        Date date1;
+        try {
+            JSONObject jsonObject = new JSONObject(JSON);
+            System.out.println(JSON);
+            artStr = jsonObject.getString("artists");
+//            jsonArrayArt = art.getJSONArray("items");
+            trackStr = jsonObject.getString("tracks");
+            JSONObject track = new JSONObject(trackStr);
+            jsonArrayTrack = track.getJSONArray("items");
+            SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy", Locale.ENGLISH);
+            date1 = formatter.parse(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        user.addWrapped(createWrappedFromJSON(artStr, trackStr, date1));
+    }
+
+    public static User createBasicUserFromJSON(String id, String JSON) {
+        JSONObject jsonObject;
+        String access_token;
+        String display_name;
+        String spotify_account;
+        try {
+            jsonObject = new JSONObject(JSON);
+            access_token = jsonObject.getString("access_token");
+            display_name = jsonObject.getString("display_name");
+            spotify_account = jsonObject.getString("spotify_account");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        User user = new User(id, display_name, spotify_account, access_token);
+        return user;
+
+    }
     public static void updateUserFromJSON(String JSON, User user) {
         try {
             JSONObject jsonObject = new JSONObject(JSON);
@@ -189,5 +230,18 @@ public class HANDLE_JSON {
         }
         return jsonObject;
 
+    }
+
+    public static JSONObject exportUserBasic(User user) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("id", user.getId());
+            jsonObject.put("display_name", user.getDisplay_name());
+            jsonObject.put("spotify_account", user.getEmail());
+            jsonObject.put("access_token", user.getAccessToken());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return jsonObject;
     }
 }

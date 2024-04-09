@@ -29,7 +29,7 @@ public class SettingsEditFragment extends Fragment {
         binding = FragmentSettingsEditBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.editName.setText(MainActivity.currUser.getId());
+        binding.editName.setText(MainActivity.currUser.getDisplay_name());
 
         binding.editSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override

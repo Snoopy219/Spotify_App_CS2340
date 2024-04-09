@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,12 +59,16 @@ public class WrappedFragment extends Fragment {
 
     private static boolean onWrapped = false;
 
+    public static int index = 0;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentWrappedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        ((MainActivity) getActivity()).setNavView(View.GONE);
+        ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
 
 //        Thread thread = new Thread() {
@@ -79,9 +84,10 @@ public class WrappedFragment extends Fragment {
 
         //int index = WrappedFragmentArgs.fromBundle(getArguments()).getIndex();
         System.out.println("im in wrapped");
-        int index = MainActivity.currUser.getWraps().size() - 1;
+//        int index = MainActivity.currUser.getWraps().size() - 1;
         thisWrap = MainActivity.currUser.getWraps().get(index);
         System.out.println(thisWrap.getArtists().size());
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         //setup songs
         for (ArtistObject a : thisWrap.getArtists()) {
@@ -130,7 +136,7 @@ public class WrappedFragment extends Fragment {
                             count = (count + 1) % thisWrap.getTracks().size();
                             currTrack = thisWrap.getTracks().get(count);
                         }
-                        if (!Thread.interrupted() && onWrapped) {
+                        if (!Thread.interrupted() && onWrapped && player != null) {
                             player.play(currTrack.getUrl());
                         }
                         try {
@@ -163,7 +169,10 @@ public class WrappedFragment extends Fragment {
             }
             playSong.interrupt();
         }
+//        MainActivity.navController.popBackStack();
         onWrapped = false;
+        ((MainActivity) getActivity()).setNavView(View.VISIBLE);
+        ((MainActivity) getActivity()).setBackVisible(false);
         super.onDestroy();
     }
 }
