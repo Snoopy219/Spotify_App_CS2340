@@ -1,6 +1,7 @@
 package com.example.spotifyapp2340.ui.wrapped;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.wrappers.TrackObject;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

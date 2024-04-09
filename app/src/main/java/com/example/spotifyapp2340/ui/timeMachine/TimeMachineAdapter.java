@@ -26,7 +26,7 @@ public class TimeMachineAdapter extends RecyclerView.Adapter<TimeMachineAdapter.
     @NonNull
     @Override
     public TimeMachineAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_past_wrapped, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.past_wrapped, parent, false);
         return new ViewHolder(view).linkAdapter(this);
     }
 

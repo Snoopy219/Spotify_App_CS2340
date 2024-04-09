@@ -49,6 +49,6 @@
             android:text="@string/artist_ranking"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="20sp" />
+            android:textSize="45sp" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
