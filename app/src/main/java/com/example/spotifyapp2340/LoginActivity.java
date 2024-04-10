@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
+import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.databinding.ActivityMainBinding;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
@@ -118,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             String str = response.toString();
             System.out.println(str);
             MainActivity.mAccessToken = response.getAccessToken();
+//            RefreshAsync async = new RefreshAsync();
             MainActivity.tokenTime = 3600000 + 9;
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);

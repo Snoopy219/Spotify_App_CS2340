@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
+import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.storage.FIRESTORE;
@@ -118,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
             //get from document with shared prefs
             FIRESTORE.newUser(sharedPreferences.getString("user", ""));
             if (MainActivity.tokenTime >= 3600000) {
-                SpotifyCalls.getToken(MainActivity.currActivity);
+//                SpotifyCalls.getToken(MainActivity.currActivity);
+                new RefreshAsync();
             }
         } else {
             //check if user exists in firestore or get new user
