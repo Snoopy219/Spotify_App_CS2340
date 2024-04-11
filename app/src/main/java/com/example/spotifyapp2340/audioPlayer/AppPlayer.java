@@ -4,6 +4,8 @@ import android.media.AudioManager;
 import android.media.DrmInitData;
 import android.media.MediaPlayer;
 
+import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
+
 import java.io.IOException;
 
 /**
@@ -19,10 +21,8 @@ public class AppPlayer {
     private static MediaPlayer player;
 
     /**
-     * Constructor which instantiates player and plays if desired.
-     *
-     * @param sourceURL URL for mp3 file.
-     * @param toPlay if it should be played.
+     * Constructor which instantiates a new MediaPlayer object.
+     * Does not play until play() is called.
      */
     public AppPlayer() {
 //        if (sourceURL == null) throw new IllegalArgumentException("sourceURL is null; Preview not available.");
@@ -66,6 +66,28 @@ public class AppPlayer {
             player.release();
             player = null;
             System.out.println("stopped");
+        }
+    }
+
+    /**
+     * To be used when adding pause & play buttons.
+     * Pauses the player.
+     */
+    public void pause() {
+        if (player != null) {
+            player.pause();
+            WrappedFragment.isPaused = true;
+        }
+    }
+
+    /**
+     * To be used when adding pause & play buttons.
+     * Unpauses the player.
+     */
+    public void unpause() {
+        if (player != null) {
+            player.start();
+            WrappedFragment.isPaused = false;
         }
     }
 }

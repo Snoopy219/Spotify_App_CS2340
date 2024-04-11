@@ -33,13 +33,15 @@ public class User {
 
     private String email;
     private String accessToken;
+    private String refreshToken;
+    private String product;
 
-
-    public User(String id, String display_name, String email, String accessToken) {
+    public User(String id, String display_name, String email, String accessToken, String product) {
         this.id = id;
         this.display_name = display_name;
         this.email = email;
         this.accessToken = accessToken;
+        this.product = product;
     }
 
     public void setWraps(ArrayList<Wrapped> wraps) {
@@ -91,6 +93,15 @@ public class User {
      */
     public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isPremium() {
+        return !(product.equals("free")
+                || product.equals("open"));
+    }
+
+    public String getProduct() {
+        return product;
     }
 
     /**
