@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
     public static String mAccessToken;
     public static String mAccessCode;
 
-    public static SharedPreferences sharedPreferences;
-
     public static NavController navController;
 
     public static MainActivity currActivity;
@@ -113,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
         setNavView(View.GONE);
         setContentView(binding.getRoot());
         currActivity = this;
-        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        if (!sharedPreferences.getString("user", "").equals("")) {
+        System.out.println(LoginActivity.sharedPreferences.getString("user", ""));
+        if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
-            FIRESTORE.newUser(sharedPreferences.getString("user", ""));
+            FIRESTORE.newUser(LoginActivity.sharedPreferences.getString("user", ""));
             if (MainActivity.tokenTime >= 3600000) {
                 SpotifyCalls.getToken(MainActivity.currActivity);
             }

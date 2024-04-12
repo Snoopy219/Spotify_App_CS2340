@@ -73,6 +73,7 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
                         System.out.println(responseStre);
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.userJSON = jsonObject;
+                    System.out.println("HERE " + MainActivity.userJSON);
                         FIRESTORE.newUser(jsonObject.getString("id"));
 //                    }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
