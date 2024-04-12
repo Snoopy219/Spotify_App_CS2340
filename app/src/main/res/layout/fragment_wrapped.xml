@@ -16,77 +16,132 @@
 <!--            app:titleTextColor="@android:color/white"-->
 <!--            app:layout_constraintTop_toTopOf="parent"/>-->
 
-    <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Spotify Wrapped"
+            app:titleTextColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <ImageView
-                android:layout_width="204dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:contentDescription="@string/describe_image"
-                android:src="@drawable/music_note" />
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="#92C7CF"
-                android:text="@string/top_songs"
-                android:textSize="20sp" />
+                android:orientation="vertical"
+                android:padding="16dp">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                <ImageView
+                    android:layout_width="204dp"
+                    android:layout_height="140dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:contentDescription="@string/describe_image"
+                    android:src="@drawable/music_note" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTopSongs"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginBottom="16dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="#92C7CF"
-                android:text="@string/top_artists"
-                android:textSize="20sp" />
+                    <!--  button to scroll to top songs section-->
+                    <Button
+                        android:id="@+id/TopSongsButton"
+                        android:layout_width="106dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="Top Songs" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTopArtists"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginBottom="16dp" />
+                    <!--  button to scroll to top artists section-->
+                    <Button
+                        android:id="@+id/TopArtistsButton"
+                        android:layout_width="117dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="Top Artists" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="#92C7CF"
-                android:text="@string/top_genres"
-                android:textSize="20sp" />
+                    <!--  button to scroll to top songs section-->
+                    <Button
+                        android:id="@+id/TopGenresButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="Top Genres" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTopGenres"
-                android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/sectionTopSongs"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#92C7CF"
+                    android:text="@string/top_songs"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textSize="20sp"
+                    android:gravity="center_vertical"/>
+
+                <!--  RecyclerView in top songs section-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTopSongs"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:id="@+id/sectionTopArtists"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#92C7CF"
+                    android:text="@string/top_artists"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textSize="20sp"
+                    android:gravity="center_vertical"
+                    />
+
+                <!--  RecyclerView in top artists section-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTopArtists"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:id="@+id/sectionTopGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="#92C7CF"
+                    android:text="@string/top_genres"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textSize="20sp"
+                    android:gravity="center_vertical"/>
+
+                <!--  RecyclerView in top genres section-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTopGenres"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

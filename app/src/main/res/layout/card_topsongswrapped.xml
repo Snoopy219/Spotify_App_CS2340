@@ -9,7 +9,7 @@
     app:cardElevation="8dp"
     app:cardMaxElevation="10dp"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="false">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,10 +26,10 @@
 
         <TextView
             android:id="@+id/songName"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="69dp"
+            android:layout_marginTop="40dp"
             android:layout_toEndOf="@id/songImage"
             android:text="@string/song_name"
             android:textColor="@color/black"
@@ -38,17 +38,18 @@
 
         <TextView
             android:id="@+id/songRating"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/songName"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="-1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-45dp"
             android:layout_toEndOf="@id/songImage"
             android:drawablePadding="2dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/song_ranking"
             android:textAlignment="viewStart"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="45sp" />
+            android:textColor="#020202"
+            android:textSize="40sp" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
