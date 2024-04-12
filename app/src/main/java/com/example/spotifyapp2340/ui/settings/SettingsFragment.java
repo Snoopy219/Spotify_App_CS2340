@@ -70,9 +70,6 @@ public class SettingsFragment extends Fragment {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 System.out.println("deleting");
-                                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
-                                editor.putString("user", "");
-                                editor.commit();
                                 SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
                                 editor2.putString("user", "");
                                 editor2.commit();
@@ -107,9 +104,6 @@ public class SettingsFragment extends Fragment {
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
-                editor.putString("user", "");
-                editor.commit();
                 SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
                 editor2.putString("user", "");
                 editor2.commit();

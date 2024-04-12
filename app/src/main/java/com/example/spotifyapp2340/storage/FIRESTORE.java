@@ -70,6 +70,7 @@ public class FIRESTORE {
                     } else {
                         //make new user
                         //needs to be done
+                        System.out.println(MainActivity.userJSON);
                         MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 //                        Map<String, String> user = new HashMap<>();
 //                        user.put("user_data", HANDLE_JSON.exportUser(MainActivity.currUser).toString());
@@ -93,13 +94,10 @@ public class FIRESTORE {
                 }
             }
         });
-        SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
-        editor.putString("user", id);
-        editor.commit();
         SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
         editor2.putString("user", id);
         editor2.commit();
-        System.out.println(MainActivity.sharedPreferences.getString("user", ""));
+//        System.out.println(MainActivity.sharedPreferences.getString("user", ""));
 //        CollectionReference usersWrapped = db.collection("users");
     }
 
