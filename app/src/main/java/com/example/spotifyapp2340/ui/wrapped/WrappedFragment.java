@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,9 +65,32 @@ public class WrappedFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        binding = FragmentWrappedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        Button topSongsButton = root.findViewById(R.id.TopSongsButton);
+        Button topArtistsButton = root.findViewById(R.id.TopArtistsButton);
+        Button topGenresButton = root.findViewById(R.id.TopGenresButton);
+        //to make page scroll to top songs section when clicked
+        topSongsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToSection(R.id.sectionTopSongs);
+            }
+        });
+        //to make page scroll to top artists section when clicked
+        topArtistsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToSection(R.id.sectionTopArtists);
+            }
+        });
+        //to make page scroll to top genres section when clicked
+        topGenresButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToSection(R.id.sectionTopGenres);
+            }
+        });
+        binding = FragmentWrappedBinding.inflate(inflater, container, false);
         ((MainActivity) getActivity()).setNavView(View.GONE);
         ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
@@ -174,5 +198,12 @@ public class WrappedFragment extends Fragment {
         ((MainActivity) getActivity()).setNavView(View.VISIBLE);
         ((MainActivity) getActivity()).setBackVisible(false);
         super.onDestroy();
+    }
+    // method to scroll to specified section
+    private void scrollToSection(int sectionId) {
+        View sectionView = getView().findViewById(sectionId);
+        if (sectionView != null) {
+            sectionView.getParent().requestChildFocus(sectionView, sectionView);
+        }
     }
 }
