@@ -13,4 +13,13 @@
        android:layout_height="wrap_content"
        android:text="Create New Wrapped" />
 
+   <Spinner
+       android:id="@+id/sortSpinner"
+       android:layout_width="180dp"
+       android:layout_height="40dp"
+       android:layout_gravity="center"
+       android:layout_margin="8dp"
+       android:background="#9992C7CF"
+       android:text="@string/timespan"
+       android:textAlignment="center" />
 </LinearLayout>
