@@ -27,7 +27,9 @@ public class HANDLE_JSON {
         User user;
         try {
             JSONObject jsonObject = new JSONObject(JSON);
-            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("email"), MainActivity.mAccessToken);
+            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"),
+                    jsonObject.getString("email"), MainActivity.mAccessToken,
+                    jsonObject.getString("product"));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -38,7 +40,9 @@ public class HANDLE_JSON {
         User user;
         try {
             JSONObject jsonObject = new JSONObject(JSON);
-            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"), jsonObject.getString("spotify_account"), jsonObject.getString("access_token"));
+            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"),
+                    jsonObject.getString("spotify_account"), jsonObject.getString("access_token"),
+                    jsonObject.getString("product"));
             JSONArray jsonArray = jsonObject.getJSONArray("wraps");
             ArrayList<Wrapped> wrappeds = new ArrayList<>();
             System.out.println("GETTING THIS MANY WRAPS" + jsonArray.length());
@@ -87,15 +91,17 @@ public class HANDLE_JSON {
         String access_token;
         String display_name;
         String spotify_account;
+        String product;
         try {
             jsonObject = new JSONObject(JSON);
             access_token = jsonObject.getString("access_token");
             display_name = jsonObject.getString("display_name");
             spotify_account = jsonObject.getString("spotify_account");
+            product = jsonObject.getString("product");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        User user = new User(id, display_name, spotify_account, access_token);
+        User user = new User(id, display_name, spotify_account, access_token, product);
         return user;
 
     }
@@ -239,6 +245,7 @@ public class HANDLE_JSON {
             jsonObject.put("display_name", user.getDisplay_name());
             jsonObject.put("spotify_account", user.getEmail());
             jsonObject.put("access_token", user.getAccessToken());
+            jsonObject.put("product", user.getProduct());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }

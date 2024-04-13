@@ -36,11 +36,13 @@ public class WrappedFragment extends Fragment {
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Thread playSong;
 
-    private final static AppPlayer player = new AppPlayer();
+    public final static AppPlayer player = new AppPlayer();
 
     private static boolean onWrapped = false;
 
     public static int index = 0;
+    public static int time = 0;
+    public static boolean isPaused = false;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -75,6 +77,7 @@ public class WrappedFragment extends Fragment {
         ((MainActivity) getActivity()).setNavView(View.GONE);
         ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
+        time = 0;
 
 //        Thread thread = new Thread() {
 //            @Override
@@ -117,49 +120,53 @@ public class WrappedFragment extends Fragment {
         LinearLayoutManager linearLayoutManagerGenre = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         genreCards.setLayoutManager(linearLayoutManagerGenre);
         genreCards.setAdapter(genreAdapter);
-
-        playSong = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (Thread.interrupted()) {
-                    if (player != null) {
-                        player.stop();
-                    }
-                    return;
-                }
-                int count = 0;
-                while (onWrapped) {
+        if (MainActivity.currUser.isPremium()) {
+            playSong = new Thread(new Runnable() {
+                @Override
+                public void run() {
                     if (Thread.interrupted()) {
                         if (player != null) {
                             player.stop();
-                            System.out.println("interuppted here");
                         }
                         return;
-                    } else {
-                        TrackObject currTrack = thisWrap.getTracks().get(count);
-                        while (currTrack.getUrl().equals("null")) {
-                            count = (count + 1) % thisWrap.getTracks().size();
-                            currTrack = thisWrap.getTracks().get(count);
-                        }
-                        if (!Thread.interrupted() && onWrapped && player != null) {
-                            player.play(currTrack.getUrl());
-                        }
-                        try {
-                            for (int i = 0; i < 300; i++) {
-                                Thread.sleep(100);
-                                if (!onWrapped) {
-                                    player.stop();
-                                    return;
-                                }
+                    }
+                    int count = 0;
+                    while (onWrapped) {
+                        if (Thread.interrupted()) {
+                            if (player != null) {
+                                player.stop();
+                                System.out.println("interuppted here");
                             }
-                        } catch (InterruptedException e) {
-                            System.out.println("interuppted");
+                            return;
+                        } else {
+                            TrackObject currTrack = thisWrap.getTracks().get(count);
+                            while (currTrack.getUrl().equals("null")) {
+                                count = (count + 1) % thisWrap.getTracks().size();
+                                currTrack = thisWrap.getTracks().get(count);
+                            }
+                            if (!Thread.interrupted() && onWrapped && player != null) {
+                                player.play(currTrack.getUrl());
+                            }
+                            try {
+                                for (time = 0; time < 300; time++) {
+                                    Thread.sleep(100);
+                                    if (!onWrapped) {
+                                        player.stop();
+                                        return;
+                                    }
+                                    if (isPaused) {
+                                        time--;
+                                    }
+                                }
+                            } catch (InterruptedException e) {
+                                System.out.println("interuppted");
+                            }
+                            count = (count + 1) % thisWrap.getTracks().size();
                         }
-                        count = (count + 1) % thisWrap.getTracks().size();
                     }
                 }
-            }
-        });
+            });
+        }
         playSong.start();
         return root;
     }
