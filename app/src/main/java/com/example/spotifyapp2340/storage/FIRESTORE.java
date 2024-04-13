@@ -134,7 +134,8 @@ public class FIRESTORE {
 
         //add wraps
         CollectionReference  userWrapped = MainActivity.db.collection("users/" + user.getId() + "/wraps");
-        for (Wrapped w : user.getWraps()) {
+        for (int i = 0; i < user.getWraps().size(); i++) {
+            Wrapped w = user.getWraps().get(i);
             Map<String, String> wrapMap = new HashMap<>();
             wrapMap.put("wrap_data", HANDLE_JSON.exportWrapped(w).toString());
             userWrapped.document(w.getDate().toString()).set(wrapMap);
