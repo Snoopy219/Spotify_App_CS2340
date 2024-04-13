@@ -164,7 +164,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected void onPostExecute(Void result) {
-        FIRESTORE.updateUser(MainActivity.currUser);
+//        FIRESTORE.updateUser(MainActivity.currUser);
         System.out.println("here it is");
     }
 
