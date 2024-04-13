@@ -1,45 +1,25 @@
 package com.example.spotifyapp2340.ui.wrapped;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
-import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
 import com.example.spotifyapp2340.databinding.FragmentWrappedBinding;
-import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
-import com.example.spotifyapp2340.ui.newWrapped.NewWrappedViewModel;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
 import com.example.spotifyapp2340.wrappers.TrackObject;
 import com.example.spotifyapp2340.wrappers.Wrapped;
-import com.spotify.sdk.android.auth.AuthorizationRequest;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.Calendar;
-
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * The type Dashboard fragment.
@@ -202,9 +182,18 @@ public class WrappedFragment extends Fragment {
     }
     // method to scroll to specified section
     private void scrollToSection(int sectionId) {
-        View sectionView = getView().findViewById(sectionId);
-        if (sectionView != null) {
-            sectionView.getParent().requestChildFocus(sectionView, sectionView);
+        View section = getView().findViewById(sectionId);
+        if (section != null) {
+            View sv = getView().findViewById(R.id.scrollView);
+            if (sv instanceof ScrollView) {
+                ScrollView scrollViewLayout = (ScrollView) sv;
+                int[] loc = new int[2];
+                section.getLocationInWindow(loc);
+                int scrollToHeight = loc[1];
+                int height = scrollViewLayout.getHeight();
+                scrollToHeight -= height / 2;
+                scrollViewLayout.smoothScrollTo(0, scrollToHeight);
+            }
         }
     }
 }
