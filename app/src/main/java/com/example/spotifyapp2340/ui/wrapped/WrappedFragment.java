@@ -65,6 +65,7 @@ public class WrappedFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentWrappedBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Button topSongsButton = root.findViewById(R.id.TopSongsButton);
         Button topArtistsButton = root.findViewById(R.id.TopArtistsButton);
@@ -90,7 +91,7 @@ public class WrappedFragment extends Fragment {
                 scrollToSection(R.id.sectionTopGenres);
             }
         });
-        binding = FragmentWrappedBinding.inflate(inflater, container, false);
+//        binding = FragmentWrappedBinding.inflate(inflater, container, false);
         ((MainActivity) getActivity()).setNavView(View.GONE);
         ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
