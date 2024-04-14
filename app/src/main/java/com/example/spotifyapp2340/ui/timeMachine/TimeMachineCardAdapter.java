@@ -41,7 +41,7 @@ public class TimeMachineCardAdapter extends RecyclerView.Adapter<TimeMachineCard
 
     @Override
     public void onBindViewHolder(@NonNull TimeMachineCardAdapter.ViewHolder holder, int position) {
-        int pos = position
+        int pos = position;
         Wrapped model = wrappedList.get(pos);
         index = pos;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
