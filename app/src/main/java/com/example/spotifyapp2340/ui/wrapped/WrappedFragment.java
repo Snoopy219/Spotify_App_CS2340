@@ -166,8 +166,8 @@ public class WrappedFragment extends Fragment {
                     }
                 }
             });
+            playSong.start();
         }
-        playSong.start();
         return root;
     }
 
