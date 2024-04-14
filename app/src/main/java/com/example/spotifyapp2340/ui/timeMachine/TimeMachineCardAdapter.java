@@ -43,11 +43,10 @@ public class TimeMachineCardAdapter extends RecyclerView.Adapter<TimeMachineCard
     public void onBindViewHolder(@NonNull TimeMachineCardAdapter.ViewHolder holder, int position) {
         int pos = position;
         Wrapped model = wrappedList.get(pos);
-        index = pos;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WrappedFragment.index = position;
+                WrappedFragment.index = pos;
                 TimeMachineCardAdapter.navController.navigate(R.id.action_navigation_timeMachine_to_wrap);
             }
         });
