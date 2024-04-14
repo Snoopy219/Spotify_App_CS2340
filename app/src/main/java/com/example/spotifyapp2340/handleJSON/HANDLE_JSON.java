@@ -23,6 +23,11 @@ import java.util.Date;
 import java.util.Locale;
 
 public class HANDLE_JSON {
+    /**
+     * Create a basic user from the JSON given by Spotify
+     * @param JSON JSON from Spotify
+     * @return Generated User
+     */
     public static User createUserFromJSON(String JSON) {
         User user;
         try {
@@ -36,32 +41,12 @@ public class HANDLE_JSON {
         return user;
     }
 
-    public static User createUserFromFirestore(String JSON) {
-        User user;
-        try {
-            JSONObject jsonObject = new JSONObject(JSON);
-            user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"),
-                    jsonObject.getString("spotify_account"), jsonObject.getString("access_token"),
-                    jsonObject.getString("product"));
-            JSONArray jsonArray = jsonObject.getJSONArray("wraps");
-            ArrayList<Wrapped> wrappeds = new ArrayList<>();
-            System.out.println("GETTING THIS MANY WRAPS" + jsonArray.length());
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                String JSONArt = jsonObject1.getString("artists");
-                String JSONTrack = jsonObject1.getString("tracks");
-                String JSONCalendar = jsonObject1.getString("date");
-                SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy", Locale.ENGLISH);
-                Date date = formatter.parse(JSONCalendar);
-                wrappeds.add(createWrappedFromJSON(JSONArt, JSONTrack, date));
-            }
-            user.setWraps(wrappeds);
-        } catch (JSONException | ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return user;
-    }
-
+    /**
+     * Add wraps from the Firestore JSON
+     * @param user
+     * @param JSON
+     * @param date
+     */
     public static void addWrappedFromJSON(User user, String JSON, String date) {
         JSONArray jsonArrayArt;
         String artStr;
@@ -86,6 +71,12 @@ public class HANDLE_JSON {
         user.addWrapped(createWrappedFromJSON(artStr, trackStr, date1));
     }
 
+    /**
+     * Creates User from Firestore JSON
+     * @param id User id
+     * @param JSON JSON of user
+     * @return Generated User
+     */
     public static User createBasicUserFromJSON(String id, String JSON) {
         JSONObject jsonObject;
         String access_token;
@@ -105,16 +96,14 @@ public class HANDLE_JSON {
         return user;
 
     }
-    public static void updateUserFromJSON(String JSON, User user) {
-        try {
-            JSONObject jsonObject = new JSONObject(JSON);
-            user.setDisplay_name((String) jsonObject.get("display_name"));
-            user.setId((String) jsonObject.get("id"));
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
+    /**
+     * Creates new Wrapped Object from JSON
+     * @param JSONArtist JSON for artists
+     * @param JSONTrack JSON for tracks
+     * @param date Date for dates
+     * @return GEnerated Wrapped
+     */
     public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Date date) {
         Wrapped wrapped = new Wrapped(date, JSONArtist, JSONTrack);
         System.out.println(JSONArtist);
@@ -203,6 +192,11 @@ public class HANDLE_JSON {
         wrapped = createWrappedFromJSON(JSONArt, JSONTrack, wrapped.getDate());
     }
 
+    /**
+     * Get JSONObject of Wrapped
+     * @param wrapped Wrapped to export
+     * @return JSONObject
+     */
     public static JSONObject exportWrapped(Wrapped wrapped) {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -217,27 +211,11 @@ public class HANDLE_JSON {
         return jsonObject;
     }
 
-    public static JSONObject exportUser(User user) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("id", user.getId());
-            jsonObject.put("display_name", user.getDisplay_name());
-            jsonObject.put("spotify_account", user.getEmail());
-            jsonObject.put("access_token", user.getAccessToken());
-            JSONArray jsonArray = new JSONArray();
-            ArrayList<Wrapped> wraps = user.getWraps();
-            System.out.println("NUM WRAPS ADDING" + wraps.size());
-            for (int i = 0; i < wraps.size(); i++) {
-                jsonArray.put(i, exportWrapped(wraps.get(i)));
-            }
-            jsonObject.put("wraps", jsonArray);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-        return jsonObject;
-
-    }
-
+    /**
+     * GEts JSON representation of User
+     * @param user User to get
+     * @return JSONObject
+     */
     public static JSONObject exportUserBasic(User user) {
         JSONObject jsonObject = new JSONObject();
         try {
