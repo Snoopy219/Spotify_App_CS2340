@@ -153,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 FAILED_CALL = false;
                 onCallback();
             }
+            if (currUser == null) {
+                new GetUserAsync().execute();
+            }
             //setTextAsync(mAccessToken, tokenTextView);
 
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
