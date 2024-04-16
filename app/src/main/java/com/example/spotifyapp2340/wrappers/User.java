@@ -44,6 +44,9 @@ public class User {
         this.product = product;
     }
 
+    public User() {
+    }
+
     public void setWraps(ArrayList<Wrapped> wraps) {
         this.wraps = wraps;
     }

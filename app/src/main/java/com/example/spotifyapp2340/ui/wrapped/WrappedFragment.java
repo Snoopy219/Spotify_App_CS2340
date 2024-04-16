@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -167,6 +168,10 @@ public class WrappedFragment extends Fragment {
                 }
             });
             playSong.start();
+        }
+        if (!MainActivity.currUser.isPremium()) {
+            Toast toast = Toast.makeText(getContext(), "Not Premium", Toast.LENGTH_LONG);
+            toast.show();
         }
         return root;
     }

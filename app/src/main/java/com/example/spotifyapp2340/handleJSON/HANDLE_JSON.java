@@ -29,14 +29,14 @@ public class HANDLE_JSON {
      * @return Generated User
      */
     public static User createUserFromJSON(String JSON) {
-        User user;
+        User user = new User();
         try {
             JSONObject jsonObject = new JSONObject(JSON);
             user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"),
                     jsonObject.getString("email"), MainActivity.mAccessToken,
                     jsonObject.getString("product"));
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
         return user;
     }
@@ -49,10 +49,10 @@ public class HANDLE_JSON {
      */
     public static void addWrappedFromJSON(User user, String JSON, String date) {
         JSONArray jsonArrayArt;
-        String artStr;
+        String artStr = null;
         JSONArray jsonArrayTrack;
-        String trackStr;
-        Date date1;
+        String trackStr = null;
+        Date date1 = null;
         try {
             JSONObject jsonObject = new JSONObject(JSON);
             System.out.println(JSON);
@@ -64,11 +64,13 @@ public class HANDLE_JSON {
             SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy", Locale.ENGLISH);
             date1 = formatter.parse(date);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
-        user.addWrapped(createWrappedFromJSON(artStr, trackStr, date1));
+        if (artStr != null && trackStr != null && date1 != null) {
+            user.addWrapped(createWrappedFromJSON(artStr, trackStr, date1));
+        }
     }
 
     /**
@@ -79,10 +81,10 @@ public class HANDLE_JSON {
      */
     public static User createBasicUserFromJSON(String id, String JSON) {
         JSONObject jsonObject;
-        String access_token;
-        String display_name;
-        String spotify_account;
-        String product;
+        String access_token = null;
+        String display_name = null;
+        String spotify_account = null;
+        String product = null;
         try {
             jsonObject = new JSONObject(JSON);
             access_token = jsonObject.getString("access_token");
@@ -90,9 +92,12 @@ public class HANDLE_JSON {
             spotify_account = jsonObject.getString("spotify_account");
             product = jsonObject.getString("product");
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
-        User user = new User(id, display_name, spotify_account, access_token, product);
+        User user = null;
+        if (id != null && display_name != null && spotify_account != null && access_token != null && product != null) {
+            user = new User(id, display_name, spotify_account, access_token, product);
+        }
         return user;
 
     }
@@ -125,18 +130,18 @@ public class HANDLE_JSON {
                 wrapped.getTracks().add(processTrackObject(jsonObject1));
             }
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
         return wrapped;
     }
 
     public static ArtistObject processArtistObject(JSONObject jsonObject) {
-        ArtistObject artistObject;
+        ArtistObject artistObject = null;
         try {
             System.out.println(jsonObject.toString());
             artistObject = new ArtistObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONArray("images")), processGenres(jsonObject.getJSONArray("genres")));
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
         return artistObject;
     }
@@ -147,7 +152,7 @@ public class HANDLE_JSON {
             try {
                 str[i] = jsonArray.getString(i);
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                System.out.println(e);
             }
         }
         return str;
@@ -162,18 +167,18 @@ public class HANDLE_JSON {
             try {
                 images[i] = processImageObject(jsonArray.getJSONObject(i));
             } catch (JSONException e) {
-                throw new RuntimeException(e);
+                System.out.println(e);
             }
         }
         return images;
     }
 
     public static TrackObject processTrackObject(JSONObject jsonObject) {
-        TrackObject trackObject;
+        TrackObject trackObject = null;
         try {
             trackObject = new TrackObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONObject("album").getJSONArray("images")), jsonObject.getString("preview_url"));
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
         return trackObject;
     }
@@ -183,7 +188,7 @@ public class HANDLE_JSON {
         try {
             imageObject = new ImageObject(jsonObject.getString("url"), jsonObject.getInt("height"), jsonObject.getInt("width"));
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
         return imageObject;
     }
@@ -206,7 +211,7 @@ public class HANDLE_JSON {
             String tracks = new JSONObject(wrapped.getJSONTrack()).getJSONArray("items").toString();
             jsonObject.put("tracks", wrapped.getJSONTrack());
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
         return jsonObject;
     }
@@ -225,7 +230,7 @@ public class HANDLE_JSON {
             jsonObject.put("access_token", user.getAccessToken());
             jsonObject.put("product", user.getProduct());
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
         return jsonObject;
     }
