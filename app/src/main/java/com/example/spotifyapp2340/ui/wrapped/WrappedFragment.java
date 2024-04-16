@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,41 +46,39 @@ public class WrappedFragment extends Fragment {
     public static int time = 0;
     public static boolean isPaused = false;
 
+    private View root;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentWrappedBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-        Button topSongsButton = root.findViewById(R.id.TopSongsButton);
-        Button topArtistsButton = root.findViewById(R.id.TopArtistsButton);
-        Button topGenresButton = root.findViewById(R.id.TopGenresButton);
-        //to make page scroll to top songs section when clicked
-        topSongsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollToSection(R.id.sectionTopSongs);
-            }
-        });
-        //to make page scroll to top artists section when clicked
-        topArtistsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollToSection(R.id.sectionTopArtists);
-            }
-        });
-        //to make page scroll to top genres section when clicked
-        topGenresButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                scrollToSection(R.id.sectionTopGenres);
-            }
-        });
-//        binding = FragmentWrappedBinding.inflate(inflater, container, false);
+        root = binding.getRoot();
         ((MainActivity) getActivity()).setNavView(View.GONE);
         ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
         time = 0;
-
+        //create click listeners for the titles
+        TextView sectionTopSongs = root.findViewById(R.id.sectionTopSongs);
+        TextView sectionTopArtists = root.findViewById(R.id.sectionTopArtists);
+        TextView sectionTopGenres = root.findViewById(R.id.sectionTopGenres);
+        sectionTopSongs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleRecyclerViewVisibility(R.id.recyclerViewTopSongs);
+            }
+        });
+        sectionTopArtists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleRecyclerViewVisibility(R.id.recyclerViewTopArtists);
+            }
+        });
+        sectionTopGenres.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleRecyclerViewVisibility(R.id.recyclerViewTopGenres);
+            }
+        });
 //        Thread thread = new Thread() {
 //            @Override
 //            public void run() {
@@ -176,6 +175,15 @@ public class WrappedFragment extends Fragment {
         return root;
     }
 
+    private void toggleRecyclerViewVisibility(int recyclerViewId) {
+        RecyclerView recyclerView = root.findViewById(recyclerViewId);
+        if (recyclerView.getVisibility() == View.VISIBLE) {
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onDestroy() {
         if (playSong != null) {
@@ -191,21 +199,5 @@ public class WrappedFragment extends Fragment {
         ((MainActivity) getActivity()).setNavView(View.VISIBLE);
         ((MainActivity) getActivity()).setBackVisible(false);
         super.onDestroy();
-    }
-    // method to scroll to specified section
-    private void scrollToSection(int sectionId) {
-        View section = getView().findViewById(sectionId);
-        if (section != null) {
-            View sv = getView().findViewById(R.id.scrollView);
-            if (sv instanceof ScrollView) {
-                ScrollView scrollViewLayout = (ScrollView) sv;
-                int[] loc = new int[2];
-                section.getLocationInWindow(loc);
-                int scrollToHeight = loc[1];
-                int height = scrollViewLayout.getHeight();
-                scrollToHeight -= height / 2;
-                scrollViewLayout.smoothScrollTo(0, scrollToHeight);
-            }
-        }
     }
 }
