@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import com.example.spotifyapp2340.LoginActivity;
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
+import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.timeMachine.TimeMachineFragment;
@@ -71,23 +73,27 @@ public class FIRESTORE {
                         //make new user
                         //needs to be done
                         System.out.println(MainActivity.userJSON);
-                        MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+                        try {
+                            MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 //                        Map<String, String> user = new HashMap<>();
 //                        user.put("user_data", HANDLE_JSON.exportUser(MainActivity.currUser).toString());
 ////        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
 //                        CollectionReference usersWrapped = MainActivity.db.collection("users");
 //                        usersWrapped.document(id).set(user);
-                        exportData(MainActivity.currUser);
-                        MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
-                        MainActivity.currActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                System.out.println("MOVING");
-                                MainActivity.navController.navigate(R.id.navigation_newWrapped);
-                                TimeMachineFragment.updateUser();
-                                SettingsFragment.updateUser();
-                            }
-                        });
+                            exportData(MainActivity.currUser);
+                            MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+                            MainActivity.currActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("MOVING");
+                                    MainActivity.navController.navigate(R.id.navigation_newWrapped);
+                                    TimeMachineFragment.updateUser();
+                                    SettingsFragment.updateUser();
+                                }
+                            });
+                        } catch (Exception e) {
+                            SpotifyCalls.getToken(MainActivity.currActivity);
+                        }
                     }
                 } else {
                     System.out.println("unsuccessful");
