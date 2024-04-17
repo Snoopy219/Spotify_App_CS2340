@@ -36,14 +36,15 @@ public class User {
     private String refreshToken;
     private String product;
 
-    public User(String id, String display_name, String email,
-                String accessToken, String product, String refreshToken) {
+    public User(String id, String display_name, String email, String accessToken, String product) {
         this.id = id;
         this.display_name = display_name;
         this.email = email;
         this.accessToken = accessToken;
         this.product = product;
-        this.refreshToken = refreshToken;
+    }
+
+    public User() {
     }
 
     public void setWraps(ArrayList<Wrapped> wraps) {
@@ -133,15 +134,6 @@ public class User {
      */
     public ArrayList<Wrapped> getWraps() {
         return wraps;
-    }
-
-    /**
-     * Gets stored refresh token.
-     *
-     * @return associated refresh token
-     */
-    public String getRefreshToken() {
-        return refreshToken;
     }
 
     /**

@@ -31,7 +31,6 @@ import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -50,17 +49,8 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected Void doInBackground(Void... params) {
-        final FormBody body = new FormBody.Builder()
-                .add("grant_type", "authorization_code")
-                .add("code", MainActivity.mAccessCode)
-                .add("redirect_uri", MainActivity.REDIRECT_URI)
-                .build();
-
         final Request request = new Request.Builder()
-                .url("https://accounts.spotify.com/api/token")
-                .post(body)
-                .addHeader("Authorization", "Basic NWZjNzAyYzcyZTVkNGM5NzljMDM2ODUwMzdh"
-                        + "YjczN2Q6NWQwYjA4YTJiNzYwNDc4ODk1ODQyY2NlY2FmNzA2Nzk=")
+                .url("https://api.spotify.com/api/token")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
                 .build();
 
@@ -81,7 +71,7 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println("This is the GetTokenAndRefreshToken response:\n" + responseStre);
+                    System.out.println(responseStre);
                     if (responseStre.contains("401")) {
                         System.out.println("fail");
                     } else {
@@ -89,7 +79,7 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.mAccessToken = jsonObject.getString("access_token");
                         MainActivity.refreshToken = jsonObject.getString("refresh_token");
-//                        LoginActivity.onCallback();
+                        LoginActivity.onCallback();
                     }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 
@@ -117,10 +107,5 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected void onPostExecute(Void result) {
-        try {
-            FIRESTORE.newUser(MainActivity.userJSON.getString("id"));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
     }
 }

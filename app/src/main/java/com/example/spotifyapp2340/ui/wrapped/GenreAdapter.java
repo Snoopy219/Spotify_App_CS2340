@@ -36,6 +36,8 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull GenreAdapter.ViewHolder holder, int position) {
         String model = genreList.get(position);
+        System.out.println(holder.genreName);
+        System.out.println(holder.genreRating);
         holder.genreName.setText(model);
 //        holder.songName.setText(model.getName());
 //        Picasso.get().load(model.getImages()[0].getUrl()).into(holder.songImage);
@@ -57,7 +59,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder>{
             super(itemView);
             genreImage = itemView.findViewById(R.id.genreImage);
             genreName = itemView.findViewById(R.id.genreName);
-            genreRating = itemView.findViewById(R.id.artistRating);
+            genreRating = itemView.findViewById(R.id.genreRating);
         }
 
         public ViewHolder linkAdapter(GenreAdapter adapter) {

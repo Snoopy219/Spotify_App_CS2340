@@ -16,9 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
-import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
+import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.storage.FIRESTORE;
@@ -82,13 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "5fc702c72e5d4c979c03685037ab737d";
     public static final String REDIRECT_URI = "com.example.spotifyapp2340://auth";
+
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
     public static final int AUTH_CODE_REQUEST_CODE = 1;
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
     public static String mAccessToken;
     public static String mAccessCode;
-
-    public static SharedPreferences sharedPreferences;
 
     public static NavController navController;
 
@@ -113,13 +112,14 @@ public class MainActivity extends AppCompatActivity {
         setNavView(View.GONE);
         setContentView(binding.getRoot());
         currActivity = this;
-        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        if (!sharedPreferences.getString("user", "").equals("")) {
+        System.out.println(LoginActivity.sharedPreferences.getString("user", ""));
+        if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
-            FIRESTORE.newUser(sharedPreferences.getString("user", ""));
-//            if (MainActivity.tokenTime >= 3600000) {
+            FIRESTORE.newUser(LoginActivity.sharedPreferences.getString("user", ""));
+            if (MainActivity.tokenTime >= 3600000) {
 //                SpotifyCalls.getToken(MainActivity.currActivity);
-//            }
+                new RefreshAsync();
+            }
         } else {
             //check if user exists in firestore or get new user
             new GetUserAsync().execute();
@@ -152,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
             if (FAILED_CALL) {
                 FAILED_CALL = false;
                 onCallback();
+            }
+            if (currUser == null) {
+                new GetUserAsync().execute();
             }
             //setTextAsync(mAccessToken, tokenTextView);
 

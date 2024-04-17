@@ -35,7 +35,6 @@ import okhttp3.Response;
 public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
     Call mCall;
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
-    public static boolean usedRefresh = false;
 
 
     /**
@@ -67,22 +66,16 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
                 try {
                     String responseStre = response.body().string();
                     System.out.println("USER" + responseStre);
-                    if (responseStre.contains("401")) {
-                        System.out.println("Need to refresh.");
-                        if (MainActivity.currUser != null && !usedRefresh) {
-                            new RefreshAsync();
-                            usedRefresh = true;
-                        } else {
-                            SpotifyCalls.getToken(MainActivity.currActivity);
-                        }
-                    } else {
+//                    if (responseStre.contains("401")) {
+//                        System.out.println("fail");
+//                        SpotifyCalls.getToken(MainActivity.currActivity);
+//                    } else {
                         System.out.println(responseStre);
-                        usedRefresh = false;
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.userJSON = jsonObject;
+                    System.out.println("HERE " + MainActivity.userJSON);
                         FIRESTORE.newUser(jsonObject.getString("id"));
-//                        new GetTokenAndRefreshToken().execute();
-                    }
+//                    }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 
                     //check if user in database
