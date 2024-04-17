@@ -3,6 +3,8 @@ package com.example.spotifyapp2340.handleJSON;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.DATE;
 
+import android.util.Log;
+
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
 import com.example.spotifyapp2340.wrappers.ImageObject;
@@ -29,7 +31,7 @@ public class HANDLE_JSON {
             JSONObject jsonObject = new JSONObject(JSON);
             user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"),
                     jsonObject.getString("email"), MainActivity.mAccessToken,
-                    jsonObject.getString("product"));
+                    jsonObject.getString("product"), MainActivity.refreshToken);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -42,7 +44,7 @@ public class HANDLE_JSON {
             JSONObject jsonObject = new JSONObject(JSON);
             user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"),
                     jsonObject.getString("spotify_account"), jsonObject.getString("access_token"),
-                    jsonObject.getString("product"));
+                    jsonObject.getString("product"), jsonObject.getString("refresh_token"));
             JSONArray jsonArray = jsonObject.getJSONArray("wraps");
             ArrayList<Wrapped> wrappeds = new ArrayList<>();
             System.out.println("GETTING THIS MANY WRAPS" + jsonArray.length());
@@ -92,16 +94,20 @@ public class HANDLE_JSON {
         String display_name;
         String spotify_account;
         String product;
+        String refresh_token;
+        System.out.println(JSON);
         try {
             jsonObject = new JSONObject(JSON);
             access_token = jsonObject.getString("access_token");
             display_name = jsonObject.getString("display_name");
             spotify_account = jsonObject.getString("spotify_account");
             product = jsonObject.getString("product");
+            refresh_token = jsonObject.getString("refresh_token");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        User user = new User(id, display_name, spotify_account, access_token, product);
+        User user = new User(id, display_name, spotify_account,
+                access_token, product, refresh_token);
         return user;
 
     }
@@ -244,7 +250,8 @@ public class HANDLE_JSON {
             jsonObject.put("id", user.getId());
             jsonObject.put("display_name", user.getDisplay_name());
             jsonObject.put("spotify_account", user.getEmail());
-            jsonObject.put("access_token", user.getAccessToken());
+            jsonObject.put("access_token", MainActivity.mAccessToken);
+            jsonObject.put("refresh_token", MainActivity.refreshToken);
             jsonObject.put("product", user.getProduct());
         } catch (JSONException e) {
             throw new RuntimeException(e);
