@@ -85,9 +85,11 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.mAccessToken = jsonObject.getString("access_token");
 //                        new GetUserAsync().execute();
+                        //If GetUserAsync triggers refresh async, does GetUserAsync again
                         if (GetUserAsync.usedRefresh = true) {
                             new GetUserAsync().execute();
                             GetUserAsync.usedRefresh = false;
+                        //If NewWrappedAsync triggers this async, does it again
                         } else {
                             new NewWrappedAsync(NewWrappedAsync.controller, NewWrappedAsync.activity).execute();
                             MainActivity.FAILED_CALL = false;
