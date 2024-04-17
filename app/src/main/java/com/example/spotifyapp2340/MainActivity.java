@@ -19,6 +19,7 @@ import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
+import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.storage.FIRESTORE;
@@ -88,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
     public static String mAccessToken;
     public static String mAccessCode;
 
-    public static SharedPreferences sharedPreferences;
-
     public static NavController navController;
 
     public static MainActivity currActivity;
@@ -113,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
         setNavView(View.GONE);
         setContentView(binding.getRoot());
         currActivity = this;
-        sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        if (!sharedPreferences.getString("user", "").equals("")) {
+        System.out.println(LoginActivity.sharedPreferences.getString("user", ""));
+        if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
             FIRESTORE.newUser(sharedPreferences.getString("user", ""));
 //            if (MainActivity.tokenTime >= 3600000) {
@@ -152,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
             if (FAILED_CALL) {
                 FAILED_CALL = false;
                 onCallback();
+            }
+            if (currUser == null) {
+                new GetUserAsync().execute();
             }
             //setTextAsync(mAccessToken, tokenTextView);
 

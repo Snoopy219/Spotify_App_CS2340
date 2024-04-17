@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
+import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.databinding.ActivityMainBinding;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
@@ -81,9 +82,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         System.out.println("SHARE PREF" + sharedPreferences);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString("user", "");
-//        editor.commit();
         if (!sharedPreferences.getString("user", "").equals("")) {
             //get user with that name from firebase
             Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -120,6 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             System.out.println(str);
             
             MainActivity.mAccessToken = response.getAccessToken();
+//            RefreshAsync async = new RefreshAsync();
             MainActivity.tokenTime = 3600000 + 9;
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);

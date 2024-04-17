@@ -37,8 +37,13 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     WrappedFragment fragment;
     NavController controller;
     Wrapped wrapped;
-
     Activity activity;
+
+    /* 0 for short term
+       1 for medium term
+       2 for long term
+     */
+    public static int timePhase = 0;
 
     /**
      * Constructor that takes in a controller.
@@ -69,10 +74,24 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
 //        MainActivity.currUser.addWrapped(wrapped);
         Log.d("Test", "This is a test to check if doInBackground is working.");
         //Getting tracks
-        final Request req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks")
-                .addHeader("Authorization",
-                        "Bearer " + MainActivity.mAccessToken)
-                .build();
+
+        final Request req;
+        if (timePhase == 0) {
+            req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks?time_range=short_term")
+                    .addHeader("Authorization",
+                            "Bearer " + MainActivity.mAccessToken)
+                    .build();
+        } else if (timePhase == 1) {
+            req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks?time_range=medium_term")
+                    .addHeader("Authorization",
+                            "Bearer " + MainActivity.mAccessToken)
+                    .build();
+        } else {
+            req = new Request.Builder().url("https://api.spotify.com/v1/me/top/tracks?time_range=long_term")
+                    .addHeader("Authorization",
+                            "Bearer " + MainActivity.mAccessToken)
+                    .build();
+        }
 
         cancelCall(mCall1);
         mCall1 = MainActivity.mOkHttpClient.newCall(req);
@@ -114,12 +133,29 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
         });
 
         //Getting artists
-        final Request req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists")
-                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
-                .build();
-        cancelCall(mCall2);
+        final Request req2;
+        if (timePhase == 0) {
+            req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists?time_range=short_term")
+                    .addHeader("Authorization",
+                            "Bearer " + MainActivity.mAccessToken)
+                    .build();
+        } else if (timePhase == 1){
+            req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists?time_range=medium_term")
+                    .addHeader("Authorization",
+                            "Bearer " + MainActivity.mAccessToken)
+                    .build();
 
+        } else {
+            req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists?time_range=long_term")
+                    .addHeader("Authorization",
+                            "Bearer " + MainActivity.mAccessToken)
+                    .build();
+        }
+
+        cancelCall(mCall2);
         mCall2 = MainActivity.mOkHttpClient.newCall(req2);
+
+
 
         mCall2.enqueue(new Callback() {
             @Override
@@ -164,7 +200,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected void onPostExecute(Void result) {
-        FIRESTORE.updateUser(MainActivity.currUser);
+//        FIRESTORE.updateUser(MainActivity.currUser);
         System.out.println("here it is");
     }
 

@@ -1,44 +1,27 @@
 package com.example.spotifyapp2340.ui.wrapped;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
-import com.example.spotifyapp2340.databinding.FragmentNewWrappedBinding;
 import com.example.spotifyapp2340.databinding.FragmentWrappedBinding;
-import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
-import com.example.spotifyapp2340.ui.newWrapped.NewWrappedViewModel;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
 import com.example.spotifyapp2340.wrappers.TrackObject;
 import com.example.spotifyapp2340.wrappers.Wrapped;
-import com.spotify.sdk.android.auth.AuthorizationRequest;
-import com.spotify.sdk.android.auth.AuthorizationResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.Calendar;
-
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * The type Dashboard fragment.
@@ -63,17 +46,39 @@ public class WrappedFragment extends Fragment {
     public static int time = 0;
     public static boolean isPaused = false;
 
+    private View root;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         binding = FragmentWrappedBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
         ((MainActivity) getActivity()).setNavView(View.GONE);
         ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
         time = 0;
-
+        //create click listeners for the titles
+        TextView sectionTopSongs = root.findViewById(R.id.sectionTopSongs);
+        TextView sectionTopArtists = root.findViewById(R.id.sectionTopArtists);
+        TextView sectionTopGenres = root.findViewById(R.id.sectionTopGenres);
+        sectionTopSongs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleRecyclerViewVisibility(R.id.recyclerViewTopSongs);
+            }
+        });
+        sectionTopArtists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleRecyclerViewVisibility(R.id.recyclerViewTopArtists);
+            }
+        });
+        sectionTopGenres.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleRecyclerViewVisibility(R.id.recyclerViewTopGenres);
+            }
+        });
 //        Thread thread = new Thread() {
 //            @Override
 //            public void run() {
@@ -161,9 +166,22 @@ public class WrappedFragment extends Fragment {
                     }
                 }
             });
+            playSong.start();
         }
-        playSong.start();
+        if (!MainActivity.currUser.isPremium()) {
+            Toast toast = Toast.makeText(getContext(), "Not Premium", Toast.LENGTH_LONG);
+            toast.show();
+        }
         return root;
+    }
+
+    private void toggleRecyclerViewVisibility(int recyclerViewId) {
+        RecyclerView recyclerView = root.findViewById(recyclerViewId);
+        if (recyclerView.getVisibility() == View.VISIBLE) {
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

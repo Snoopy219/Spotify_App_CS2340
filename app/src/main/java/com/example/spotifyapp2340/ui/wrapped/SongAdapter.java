@@ -38,7 +38,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull SongAdapter.ViewHolder holder, int position) {
         TrackObject model = trackList.get(position);
         holder.songName.setText(model.getName());
-        Picasso.get().load(model.getImages()[0].getUrl()).into(holder.songImage);
+        if (model.getImages().length > 0) {
+            Picasso.get().load(model.getImages()[0].getUrl()).into(holder.songImage);
+        }
         holder.songRating.setText(Integer.toString(position + 1));
         if (MainActivity.currUser.isPremium()) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {

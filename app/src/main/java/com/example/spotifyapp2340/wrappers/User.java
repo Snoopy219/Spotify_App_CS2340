@@ -46,6 +46,9 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
+    public User() {
+    }
+
     public void setWraps(ArrayList<Wrapped> wraps) {
         this.wraps = wraps;
     }

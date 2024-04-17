@@ -9,11 +9,14 @@
     app:cardElevation="8dp"
     app:cardMaxElevation="10dp"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="false">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/genreImage"
@@ -24,32 +27,26 @@
             android:padding="5dp"
             android:src="@drawable/genreimage" />
 
-        <TextView
-            android:id="@+id/genreName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/genreImage"
-            android:text="@string/genre_name"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/genreRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/genre_ranking"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="#020202"
+                android:textSize="40sp" />
 
-        <TextView
-            android:id="@+id/artistRating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/genreName"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="-1dp"
-            android:layout_toEndOf="@id/genreImage"
-            android:drawablePadding="2dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/genre_ranking"
-            android:textAlignment="viewStart"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textSize="45sp" />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/genreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/genre_name"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
