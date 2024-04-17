@@ -1,7 +1,5 @@
 package com.example.spotifyapp2340.ui.settings;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -71,25 +69,31 @@ public class SettingsFragment extends Fragment {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which) {
-                                            case DialogInterface.BUTTON_POSITIVE:
-                                                deleteAccount();
-                                                break;
-                                            case DialogInterface.BUTTON_NEGATIVE:
-                                                dialog.dismiss();
-
-                                        }
-                                    }
-                                };
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                // on below line we are setting message for our dialog box.
-                                builder.setMessage("Are you sure you want to delete your account?")
-                                        .setPositiveButton("Yes", dialogClickListener)
-                                        .setNegativeButton("No", dialogClickListener)
-                                        .show();// on below line we are creating a builder variable for our alert dialog
+                                System.out.println("deleting");
+                                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                                editor.putString("user", "");
+                                editor.commit();
+                                SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
+                                editor2.putString("user", "");
+                                editor2.commit();
+                                MainActivity.db.collection("/users/" + MainActivity.currUser.getId() + "/wraps")
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        document.getReference().delete();
+                                                    }
+                                                    MainActivity.currUser = null;
+                                                    MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
+                                                    Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
+                                                    startActivity(myIntent);
+                                                } else {
+                                                    System.out.println("failed");
+                                                }
+                                            }
+                                        });
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
@@ -103,6 +107,9 @@ public class SettingsFragment extends Fragment {
         binding.logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences.Editor editor = MainActivity.sharedPreferences.edit();
+                editor.putString("user", "");
+                editor.commit();
                 SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
                 editor2.putString("user", "");
                 editor2.commit();
@@ -113,31 +120,6 @@ public class SettingsFragment extends Fragment {
         });
 
         return root;
-    }
-
-    private void deleteAccount() {
-        System.out.println("deleting");
-        SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
-        editor2.putString("user", "");
-        editor2.commit();
-        MainActivity.db.collection("/users/" + MainActivity.currUser.getId() + "/wraps")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                document.getReference().delete();
-                            }
-                            MainActivity.currUser = null;
-                            MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
-                            Intent myIntent = new Intent(getContext(), LoginActivity.class);
-                            startActivity(myIntent);
-                        } else {
-                            System.out.println("failed");
-                        }
-                    }
-                });
     }
 
     public static void onCallback() {

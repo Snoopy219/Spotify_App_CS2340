@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.ui.timeMachine.TimeMachineAdapter;
-import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
 import com.example.spotifyapp2340.wrappers.Wrapped;
 import com.squareup.picasso.Picasso;
@@ -24,7 +23,6 @@ public class TimeMachineCardAdapter extends RecyclerView.Adapter<TimeMachineCard
     private final Context context;
     private ArrayList<Wrapped> wrappedList;
 
-    public int index;
     private static NavController navController;
 
     public TimeMachineCardAdapter(Context context, ArrayList<Wrapped> wrappedList, NavController navController) {
@@ -34,6 +32,7 @@ public class TimeMachineCardAdapter extends RecyclerView.Adapter<TimeMachineCard
     }
 
     @NonNull
+    @Override
     public TimeMachineCardAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_past_wrapped, parent, false);
         return new ViewHolder(view).linkAdapter(this);
@@ -41,15 +40,7 @@ public class TimeMachineCardAdapter extends RecyclerView.Adapter<TimeMachineCard
 
     @Override
     public void onBindViewHolder(@NonNull TimeMachineCardAdapter.ViewHolder holder, int position) {
-        int pos = position;
-        Wrapped model = wrappedList.get(pos);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WrappedFragment.index = pos;
-                TimeMachineCardAdapter.navController.navigate(R.id.action_navigation_timeMachine_to_wrap);
-            }
-        });
+        Wrapped model = wrappedList.get(position);
         holder.dateName.setText(model.getDate().toString());
         Picasso.get().load(model.getArtists().get(0).getImages()[0].getUrl()).into(holder.artImage);
     }
@@ -68,11 +59,16 @@ public class TimeMachineCardAdapter extends RecyclerView.Adapter<TimeMachineCard
             super(itemView);
             dateName = itemView.findViewById(R.id.dateText);
             artImage = itemView.findViewById(R.id.artistImage);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TimeMachineCardAdapter.navController.navigate(R.id.action_navigation_timeMachine_to_wrap);
+                }
+            });
         }
 
         public ViewHolder linkAdapter(TimeMachineCardAdapter adapter) {
             this.adapter = adapter;
-
             return this;
         }
     }

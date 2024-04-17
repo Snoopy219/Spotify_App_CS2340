@@ -80,7 +80,6 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
                         usedRefresh = false;
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.userJSON = jsonObject;
-                    System.out.println("HERE " + MainActivity.userJSON);
                         FIRESTORE.newUser(jsonObject.getString("id"));
 //                        new GetTokenAndRefreshToken().execute();
                     }
