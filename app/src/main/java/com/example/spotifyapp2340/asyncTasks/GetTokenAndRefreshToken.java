@@ -89,9 +89,6 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.mAccessToken = jsonObject.getString("access_token");
                         MainActivity.refreshToken = jsonObject.getString("refresh_token");
-
-                        System.out.println("New mAccessToken: " + jsonObject.getString("access_token"));
-                        System.out.println("New refreshToken: " + jsonObject.getString("refresh_token"));
 //                        LoginActivity.onCallback();
                     }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
