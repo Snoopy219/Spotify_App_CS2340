@@ -46,9 +46,6 @@ public class FIRESTORE {
                         if (MainActivity.mAccessToken == null) {
                             MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
                         }
-                        if (MainActivity.refreshToken == null) {
-                            MainActivity.refreshToken = MainActivity.currUser.getRefreshToken();
-                        }
                         MainActivity.db.collection("/users/" + id + "/wraps")
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
