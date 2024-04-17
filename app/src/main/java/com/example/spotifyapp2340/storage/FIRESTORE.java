@@ -132,10 +132,7 @@ public class FIRESTORE {
 ////        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
 //        CollectionReference usersWrapped = MainActivity.db.collection("users");
 //        usersWrapped.document(user.getId()).set(userMap);
-        Map<String, String> userMap = new HashMap<>();
-        userMap.put("user_data", HANDLE_JSON.exportUserBasic(user).toString());
-        CollectionReference basicUser = MainActivity.db.collection("users");
-        basicUser.document(user.getId()).set(userMap);
+        updateUserInfo(user);
 
         //add wraps
         CollectionReference  userWrapped = MainActivity.db.collection("users/" + user.getId() + "/wraps");
@@ -146,4 +143,15 @@ public class FIRESTORE {
         }
     }
 
+    /**
+     * Updates user's info in Firebase.
+     *
+     * @param user user that is being updated
+     */
+    public static void updateUserInfo(User user) {
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("user_data", HANDLE_JSON.exportUserBasic(user).toString());
+        CollectionReference basicUser = MainActivity.db.collection("users");
+        basicUser.document(user.getId()).set(userMap);
+    }
 }

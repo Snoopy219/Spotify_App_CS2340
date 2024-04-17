@@ -84,9 +84,15 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
                         System.out.println(responseStre);
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.mAccessToken = jsonObject.getString("access_token");
-                        MainActivity.refreshToken = jsonObject.getString("refresh_token");
-                        new GetUserAsync().execute();
-                        FIRESTORE.updateUser(MainActivity.currUser);
+//                        new GetUserAsync().execute();
+                        if (GetUserAsync.usedRefresh = true) {
+                            new GetUserAsync().execute();
+                            GetUserAsync.usedRefresh = false;
+                        } else {
+                            new NewWrappedAsync(NewWrappedAsync.controller, NewWrappedAsync.activity).execute();
+                            MainActivity.FAILED_CALL = false;
+                        }
+                        FIRESTORE.updateUserInfo(MainActivity.currUser);
                         LoginActivity.onCallback();
                     }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
