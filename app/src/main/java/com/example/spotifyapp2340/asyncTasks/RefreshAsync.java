@@ -47,7 +47,7 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected Void doInBackground(Void... params) {
-        Log.d("RefreshAsync Test", "It's running doInBackGround");
+//        Log.d("RefreshAsync Test", "It's running doInBackGround");
         final FormBody formBody = new FormBody.Builder()
                 .add("grant_type", "refresh_token")
                 .add("refresh_token", MainActivity.refreshToken)
@@ -77,7 +77,7 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println(responseStre);
+                    System.out.println("RefreshAsync response: " + responseStre);
                     if (responseStre.contains("401")) {
                         System.out.println("fail");
                     } else {

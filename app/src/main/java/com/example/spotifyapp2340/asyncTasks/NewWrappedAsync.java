@@ -170,7 +170,8 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                 if (art.contains("\"status\": 401,")) {
                     System.out.println("ART FAIL" + art);
                     MainActivity.FAILED_CALL = true;
-                    SpotifyCalls.getToken(MainActivity.currActivity);
+//                    SpotifyCalls.getToken(MainActivity.currActivity);
+                    new RefreshAsync().execute();
                 } else {
                     System.out.println("ART" + art);
                     numGot[0]++;
