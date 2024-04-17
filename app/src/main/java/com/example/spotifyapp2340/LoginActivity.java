@@ -92,8 +92,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //call login
                 //if login successful
-                SpotifyCalls.getToken(LoginActivity.this);
-                System.out.println(MainActivity.mAccessToken);
+//                SpotifyCalls.getCode(LoginActivity.this);
+                SpotifyCalls.getCode(LoginActivity.this);
+//                new GetTokenAndRefreshToken().execute();
             }
         });
         context = this;
@@ -115,14 +116,16 @@ public class LoginActivity extends AppCompatActivity {
         if (MainActivity.AUTH_TOKEN_REQUEST_CODE == requestCode) {
             String str = response.toString();
             System.out.println(str);
+            
             MainActivity.mAccessToken = response.getAccessToken();
 //            RefreshAsync async = new RefreshAsync();
             MainActivity.tokenTime = 3600000 + 9;
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);
-
         } else if (MainActivity.AUTH_CODE_REQUEST_CODE == requestCode) {
             MainActivity.mAccessCode = response.getCode();
+            System.out.println(MainActivity.mAccessCode + " is the access code.");
+            SpotifyCalls.getToken(LoginActivity.this);
         }
     }
 

@@ -54,9 +54,10 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
                 .build();
 
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/api/token")
+                .url("https://accounts.spotify.com/api/token")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("Authorization", "Basic " + MainActivity.CLIENT_ID)
+                .addHeader("Authorization", "Basic NWZjNzAyYzcyZTVkNGM5NzljMDM2ODU"
+                        + "wMzdhYjczN2Q6NWQwYjA4YTJiNzYwNDc4ODk1ODQyY2NlY2FmNzA2Nzk=")
                 .post(formBody)
                 .build();
 
@@ -84,6 +85,8 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.mAccessToken = jsonObject.getString("access_token");
                         MainActivity.refreshToken = jsonObject.getString("refresh_token");
+                        new GetUserAsync().execute();
+                        FIRESTORE.updateUser(MainActivity.currUser);
                         LoginActivity.onCallback();
                     }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
@@ -110,7 +113,7 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
     }
 
     /**
-     * Does nothing.
+     * Nothing.
      */
     @Override
     protected void onPostExecute(Void result) {
