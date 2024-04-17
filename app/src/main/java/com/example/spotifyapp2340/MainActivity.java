@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(LoginActivity.sharedPreferences.getString("user", ""));
         if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
-            FIRESTORE.newUser(sharedPreferences.getString("user", ""));
+            FIRESTORE.newUser(LoginActivity.sharedPreferences.getString("user", ""));
 //            if (MainActivity.tokenTime >= 3600000) {
 //                SpotifyCalls.getToken(MainActivity.currActivity);
 //            }

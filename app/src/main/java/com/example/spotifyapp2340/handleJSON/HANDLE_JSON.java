@@ -108,12 +108,12 @@ public class HANDLE_JSON {
      * @return Generated User
      */
     public static User createBasicUserFromJSON(String id, String JSON) {
-        JSONObject jsonObject;
-        String access_token;
-        String display_name;
-        String spotify_account;
-        String product;
-        String refresh_token;
+        JSONObject jsonObject = null;
+        String access_token = null;
+        String display_name = null;
+        String spotify_account = null;
+        String product = null;
+        String refresh_token = null;
         System.out.println(JSON);
         try {
             jsonObject = new JSONObject(JSON);
@@ -126,11 +126,9 @@ public class HANDLE_JSON {
             System.out.println(e);
         }
         User user = null;
-        if (id != null && display_name != null && spotify_account != null && access_token != null && product != null) {
-            user = new User(id, display_name, spotify_account, access_token, product);
+        if (id != null && display_name != null && spotify_account != null && access_token != null && product != null && refresh_token != null) {
+            user = new User(id, display_name, spotify_account, access_token, product, refresh_token);
         }
-        User user = new User(id, display_name, spotify_account,
-                access_token, product, refresh_token);
         return user;
 
     }
