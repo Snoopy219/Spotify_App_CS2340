@@ -231,7 +231,7 @@ public class HANDLE_JSON {
             jsonObject.put("id", user.getId());
             jsonObject.put("display_name", user.getDisplay_name());
             jsonObject.put("spotify_account", user.getEmail());
-            jsonObject.put("access_token", MainActivity.refreshToken);
+            jsonObject.put("access_token", MainActivity.mAccessToken);
             jsonObject.put("refresh_token", MainActivity.refreshToken);
             jsonObject.put("product", user.getProduct());
         } catch (JSONException e) {
