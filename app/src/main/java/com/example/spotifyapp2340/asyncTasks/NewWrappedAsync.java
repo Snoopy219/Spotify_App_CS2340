@@ -35,9 +35,10 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     Call mCall1;
     Call mCall2;
     WrappedFragment fragment;
-    NavController controller;
+    public static NavController controller;
     Wrapped wrapped;
-    Activity activity;
+    public static Activity activity;
+    private static int numFail = 0;
 
     /* 0 for short term
        1 for medium term
@@ -108,7 +109,11 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                 if (track.contains("\"status\": 401,")) {
                     System.out.println("TRACK FAIL" + track);
                     MainActivity.FAILED_CALL = true;
-                    SpotifyCalls.getToken(MainActivity.currActivity);
+//                    SpotifyCalls.getToken(MainActivity.currActivity);
+                    numFail++;
+                    if (numFail >= 2) {
+                        new RefreshAsync().execute();
+                    }
                 } else {
                     System.out.println("Track" + track);
                     numGot[0]++;
@@ -128,8 +133,8 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                     }
                 }
             }
-                //fragment.notifyTrack();
-                //setTextAsync(jsonObject.toString(3), profileTextView);
+            //fragment.notifyTrack();
+            //setTextAsync(jsonObject.toString(3), profileTextView);
         });
 
         //Getting artists
@@ -169,7 +174,11 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                 if (art.contains("\"status\": 401,")) {
                     System.out.println("ART FAIL" + art);
                     MainActivity.FAILED_CALL = true;
-                    SpotifyCalls.getToken(MainActivity.currActivity);
+//                    SpotifyCalls.getToken(MainActivity.currActivity);
+                    numFail++;
+                    if (numFail >= 2) {
+                        new RefreshAsync().execute();
+                    }
                 } else {
                     System.out.println("ART" + art);
                     numGot[0]++;
@@ -205,7 +214,11 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     }
 
     private void navigateToNew() {
-        controller.navigate(R.id.action_navigation_newWrapped_to_wrap);
+        try {
+            MainActivity.currActivity.afterCall();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void cancelCall(Call mCall) {

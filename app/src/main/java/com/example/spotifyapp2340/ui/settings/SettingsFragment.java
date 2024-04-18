@@ -84,7 +84,7 @@ public class SettingsFragment extends Fragment {
                 builder.setMessage("Are you sure you want to delete your account?")
                         .setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener)
-                        .show();// on below line we are creating a build
+                        .show();// on below line we are cr
             }
         });
 
@@ -113,9 +113,6 @@ public class SettingsFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
-                        editor2.putString("user", "");
-                        editor2.commit();
                         MainActivity.db.collection("/users/" + MainActivity.currUser.getId() + "/wraps")
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -127,7 +124,7 @@ public class SettingsFragment extends Fragment {
                                             }
                                             MainActivity.currUser = null;
                                             MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
-                                            Intent myIntent = new Intent(getView().getContext(), LoginActivity.class);
+                                            Intent myIntent = new Intent(getContext(), LoginActivity.class);
                                             startActivity(myIntent);
                                         } else {
                                             System.out.println("failed");

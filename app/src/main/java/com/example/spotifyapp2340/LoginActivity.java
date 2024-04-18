@@ -82,6 +82,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         System.out.println("SHARE PREF" + sharedPreferences);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("user", "");
+//        editor.commit();
         if (!sharedPreferences.getString("user", "").equals("")) {
             //get user with that name from firebase
             Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -92,7 +95,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //call login
                 //if login successful
-                SpotifyCalls.getToken(LoginActivity.this);
+//                SpotifyCalls.getToken(LoginActivity.this);
+                SpotifyCalls.getCode(LoginActivity.this);
+//                new GetTokenAndRefreshToken().execute();
                 System.out.println(MainActivity.mAccessToken);
             }
         });
@@ -118,11 +123,12 @@ public class LoginActivity extends AppCompatActivity {
             MainActivity.mAccessToken = response.getAccessToken();
 //            RefreshAsync async = new RefreshAsync();
             MainActivity.tokenTime = 3600000 + 9;
+            new GetTokenAndRefreshToken().execute();
             Intent myIntent = new Intent(context, MainActivity.class);
             startActivity(myIntent);
-
         } else if (MainActivity.AUTH_CODE_REQUEST_CODE == requestCode) {
             MainActivity.mAccessCode = response.getCode();
+            SpotifyCalls.getToken(LoginActivity.this);
         }
     }
 

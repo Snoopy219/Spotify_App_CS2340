@@ -36,12 +36,14 @@ public class User {
     private String refreshToken;
     private String product;
 
-    public User(String id, String display_name, String email, String accessToken, String product) {
+    public User(String id, String display_name, String email,
+                String accessToken, String product, String refreshToken) {
         this.id = id;
         this.display_name = display_name;
         this.email = email;
         this.accessToken = accessToken;
         this.product = product;
+        this.refreshToken = refreshToken;
     }
 
     public User() {
@@ -124,7 +126,9 @@ public class User {
      * @param wrapped the wrapped
      */
     public void addWrapped(Wrapped wrapped) {
-        wraps.add(wrapped);
+        if (!wraps.contains(wrapped)) {
+            wraps.add(wrapped);
+        }
     }
 
     /**
@@ -148,5 +152,14 @@ public class User {
         }
         s += "]";
         return s;
+    }
+
+    /**
+     * Returns refresh token.
+     *
+     * @return refresh token
+     */
+    public String getRefreshToken() {
+        return refreshToken;
     }
 }

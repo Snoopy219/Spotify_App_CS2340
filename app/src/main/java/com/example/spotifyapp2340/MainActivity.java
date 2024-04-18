@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
+import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
 import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
@@ -115,11 +116,12 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(LoginActivity.sharedPreferences.getString("user", ""));
         if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
+            System.out.println("WE ARE GOOOOOOODDDDDDDDDD");
             FIRESTORE.newUser(LoginActivity.sharedPreferences.getString("user", ""));
-            if (MainActivity.tokenTime >= 3600000) {
-//                SpotifyCalls.getToken(MainActivity.currActivity);
-                new RefreshAsync();
-            }
+//            if (MainActivity.tokenTime >= 3600000) {
+////                SpotifyCalls.getToken(MainActivity.currActivity);
+//                new RefreshAsync();
+//            }
         } else {
             //check if user exists in firestore or get new user
             new GetUserAsync().execute();
@@ -149,10 +151,6 @@ public class MainActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
-            if (FAILED_CALL) {
-                FAILED_CALL = false;
-                onCallback();
-            }
             if (currUser == null) {
                 new GetUserAsync().execute();
             }
@@ -160,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
             mAccessCode = response.getCode();
+            new GetTokenAndRefreshToken().execute();
             //setTextAsync(mAccessCode, codeTextView);
         }
     }
@@ -186,5 +185,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setBackVisible(boolean visible) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(visible);
+    }
+
+    public void afterCall() {
+        super.onPostResume();
+        navController.navigate(R.id.action_navigation_newWrapped_to_wrap);
     }
 }

@@ -47,16 +47,17 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected Void doInBackground(Void... params) {
-        Log.d("RefreshAsync Test", "It's running doInBackGround");
+//        Log.d("RefreshAsync Test", "It's running doInBackGround");
         final FormBody formBody = new FormBody.Builder()
                 .add("grant_type", "refresh_token")
                 .add("refresh_token", MainActivity.refreshToken)
                 .build();
 
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/api/token")
+                .url("https://accounts.spotify.com/api/token")
                 .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("Authorization", "Basic " + MainActivity.CLIENT_ID)
+                .addHeader("Authorization", "Basic NWZjNzAyYzcyZTVkNGM5NzljMDM2ODU"
+                        + "wMzdhYjczN2Q6NWQwYjA4YTJiNzYwNDc4ODk1ODQyY2NlY2FmNzA2Nzk=")
                 .post(formBody)
                 .build();
 
@@ -76,14 +77,26 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println(responseStre);
+                    System.out.println("RefreshAsync response: " + responseStre);
                     if (responseStre.contains("401")) {
                         System.out.println("fail");
                     } else {
                         System.out.println(responseStre);
                         final JSONObject jsonObject = new JSONObject(responseStre);
                         MainActivity.mAccessToken = jsonObject.getString("access_token");
-                        MainActivity.refreshToken = jsonObject.getString("refresh_token");
+//                        new GetUserAsync().execute();
+                        //If GetUserAsync triggers refresh async, does GetUserAsync again
+                        if (GetUserAsync.usedRefresh) {
+                            System.out.println("HERE AT USER");
+                            new GetUserAsync().execute();
+                            GetUserAsync.usedRefresh = false;
+                        //If NewWrappedAsync triggers this async, does it again
+                        } else {
+                            System.out.println("HERE AT TRIGGER");
+                            new NewWrappedAsync(NewWrappedAsync.controller, NewWrappedAsync.activity).execute();
+                            MainActivity.FAILED_CALL = false;
+                        }
+                        FIRESTORE.updateUserInfo(MainActivity.currUser);
                         LoginActivity.onCallback();
                     }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
@@ -110,7 +123,7 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
     }
 
     /**
-     * Does nothing.
+     * Nothing.
      */
     @Override
     protected void onPostExecute(Void result) {

@@ -9,7 +9,9 @@ import com.example.spotifyapp2340.LoginActivity;
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
+import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
+import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.timeMachine.TimeMachineFragment;
@@ -45,6 +47,9 @@ public class FIRESTORE {
                         MainActivity.currUser = HANDLE_JSON.createBasicUserFromJSON(document.getId(), document.getData().toString().substring(11));
                         if (MainActivity.mAccessToken == null) {
                             MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
+                        }
+                        if (MainActivity.refreshToken == null) {
+                            MainActivity.refreshToken = MainActivity.currUser.getRefreshToken();
                         }
                         MainActivity.db.collection("/users/" + id + "/wraps")
                                 .get()
@@ -92,7 +97,9 @@ public class FIRESTORE {
                                 }
                             });
                         } catch (Exception e) {
-                            SpotifyCalls.getToken(MainActivity.currActivity);
+//                            SpotifyCalls.getToken(MainActivity.currActivity);
+                            SpotifyCalls.getCode(MainActivity.currActivity);
+                            GetUserAsync.usedRefresh = true;
                         }
                     }
                 } else {
@@ -133,10 +140,7 @@ public class FIRESTORE {
 ////        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
 //        CollectionReference usersWrapped = MainActivity.db.collection("users");
 //        usersWrapped.document(user.getId()).set(userMap);
-        Map<String, String> userMap = new HashMap<>();
-        userMap.put("user_data", HANDLE_JSON.exportUserBasic(user).toString());
-        CollectionReference basicUser = MainActivity.db.collection("users");
-        basicUser.document(user.getId()).set(userMap);
+        updateUserInfo(user);
 
         //add wraps
         CollectionReference  userWrapped = MainActivity.db.collection("users/" + user.getId() + "/wraps");
@@ -148,4 +152,15 @@ public class FIRESTORE {
         }
     }
 
+    /**
+     * Updates user's info in Firebase.
+     *
+     * @param user user that is being updated
+     */
+    public static void updateUserInfo(User user) {
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("user_data", HANDLE_JSON.exportUserBasic(user).toString());
+        CollectionReference basicUser = MainActivity.db.collection("users");
+        basicUser.document(user.getId()).set(userMap);
+    }
 }

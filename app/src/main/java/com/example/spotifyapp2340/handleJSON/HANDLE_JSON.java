@@ -34,7 +34,7 @@ public class HANDLE_JSON {
             JSONObject jsonObject = new JSONObject(JSON);
             user = new User((String) jsonObject.get("id"), (String) jsonObject.get("display_name"),
                     jsonObject.getString("email"), MainActivity.mAccessToken,
-                    jsonObject.getString("product"));
+                    jsonObject.getString("product"), MainActivity.refreshToken);
         } catch (JSONException e) {
             System.out.println(e);
         }
@@ -85,18 +85,22 @@ public class HANDLE_JSON {
         String display_name = null;
         String spotify_account = null;
         String product = null;
+        String refresh_token = null;
         try {
             jsonObject = new JSONObject(JSON);
             access_token = jsonObject.getString("access_token");
             display_name = jsonObject.getString("display_name");
             spotify_account = jsonObject.getString("spotify_account");
             product = jsonObject.getString("product");
+            refresh_token = jsonObject.getString("refresh_token");
+            System.out.println("Refrehs token obtained from JSON is: " + refresh_token);
         } catch (JSONException e) {
             System.out.println(e);
         }
         User user = null;
         if (id != null && display_name != null && spotify_account != null && access_token != null && product != null) {
-            user = new User(id, display_name, spotify_account, access_token, product);
+            user = new User(id, display_name, spotify_account,
+                    access_token, product, refresh_token);
         }
         return user;
 
@@ -111,15 +115,15 @@ public class HANDLE_JSON {
      */
     public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Date date) {
         Wrapped wrapped = new Wrapped(date, JSONArtist, JSONTrack);
-        System.out.println(JSONArtist);
-        System.out.println(JSONTrack);
+//        System.out.println(JSONArtist);
+//        System.out.println(JSONTrack);
         try {
             JSONObject jsonObjectArt = new JSONObject(JSONArtist);
             JSONArray jsonArrayArt = jsonObjectArt.getJSONArray("items");
-            System.out.println("KKKKKKK");
-            System.out.println(jsonArrayArt.length());
+//            System.out.println("KKKKKKK");
+//            System.out.println(jsonArrayArt.length());
             for (int i = 0; i < jsonArrayArt.length(); i++) {
-                System.out.println("adding art");
+//                System.out.println("adding art");
                 JSONObject jsonObject1 = jsonArrayArt.getJSONObject(i);
                 wrapped.getArtists().add(processArtistObject(jsonObject1));
             }
@@ -138,7 +142,7 @@ public class HANDLE_JSON {
     public static ArtistObject processArtistObject(JSONObject jsonObject) {
         ArtistObject artistObject = null;
         try {
-            System.out.println(jsonObject.toString());
+//            System.out.println(jsonObject.toString());
             artistObject = new ArtistObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONArray("images")), processGenres(jsonObject.getJSONArray("genres")));
         } catch (JSONException e) {
             System.out.println(e);
@@ -227,7 +231,8 @@ public class HANDLE_JSON {
             jsonObject.put("id", user.getId());
             jsonObject.put("display_name", user.getDisplay_name());
             jsonObject.put("spotify_account", user.getEmail());
-            jsonObject.put("access_token", user.getAccessToken());
+            jsonObject.put("access_token", MainActivity.mAccessToken);
+            jsonObject.put("refresh_token", MainActivity.refreshToken);
             jsonObject.put("product", user.getProduct());
         } catch (JSONException e) {
             System.out.println(e);

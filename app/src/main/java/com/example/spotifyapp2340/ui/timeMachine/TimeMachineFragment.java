@@ -55,6 +55,7 @@ public class TimeMachineFragment extends Fragment {
         pastWraps = root.findViewById(R.id.recyclerview_timemachine);
         navController = MainActivity.navController;
         if (MainActivity.currUser != null) {
+            System.out.println(MainActivity.currUser.getWraps().size() + "SIZZZEEEE");
             recyclerAdapter = new TimeMachineCardAdapter(getContext(), MainActivity.currUser.getWraps(), navController);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
             pastWraps.setLayoutManager(linearLayoutManager);
