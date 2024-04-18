@@ -186,4 +186,9 @@ public class MainActivity extends AppCompatActivity {
     public void setBackVisible(boolean visible) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(visible);
     }
+
+    public void afterCall() {
+        super.onPostResume();
+        navController.navigate(R.id.action_navigation_newWrapped_to_wrap);
+    }
 }

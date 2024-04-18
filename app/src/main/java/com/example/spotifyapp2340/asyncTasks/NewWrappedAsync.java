@@ -38,6 +38,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     public static NavController controller;
     Wrapped wrapped;
     public static Activity activity;
+    private static int numFail = 0;
 
     /* 0 for short term
        1 for medium term
@@ -109,7 +110,10 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                     System.out.println("TRACK FAIL" + track);
                     MainActivity.FAILED_CALL = true;
 //                    SpotifyCalls.getToken(MainActivity.currActivity);
-                    new RefreshAsync().execute();
+                    numFail++;
+                    if (numFail >= 2) {
+                        new RefreshAsync().execute();
+                    }
                 } else {
                     System.out.println("Track" + track);
                     numGot[0]++;
@@ -171,7 +175,10 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                     System.out.println("ART FAIL" + art);
                     MainActivity.FAILED_CALL = true;
 //                    SpotifyCalls.getToken(MainActivity.currActivity);
-                    new RefreshAsync().execute();
+                    numFail++;
+                    if (numFail >= 2) {
+                        new RefreshAsync().execute();
+                    }
                 } else {
                     System.out.println("ART" + art);
                     numGot[0]++;
@@ -208,7 +215,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
 
     private void navigateToNew() {
         try {
-            controller.navigate(R.id.action_navigation_newWrapped_to_wrap);
+            MainActivity.currActivity.afterCall();
         } catch (Exception e) {
             System.out.println(e);
         }
