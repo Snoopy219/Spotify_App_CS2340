@@ -93,7 +93,7 @@ public class HANDLE_JSON {
             spotify_account = jsonObject.getString("spotify_account");
             product = jsonObject.getString("product");
             refresh_token = jsonObject.getString("refresh_token");
-            System.out.println("Refrehs token obtained from JSON is FUCK: " + refresh_token);
+            System.out.println("Refrehs token obtained from JSON is: " + refresh_token);
         } catch (JSONException e) {
             System.out.println(e);
         }
