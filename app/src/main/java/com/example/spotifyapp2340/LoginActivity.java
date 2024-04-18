@@ -82,6 +82,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         System.out.println("SHARE PREF" + sharedPreferences);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("user", "");
+//        editor.commit();
         if (!sharedPreferences.getString("user", "").equals("")) {
             //get user with that name from firebase
             Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
