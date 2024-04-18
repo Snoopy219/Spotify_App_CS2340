@@ -12,7 +12,6 @@ import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyapp2340.R;
-import com.example.spotifyapp2340.ui.timeMachine.TimeMachineAdapter;
 import com.example.spotifyapp2340.ui.wrapped.WrappedFragment;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
 import com.example.spotifyapp2340.wrappers.Wrapped;
