@@ -66,37 +66,25 @@ public class SettingsFragment extends Fragment {
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.db.collection("users").document(MainActivity.currUser.getId())
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        switch (which) {
-                                            case DialogInterface.BUTTON_POSITIVE:
-                                                deleteAccount();
-                                                break;
-                                            case DialogInterface.BUTTON_NEGATIVE:
-                                                dialog.dismiss();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                deleteAccount();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                dialog.dismiss();
 
-                                        }
-                                    }
-                                };
-                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                                // on below line we are setting message for our dialog box.
-                                builder.setMessage("Are you sure you want to delete your account?")
-                                        .setPositiveButton("Yes", dialogClickListener)
-                                        .setNegativeButton("No", dialogClickListener)
-                                        .show();// on below line we are creating a builder variable for our alert dialog
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                            }
-                        });
+                        }
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                // on below line we are setting message for our dialog box.
+                builder.setMessage("Are you sure you want to delete your account?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener)
+                        .show();// on below line we are cr
             }
         });
 
@@ -120,22 +108,34 @@ public class SettingsFragment extends Fragment {
         SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
         editor2.putString("user", "");
         editor2.commit();
-        MainActivity.db.collection("/users/" + MainActivity.currUser.getId() + "/wraps")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        MainActivity.db.collection("users").document(MainActivity.currUser.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                document.getReference().delete();
-                            }
-                            MainActivity.currUser = null;
-                            MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
-                            Intent myIntent = new Intent(getContext(), LoginActivity.class);
-                            startActivity(myIntent);
-                        } else {
-                            System.out.println("failed");
-                        }
+                    public void onSuccess(Void aVoid) {
+                        MainActivity.db.collection("/users/" + MainActivity.currUser.getId() + "/wraps")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                document.getReference().delete();
+                                            }
+                                            MainActivity.currUser = null;
+                                            MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
+                                            Intent myIntent = new Intent(getContext(), LoginActivity.class);
+                                            startActivity(myIntent);
+                                        } else {
+                                            System.out.println("failed");
+                                        }
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
                     }
                 });
     }
