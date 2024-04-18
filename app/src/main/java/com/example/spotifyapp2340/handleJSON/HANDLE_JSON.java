@@ -115,15 +115,15 @@ public class HANDLE_JSON {
      */
     public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Date date) {
         Wrapped wrapped = new Wrapped(date, JSONArtist, JSONTrack);
-        System.out.println(JSONArtist);
-        System.out.println(JSONTrack);
+//        System.out.println(JSONArtist);
+//        System.out.println(JSONTrack);
         try {
             JSONObject jsonObjectArt = new JSONObject(JSONArtist);
             JSONArray jsonArrayArt = jsonObjectArt.getJSONArray("items");
-            System.out.println("KKKKKKK");
-            System.out.println(jsonArrayArt.length());
+//            System.out.println("KKKKKKK");
+//            System.out.println(jsonArrayArt.length());
             for (int i = 0; i < jsonArrayArt.length(); i++) {
-                System.out.println("adding art");
+//                System.out.println("adding art");
                 JSONObject jsonObject1 = jsonArrayArt.getJSONObject(i);
                 wrapped.getArtists().add(processArtistObject(jsonObject1));
             }
@@ -142,7 +142,7 @@ public class HANDLE_JSON {
     public static ArtistObject processArtistObject(JSONObject jsonObject) {
         ArtistObject artistObject = null;
         try {
-            System.out.println(jsonObject.toString());
+//            System.out.println(jsonObject.toString());
             artistObject = new ArtistObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONArray("images")), processGenres(jsonObject.getJSONArray("genres")));
         } catch (JSONException e) {
             System.out.println(e);

@@ -116,11 +116,12 @@ public class MainActivity extends AppCompatActivity {
         System.out.println(LoginActivity.sharedPreferences.getString("user", ""));
         if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
             //get from document with shared prefs
+            System.out.println("WE ARE GOOOOOOODDDDDDDDDD");
             FIRESTORE.newUser(LoginActivity.sharedPreferences.getString("user", ""));
-            if (MainActivity.tokenTime >= 3600000) {
-//                SpotifyCalls.getToken(MainActivity.currActivity);
-                new RefreshAsync();
-            }
+//            if (MainActivity.tokenTime >= 3600000) {
+////                SpotifyCalls.getToken(MainActivity.currActivity);
+//                new RefreshAsync();
+//            }
         } else {
             //check if user exists in firestore or get new user
             new GetUserAsync().execute();

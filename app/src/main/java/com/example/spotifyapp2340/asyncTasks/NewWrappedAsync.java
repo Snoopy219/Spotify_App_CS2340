@@ -207,7 +207,11 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     }
 
     private void navigateToNew() {
-        controller.navigate(R.id.action_navigation_newWrapped_to_wrap);
+        try {
+            controller.navigate(R.id.action_navigation_newWrapped_to_wrap);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void cancelCall(Call mCall) {

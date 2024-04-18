@@ -93,7 +93,11 @@ public class WrappedFragment extends Fragment {
         //int index = WrappedFragmentArgs.fromBundle(getArguments()).getIndex();
         System.out.println("im in wrapped");
 //        int index = MainActivity.currUser.getWraps().size() - 1;
-        thisWrap = MainActivity.currUser.getWraps().get(index);
+        if (index < MainActivity.currUser.getWraps().size()) {
+            thisWrap = MainActivity.currUser.getWraps().get(index);
+        } else {
+            System.out.println("error getting wrapped");
+        }
         System.out.println(thisWrap.getArtists().size());
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
