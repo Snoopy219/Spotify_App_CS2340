@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
+import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.asyncTasks.NewWrappedAsync;
 import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
@@ -149,10 +150,6 @@ public class MainActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
-            if (FAILED_CALL) {
-                FAILED_CALL = false;
-                onCallback();
-            }
             if (currUser == null) {
                 new GetUserAsync().execute();
             }
@@ -160,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
             mAccessCode = response.getCode();
+            new GetTokenAndRefreshToken().execute();
             //setTextAsync(mAccessCode, codeTextView);
         }
     }

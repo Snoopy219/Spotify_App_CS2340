@@ -91,6 +91,9 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
                         MainActivity.refreshToken = jsonObject.getString("refresh_token");
 //                        LoginActivity.onCallback();
                     }
+                    if (GetUserAsync.usedRefresh) {
+                        new GetUserAsync().execute();
+                    }
                     //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 
                     //check if user in database

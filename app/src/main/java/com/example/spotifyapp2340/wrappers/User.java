@@ -126,7 +126,9 @@ public class User {
      * @param wrapped the wrapped
      */
     public void addWrapped(Wrapped wrapped) {
-        wraps.add(wrapped);
+        if (!wraps.contains(wrapped)) {
+            wraps.add(wrapped);
+        }
     }
 
     /**
