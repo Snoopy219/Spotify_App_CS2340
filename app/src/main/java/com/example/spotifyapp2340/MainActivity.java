@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean FAILED_CALL = false;
 
     public static String refreshToken;
+    public static boolean remindPremium = true;
 
     public static boolean comingFromRefresh = false;
 
@@ -141,10 +142,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//        if (comingFromRefresh) {
-//            comingFromRefresh = false;
-//            navController.navigate(R.id.action_navigation_newWrapped_to_wrap);
-//        }
     }
 
     /**
