@@ -201,10 +201,10 @@ public class WrappedFragment extends Fragment {
             });
             playSong.start();
         }
-        if (!MainActivity.currUser.isPremium()) {
-            Toast toast = Toast.makeText(getContext(), "Not Premium", Toast.LENGTH_LONG);
-            toast.show();
-        }
+//        if (!MainActivity.currUser.isPremium()) {
+//            Toast toast = Toast.makeText(getContext(), "Not Premium", Toast.LENGTH_LONG);
+//            toast.show();
+//        }
         return root;
     }
 
