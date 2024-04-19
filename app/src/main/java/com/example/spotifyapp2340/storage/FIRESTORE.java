@@ -67,7 +67,9 @@ public class FIRESTORE {
                                             @Override
                                             public void run() {
                                                 System.out.println("MOVING");
-                                                MainActivity.navController.navigate(R.id.navigation_newWrapped);
+                                                if (!MainActivity.comingFromRefresh) {
+                                                    MainActivity.navController.navigate(R.id.navigation_newWrapped);
+                                                }
                                                 TimeMachineFragment.updateUser();
                                                 SettingsFragment.updateUser();
                                             }
@@ -91,7 +93,9 @@ public class FIRESTORE {
                                 @Override
                                 public void run() {
                                     System.out.println("MOVING");
-                                    MainActivity.navController.navigate(R.id.navigation_newWrapped);
+                                    if (!MainActivity.comingFromRefresh) {
+                                        MainActivity.navController.navigate(R.id.navigation_newWrapped);
+                                    }
                                     TimeMachineFragment.updateUser();
                                     SettingsFragment.updateUser();
                                 }
