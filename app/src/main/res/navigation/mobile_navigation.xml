@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_navigation_waiting_to_navigation_newWrapped"
             app:destination="@id/navigation_newWrapped" />
+        <action
+            android:id="@+id/action_navigation_waiting_to_wrap"
+            app:destination="@id/wrap" />
     </fragment>
 
     <fragment

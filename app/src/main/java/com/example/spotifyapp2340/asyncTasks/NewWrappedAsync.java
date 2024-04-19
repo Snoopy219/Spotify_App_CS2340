@@ -38,7 +38,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
     public static NavController controller;
     Wrapped wrapped;
     public static Activity activity;
-    private static int numFail = 0;
+    private int numFail = 0;
 
     /* 0 for short term
        1 for medium term
@@ -72,6 +72,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
         final String[] JSONTrack = new String[1];
         final String[] JSONArt = new String[1];
         final int[] numGot = {0};
+
 //        MainActivity.currUser.addWrapped(wrapped);
         Log.d("Test", "This is a test to check if doInBackground is working.");
         //Getting tracks
@@ -112,6 +113,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
 //                    SpotifyCalls.getToken(MainActivity.currActivity);
                     numFail++;
                     if (numFail >= 2) {
+                        MainActivity.comingFromRefresh = true;
                         new RefreshAsync().execute();
                     }
                 } else {
@@ -124,6 +126,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                         MainActivity.currUser.addWrapped(wrapped[0]);
                         System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
                         FIRESTORE.updateUser(MainActivity.currUser);
+                        MainActivity.comingFromRefresh = false;
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -177,6 +180,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
 //                    SpotifyCalls.getToken(MainActivity.currActivity);
                     numFail++;
                     if (numFail >= 2) {
+                        MainActivity.comingFromRefresh = true;
                         new RefreshAsync().execute();
                     }
                 } else {
@@ -188,6 +192,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                         MainActivity.currUser.addWrapped(wrapped[0]);
                         System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
                         FIRESTORE.updateUser(MainActivity.currUser);
+                        MainActivity.comingFromRefresh = false;
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

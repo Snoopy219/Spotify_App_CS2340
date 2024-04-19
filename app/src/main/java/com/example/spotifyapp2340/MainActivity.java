@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static String refreshToken;
 
+    public static boolean comingFromRefresh = false;
+
 
 
     @Override
@@ -114,17 +116,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         currActivity = this;
         System.out.println(LoginActivity.sharedPreferences.getString("user", ""));
-        if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
-            //get from document with shared prefs
-            System.out.println("WE ARE GOOOOOOODDDDDDDDDD");
-            FIRESTORE.newUser(LoginActivity.sharedPreferences.getString("user", ""));
+        if (!comingFromRefresh) {
+            if (!LoginActivity.sharedPreferences.getString("user", "").equals("")) {
+                //get from document with shared prefs
+                System.out.println("WE ARE GOOOOOOODDDDDDDDDD");
+                FIRESTORE.newUser(LoginActivity.sharedPreferences.getString("user", ""));
 //            if (MainActivity.tokenTime >= 3600000) {
 ////                SpotifyCalls.getToken(MainActivity.currActivity);
 //                new RefreshAsync();
 //            }
-        } else {
-            //check if user exists in firestore or get new user
-            new GetUserAsync().execute();
+            } else {
+                //check if user exists in firestore or get new user
+                new GetUserAsync().execute();
+            }
         }
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -137,6 +141,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//        if (comingFromRefresh) {
+//            comingFromRefresh = false;
+//            navController.navigate(R.id.action_navigation_newWrapped_to_wrap);
+//        }
     }
 
     /**
@@ -174,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        if (navController.getCurrentDestination().getId() == R.id.navigation_waiting) {
+            navController.navigate(R.id.navigation_newWrapped);
+        }
         return true;
     }
 
@@ -189,6 +200,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void afterCall() {
         super.onPostResume();
-        navController.navigate(R.id.action_navigation_newWrapped_to_wrap);
+        if (navController.getCurrentDestination().getId() == R.id.navigation_waiting) {
+            navController.navigate(R.id.action_navigation_waiting_to_wrap);
+        } else {
+            navController.navigate(R.id.action_navigation_newWrapped_to_wrap);
+        }
     }
 }
