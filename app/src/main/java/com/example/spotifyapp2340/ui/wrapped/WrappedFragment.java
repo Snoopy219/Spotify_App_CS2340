@@ -1,5 +1,9 @@
 package com.example.spotifyapp2340.ui.wrapped;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +61,31 @@ public class WrappedFragment extends Fragment {
         ((MainActivity) getActivity()).setBackVisible(true);
         onWrapped = true;
         time = 0;
+        if (!MainActivity.currUser.isPremium() && MainActivity.remindPremium) {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            MainActivity.remindPremium = false;
+                        case DialogInterface.BUTTON_POSITIVE:
+                            dialog.dismiss();
+                            break;
+                        case DialogInterface.BUTTON_NEUTRAL:
+                            Intent httpIntent = new Intent(Intent.ACTION_VIEW,
+                                    Uri.parse("https://www.spotify.com/us/premium/"));
+                            startActivity(httpIntent);
+                    }
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            // on below line we are setting message for our dialog box.
+            builder.setMessage("Audio playback is unavailable to non-Premium users.")
+                    .setPositiveButton("OK", dialogClickListener)
+                    .setNegativeButton("Don't remind again", dialogClickListener)
+                    .setNeutralButton("Buy Premium", dialogClickListener)
+                    .show();
+        }
         //create click listeners for the titles
         TextView sectionTopSongs = root.findViewById(R.id.sectionTopSongs);
         TextView sectionTopArtists = root.findViewById(R.id.sectionTopArtists);

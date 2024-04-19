@@ -99,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean FAILED_CALL = false;
 
     public static String refreshToken;
-
-
+    public static boolean remindPremium = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
