@@ -76,31 +76,79 @@ public class MainActivity extends AppCompatActivity {
      */
     public static FirebaseFirestore db;
 
+    /**
+     * The constant userJSON.
+     */
     public static JSONObject userJSON;
+    /**
+     * The constant currUser.
+     */
     public static User currUser;
 
     private static Button profileBtn;
 
+    /**
+     * The constant CLIENT_ID.
+     */
     public static final String CLIENT_ID = "5fc702c72e5d4c979c03685037ab737d";
+    /**
+     * The constant REDIRECT_URI.
+     */
     public static final String REDIRECT_URI = "com.example.spotifyapp2340://auth";
 
+    /**
+     * The constant AUTH_TOKEN_REQUEST_CODE.
+     */
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
+    /**
+     * The constant AUTH_CODE_REQUEST_CODE.
+     */
     public static final int AUTH_CODE_REQUEST_CODE = 1;
+    /**
+     * The constant mOkHttpClient.
+     */
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
+    /**
+     * The constant mAccessToken.
+     */
     public static String mAccessToken;
+    /**
+     * The constant mAccessCode.
+     */
     public static String mAccessCode;
 
+    /**
+     * The constant navController.
+     */
     public static NavController navController;
 
+    /**
+     * The constant currActivity.
+     */
     public static MainActivity currActivity;
 
+    /**
+     * The constant tokenTime.
+     */
     public static long tokenTime;
 
+    /**
+     * The constant FAILED_CALL.
+     */
     public static boolean FAILED_CALL = false;
 
+    /**
+     * The constant refreshToken.
+     */
     public static String refreshToken;
+    /**
+     * The constant remindPremium.
+     */
     public static boolean remindPremium = true;
 
+    /**
+     * The constant comingFromRefresh.
+     */
     public static boolean comingFromRefresh = false;
 
 
@@ -146,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * When the app leaves this activity to momentarily get a token/code, this function
-     * fetches the result of that external activity to get the response from Spotify
+     * fetches the result of that external activity to get the response from Spotify.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,9 +216,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * On callback.
+     */
     public static void onCallback() {
         new NewWrappedAsync(navController, currActivity).execute();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -185,16 +237,29 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Sets nav view.
+     *
+     * @param visibility the visibility
+     */
     public void setNavView(int visibility) {
         if (binding != null) {
             binding.navView.setVisibility(visibility);
         }
     }
 
+    /**
+     * Sets back visible.
+     *
+     * @param visible the visible
+     */
     public void setBackVisible(boolean visible) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(visible);
     }
 
+    /**
+     * After call.
+     */
     public void afterCall() {
         super.onPostResume();
         if (navController.getCurrentDestination().getId() == R.id.navigation_waiting) {

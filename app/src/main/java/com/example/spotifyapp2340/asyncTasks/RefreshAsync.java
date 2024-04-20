@@ -34,8 +34,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
+/**
+ * To refresh the token.
+ */
 public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
+    /**
+     * The M call.
+     */
     Call mCall;
+    /**
+     * The constant mOkHttpClient.
+     */
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
 
 
@@ -69,8 +78,6 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
             public void onFailure(Call call, IOException e) {
                 System.out.println("here654");
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-                //        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -93,20 +100,18 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
                         //If NewWrappedAsync triggers this async, does it again
                         } else {
                             System.out.println("HERE AT TRIGGER");
-                            new NewWrappedAsync(NewWrappedAsync.controller, NewWrappedAsync.activity).execute();
+                            new NewWrappedAsync(NewWrappedAsync.controller,
+                                    NewWrappedAsync.activity).execute();
                             MainActivity.FAILED_CALL = false;
                         }
                         FIRESTORE.updateUserInfo(MainActivity.currUser);
                         LoginActivity.onCallback();
                     }
-                    //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 
                     //check if user in database
                     //MainActivity.newUser(MainActivity.currUser);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-                    // Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -66,25 +66,28 @@ public class SettingsFragment extends Fragment {
         binding.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                deleteAccount();
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                dialog.dismiss();
+                DialogInterface.OnClickListener dialogClickListener =
+                        new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    deleteAccount();
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    dialog.dismiss();
+                                    break;
+                                default:
 
+                            }
                         }
-                    }
-                };
+                    };
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 // on below line we are setting message for our dialog box.
                 builder.setMessage("Are you sure you want to delete your account?")
                         .setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener)
-                        .show();// on below line we are cr
+                        .show(); // on below line we are cr
             }
         });
 
@@ -94,7 +97,8 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences.Editor editor2 = LoginActivity.sharedPreferences.edit();
                 editor2.putString("user", "");
                 editor2.commit();
-                MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
+                MainActivity.navController.navigate(
+                        R.id.action_navigation_settings_to_navigation_newWrapped);
                 Intent myIntent = new Intent(v.getContext(), LoginActivity.class);
                 startActivity(myIntent);
             }
@@ -113,18 +117,22 @@ public class SettingsFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        MainActivity.db.collection("/users/" + MainActivity.currUser.getId() + "/wraps")
+                        MainActivity.db.collection("/users/"
+                                        + MainActivity.currUser.getId() + "/wraps")
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                            for (QueryDocumentSnapshot document
+                                                    : task.getResult()) {
                                                 document.getReference().delete();
                                             }
                                             MainActivity.currUser = null;
-                                            MainActivity.navController.navigate(R.id.action_navigation_settings_to_navigation_newWrapped);
-                                            Intent myIntent = new Intent(getContext(), LoginActivity.class);
+                                            MainActivity.navController.navigate(R.id
+                                                            .action_navigation_settings_to_navigation_newWrapped);
+                                            Intent myIntent = new Intent(getContext(),
+                                                    LoginActivity.class);
                                             startActivity(myIntent);
                                         } else {
                                             System.out.println("failed");
@@ -140,6 +148,9 @@ public class SettingsFragment extends Fragment {
                 });
     }
 
+    /**
+     * On callback.
+     */
     public static void onCallback() {
         if (binding != null) {
             binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
@@ -148,7 +159,10 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    public static void updateUser(){
+    /**
+     * Update user.
+     */
+    public static void updateUser() {
         if (binding != null && MainActivity.currUser != null) {
             binding.namePlaceHolder.setText(MainActivity.currUser.getDisplay_name());
             binding.textView6.setText(MainActivity.currUser.getId());

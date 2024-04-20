@@ -32,9 +32,21 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
+/**
+ * To get user info.
+ */
 public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
+    /**
+     * The M call.
+     */
     Call mCall;
+    /**
+     * The constant mOkHttpClient.
+     */
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
+    /**
+     * The constant usedRefresh.
+     */
     public static boolean usedRefresh = false;
 
 
@@ -58,8 +70,6 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-                //        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -83,14 +93,11 @@ public class GetUserAsync extends AsyncTask<Void, Void, Void>  {
 //                        new GetTokenAndRefreshToken().execute();
                     }
                     FIRESTORE.newUser(new JSONObject(responseStre).getString("id"));
-                    //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
 
                     //check if user in database
                     //MainActivity.newUser(MainActivity.currUser);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-                    // Toast.LENGTH_SHORT).show();
                 }
             }
         });

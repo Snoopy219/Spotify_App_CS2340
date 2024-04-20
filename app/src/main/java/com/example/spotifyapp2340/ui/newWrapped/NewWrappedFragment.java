@@ -41,7 +41,8 @@ public class NewWrappedFragment extends Fragment {
         View root = binding.getRoot();
 
         Spinner spinner = binding.getRoot().findViewById(R.id.sortSpinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.time_options, android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+                R.array.time_options, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -70,7 +71,8 @@ public class NewWrappedFragment extends Fragment {
             public void onClick(View v) {
                 binding.createNewWrapped.setText("Loading...");
                 WrappedFragment.index = MainActivity.currUser.getWraps().size();
-                new NewWrappedAsync(NavHostFragment.findNavController(NewWrappedFragment.this), getActivity()).execute();
+                new NewWrappedAsync(NavHostFragment
+                        .findNavController(NewWrappedFragment.this), getActivity()).execute();
             }
         });
         return root;

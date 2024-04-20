@@ -21,58 +21,125 @@ public class Wrapped {
 
     private String JSONArt;
 
+    /**
+     * Sets json art.
+     *
+     * @param JSONArt the json art
+     */
     public void setJSONArt(String JSONArt) {
         this.JSONArt = JSONArt;
     }
 
+    /**
+     * Sets json track.
+     *
+     * @param JSONTrack the json track
+     */
     public void setJSONTrack(String JSONTrack) {
         this.JSONTrack = JSONTrack;
     }
 
     private String JSONTrack;
 
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
     public void setDate(Date date) {
         this.date = date;
     }
 
+    /**
+     * Gets json art.
+     *
+     * @return the json art
+     */
     public String getJSONArt() {
         return JSONArt;
     }
 
+    /**
+     * Gets json track.
+     *
+     * @return the json track
+     */
     public String getJSONTrack() {
         return JSONTrack;
     }
 
+    /**
+     * Instantiates a new Wrapped.
+     *
+     * @param date      the date
+     * @param JSONArt   the json art
+     * @param JSONTrack the json track
+     */
     public Wrapped(Date date, String JSONArt, String JSONTrack) {
         this.date = date;
         this.JSONArt = JSONArt;
         this.JSONTrack = JSONTrack;
     }
 
+    /**
+     * Instantiates a new Wrapped.
+     *
+     * @param date the date
+     */
     public Wrapped(Date date) {
         this.date = date;
     }
 
+    /**
+     * Gets artists.
+     *
+     * @return the artists
+     */
     public ArrayList<ArtistObject> getArtists() {
         return artists;
     }
 
+    /**
+     * Sets artists.
+     *
+     * @param artists the artists
+     */
     public void setArtists(ArrayList<ArtistObject> artists) {
         this.artists = artists;
     }
 
+    /**
+     * Gets tracks.
+     *
+     * @return the tracks
+     */
     public ArrayList<TrackObject> getTracks() {
         return tracks;
     }
 
+    /**
+     * Sets tracks.
+     *
+     * @param tracks the tracks
+     */
     public void setTracks(ArrayList<TrackObject> tracks) {
         this.tracks = tracks;
     }
 
+    /**
+     * Gets top genres.
+     *
+     * @return the top genres
+     */
     public ArrayList<String> getTopGenres() {
         HashMap<String, Integer> freq = new HashMap<>();
         for (int i = 0; i < artists.size(); i++) {

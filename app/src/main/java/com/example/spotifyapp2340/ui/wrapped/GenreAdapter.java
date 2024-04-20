@@ -17,10 +17,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder>{
+/**
+ * The type Genre adapter.
+ */
+public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> {
     private final Context context;
     private ArrayList<String> genreList;
 
+    /**
+     * Instantiates a new Genre adapter.
+     *
+     * @param context   the context
+     * @param genreList the genre list
+     */
     public GenreAdapter(Context context, ArrayList<String> genreList) {
         this.context = context;
         this.genreList = genreList;
@@ -29,7 +38,8 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder>{
     @NonNull
     @Override
     public GenreAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_topgenrewrapped, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_topgenrewrapped, parent, false);
         return new ViewHolder(view).linkAdapter(this);
     }
 
@@ -49,12 +59,20 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder>{
         return genreList.size();
     }
 
+    /**
+     * The type View holder.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView genreName;
         private final TextView genreRating;
         private final ImageView genreImage;
         private GenreAdapter adapter;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param itemView the item view
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             genreImage = itemView.findViewById(R.id.genreImage);
@@ -62,6 +80,12 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder>{
             genreRating = itemView.findViewById(R.id.genreRating);
         }
 
+        /**
+         * Link adapter view holder.
+         *
+         * @param adapter the adapter
+         * @return the view holder
+         */
         public ViewHolder linkAdapter(GenreAdapter adapter) {
             this.adapter = adapter;
             return this;

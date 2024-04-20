@@ -36,6 +36,16 @@ public class User {
     private String refreshToken;
     private String product;
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param id           the id
+     * @param display_name the display name
+     * @param email        the email
+     * @param accessToken  the access token
+     * @param product      the product
+     * @param refreshToken the refresh token
+     */
     public User(String id, String display_name, String email,
                 String accessToken, String product, String refreshToken) {
         this.id = id;
@@ -46,33 +56,71 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
+    /**
+     * Instantiates a new User.
+     */
     public User() {
     }
 
+    /**
+     * Sets wraps.
+     *
+     * @param wraps the wraps
+     */
     public void setWraps(ArrayList<Wrapped> wraps) {
         this.wraps = wraps;
     }
 
+    /**
+     * Gets access token.
+     *
+     * @return the access token
+     */
     public String getAccessToken() {
         return accessToken;
     }
 
+    /**
+     * Sets access token.
+     *
+     * @param accessToken the access token
+     */
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets email.
+     *
+     * @param email the email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets display name.
+     *
+     * @return the display name
+     */
     public String getDisplay_name() {
         return display_name;
     }
 
+    /**
+     * Sets display name.
+     *
+     * @param display_name the display name
+     */
     public void setDisplay_name(String display_name) {
         this.display_name = display_name;
     }
@@ -100,11 +148,21 @@ public class User {
         this.id = id;
     }
 
+    /**
+     * Is premium boolean.
+     *
+     * @return the boolean
+     */
     public boolean isPremium() {
         return !(product.equals("free")
                 || product.equals("open"));
     }
 
+    /**
+     * Gets product.
+     *
+     * @return the product
+     */
     public String getProduct() {
         return product;
     }

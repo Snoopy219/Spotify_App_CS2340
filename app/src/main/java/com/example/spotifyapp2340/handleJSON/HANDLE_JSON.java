@@ -22,9 +22,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * Class fro processing JSON objects.
+ */
 public class HANDLE_JSON {
-    /**
-     * Create a basic user from the JSON given by Spotify
+    /** Create a basic user from the JSON given by Spotify.
+     *
      * @param JSON JSON from Spotify
      * @return Generated User
      */
@@ -42,10 +45,11 @@ public class HANDLE_JSON {
     }
 
     /**
-     * Add wraps from the Firestore JSON
-     * @param user
-     * @param JSON
-     * @param date
+     * Add wraps from the Firestore JSON.
+     *
+     * @param user the user
+     * @param JSON the json
+     * @param date the date
      */
     public static void addWrappedFromJSON(User user, String JSON, String date) {
         JSONArray jsonArrayArt;
@@ -61,7 +65,8 @@ public class HANDLE_JSON {
             trackStr = jsonObject.getString("tracks");
             JSONObject track = new JSONObject(trackStr);
             jsonArrayTrack = track.getJSONArray("items");
-            SimpleDateFormat formatter = new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy", Locale.ENGLISH);
+            SimpleDateFormat formatter =
+                    new SimpleDateFormat("EEE MMM dd hh:mm:ss zzz yyyy", Locale.ENGLISH);
             date1 = formatter.parse(date);
         } catch (ParseException e) {
             System.out.println(e);
@@ -74,8 +79,9 @@ public class HANDLE_JSON {
     }
 
     /**
-     * Creates User from Firestore JSON
-     * @param id User id
+     * Creates User from Firestore JSON.
+     *
+     * @param id   User id
      * @param JSON JSON of user
      * @return Generated User
      */
@@ -98,7 +104,8 @@ public class HANDLE_JSON {
             System.out.println(e);
         }
         User user = null;
-        if (id != null && display_name != null && spotify_account != null && access_token != null && product != null) {
+        if (id != null && display_name != null
+                && spotify_account != null && access_token != null && product != null) {
             user = new User(id, display_name, spotify_account,
                     access_token, product, refresh_token);
         }
@@ -107,10 +114,11 @@ public class HANDLE_JSON {
     }
 
     /**
-     * Creates new Wrapped Object from JSON
+     * Creates new Wrapped Object from JSON.
+     *
      * @param JSONArtist JSON for artists
-     * @param JSONTrack JSON for tracks
-     * @param date Date for dates
+     * @param JSONTrack  JSON for tracks
+     * @param date       Date for dates
      * @return GEnerated Wrapped
      */
     public static Wrapped createWrappedFromJSON(String JSONArtist, String JSONTrack, Date date) {
@@ -139,17 +147,31 @@ public class HANDLE_JSON {
         return wrapped;
     }
 
+    /**
+     * Process artist object artist object.
+     *
+     * @param jsonObject the json object
+     * @return the artist object
+     */
     public static ArtistObject processArtistObject(JSONObject jsonObject) {
         ArtistObject artistObject = null;
         try {
 //            System.out.println(jsonObject.toString());
-            artistObject = new ArtistObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONArray("images")), processGenres(jsonObject.getJSONArray("genres")));
+            artistObject = new ArtistObject((String) jsonObject.get("name"),
+                    processImageArray(jsonObject.getJSONArray("images")),
+                    processGenres(jsonObject.getJSONArray("genres")));
         } catch (JSONException e) {
             System.out.println(e);
         }
         return artistObject;
     }
 
+    /**
+     * Process genres string [ ].
+     *
+     * @param jsonArray the json array
+     * @return the string [ ]
+     */
     public static String[] processGenres(JSONArray jsonArray) {
         String[] str = new String[jsonArray.length()];
         for (int i = 0; i < str.length; i++) {
@@ -162,6 +184,12 @@ public class HANDLE_JSON {
         return str;
     }
 
+    /**
+     * Process image array image object [ ].
+     *
+     * @param jsonArray the json array
+     * @return the image object [ ]
+     */
     public static ImageObject[] processImageArray(JSONArray jsonArray) {
         if (jsonArray == null) {
             return new ImageObject[0];
@@ -177,34 +205,48 @@ public class HANDLE_JSON {
         return images;
     }
 
+    /**
+     * Process track object track object.
+     *
+     * @param jsonObject the json object
+     * @return the track object
+     */
     public static TrackObject processTrackObject(JSONObject jsonObject) {
         TrackObject trackObject = null;
         try {
-            trackObject = new TrackObject((String) jsonObject.get("name"), processImageArray(jsonObject.getJSONObject("album").getJSONArray("images")), jsonObject.getString("preview_url"));
+            trackObject = new TrackObject((String) jsonObject.get("name"),
+                    processImageArray(jsonObject.getJSONObject("album").getJSONArray("images")),
+                    jsonObject.getString("preview_url"));
         } catch (JSONException e) {
             System.out.println(e);
         }
         return trackObject;
     }
 
+    /**
+     * Process image object image object.
+     *
+     * @param jsonObject the json object
+     * @return the image object
+     */
     public static ImageObject processImageObject(JSONObject jsonObject) {
         ImageObject imageObject = null;
         try {
-            imageObject = new ImageObject(jsonObject.getString("url"), jsonObject.getInt("height"), jsonObject.getInt("width"));
+            imageObject =
+                    new ImageObject(jsonObject.getString("url"),
+                            jsonObject.getInt("height"),
+                            jsonObject.getInt("width"));
         } catch (JSONException e) {
             System.out.println(e);
         }
         return imageObject;
     }
 
-    public static void updateWrappedFromJSON(String JSONArt, String JSONTrack, Wrapped wrapped) {
-        wrapped = createWrappedFromJSON(JSONArt, JSONTrack, wrapped.getDate());
-    }
-
     /**
-     * Get JSONObject of Wrapped
+     * Get JSONObject of Wrapped.
+     *
      * @param wrapped Wrapped to export
-     * @return JSONObject
+     * @return JSONObject json object
      */
     public static JSONObject exportWrapped(Wrapped wrapped) {
         JSONObject jsonObject = new JSONObject();
@@ -221,9 +263,10 @@ public class HANDLE_JSON {
     }
 
     /**
-     * GEts JSON representation of User
+     * Gets JSON representation of User.
+     *
      * @param user User to get
-     * @return JSONObject
+     * @return JSONObject json object
      */
     public static JSONObject exportUserBasic(User user) {
         JSONObject jsonObject = new JSONObject();

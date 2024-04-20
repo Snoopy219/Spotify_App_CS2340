@@ -18,10 +18,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
+/**
+ * The type Song adapter.
+ */
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
     private final Context context;
     private ArrayList<TrackObject> trackList;
 
+    /**
+     * Instantiates a new Song adapter.
+     *
+     * @param context   the context
+     * @param trackList the track list
+     */
     public SongAdapter(Context context, ArrayList<TrackObject> trackList) {
         this.context = context;
         this.trackList = trackList;
@@ -30,7 +39,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
     @NonNull
     @Override
     public SongAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_topsongswrapped, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_topsongswrapped, parent, false);
         return new ViewHolder(view).linkAdapter(this);
     }
 
@@ -59,12 +69,20 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
         return trackList.size();
     }
 
+    /**
+     * The type View holder.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView songName;
         private final TextView songRating;
         private final ImageView songImage;
         private SongAdapter adapter;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param itemView the item view
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             songName = itemView.findViewById(R.id.songName);
@@ -72,6 +90,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder>{
             songImage = itemView.findViewById(R.id.songImage);
         }
 
+        /**
+         * Link adapter view holder.
+         *
+         * @param adapter the adapter
+         * @return the view holder
+         */
         public ViewHolder linkAdapter(SongAdapter adapter) {
             this.adapter = adapter;
             return this;
