@@ -16,10 +16,19 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder>{
+/**
+ * The type Artist adapter.
+ */
+public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder> {
     private final Context context;
     private ArrayList<ArtistObject> artistList;
 
+    /**
+     * Instantiates a new Artist adapter.
+     *
+     * @param context    the context
+     * @param artistList the artist list
+     */
     public ArtistAdapter(Context context, ArrayList<ArtistObject> artistList) {
         this.context = context;
         this.artistList = artistList;
@@ -28,7 +37,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
     @NonNull
     @Override
     public ArtistAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_topartistswrapped, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.card_topartistswrapped, parent, false);
         return new ViewHolder(view).linkAdapter(this);
     }
 
@@ -47,12 +57,20 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
         return artistList.size();
     }
 
+    /**
+     * The type View holder.
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView artName;
         private final TextView artRating;
         private final ImageView artImage;
         private ArtistAdapter adapter;
 
+        /**
+         * Instantiates a new View holder.
+         *
+         * @param itemView the item view
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             artName = itemView.findViewById(R.id.artistName);
@@ -60,6 +78,12 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ViewHolder
             artImage = itemView.findViewById(R.id.artistImage);
         }
 
+        /**
+         * Link adapter view holder.
+         *
+         * @param adapter the adapter
+         * @return the view holder
+         */
         public ViewHolder linkAdapter(ArtistAdapter adapter) {
             this.adapter = adapter;
             return this;

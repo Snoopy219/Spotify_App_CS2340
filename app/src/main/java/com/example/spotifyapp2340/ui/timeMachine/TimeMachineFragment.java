@@ -56,17 +56,22 @@ public class TimeMachineFragment extends Fragment {
         navController = MainActivity.navController;
         if (MainActivity.currUser != null) {
             System.out.println(MainActivity.currUser.getWraps().size() + "SIZZZEEEE");
-            recyclerAdapter = new TimeMachineCardAdapter(getContext(), MainActivity.currUser.getWraps(), navController);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            recyclerAdapter = new TimeMachineCardAdapter(
+                    getContext(), MainActivity.currUser.getWraps(), navController);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                    getContext(), LinearLayoutManager.VERTICAL, false);
             pastWraps.setLayoutManager(linearLayoutManager);
             pastWraps.setAdapter(recyclerAdapter);
         } else {
-            recyclerAdapter = new TimeMachineCardAdapter(getContext(), new ArrayList<>(), navController);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            recyclerAdapter = new TimeMachineCardAdapter(
+                    getContext(), new ArrayList<>(), navController);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                    getContext(), LinearLayoutManager.VERTICAL, false);
             pastWraps.setLayoutManager(linearLayoutManager);
             pastWraps.setAdapter(recyclerAdapter);
         }
-        ArrayList<Wrapped> currWraps = MainActivity.currUser == null ? new ArrayList<>() : MainActivity.currUser.getWraps();
+        ArrayList<Wrapped> currWraps = MainActivity.currUser == null
+                ? new ArrayList<>() : MainActivity.currUser.getWraps();
         if (currWraps.size() > 0) {
 //            binding.recyclerviewTimemachine.setAdapter(recyclerAdapter);
             binding.textTimeMachine.setVisibility(View.INVISIBLE);
@@ -87,14 +92,19 @@ public class TimeMachineFragment extends Fragment {
         binding = null;
     }
 
+    /**
+     * Update user.
+     */
     public static void updateUser() {
         System.out.println("UPDATING TIME FRAG");
         if (MainActivity.currUser != null && binding != null) {
             currWraps = MainActivity.currUser.getWraps();
 //            recyclerAdapter = new TimeMachineCardAdapter(context, currWraps);
             if (recyclerAdapter == null) {
-                recyclerAdapter = new TimeMachineCardAdapter(context, MainActivity.currUser.getWraps(), navController);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+                recyclerAdapter = new TimeMachineCardAdapter(
+                        context, MainActivity.currUser.getWraps(), navController);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(
+                        context, LinearLayoutManager.VERTICAL, false);
                 if (pastWraps != null) {
                     pastWraps.setLayoutManager(linearLayoutManager);
                     pastWraps.setAdapter(recyclerAdapter);

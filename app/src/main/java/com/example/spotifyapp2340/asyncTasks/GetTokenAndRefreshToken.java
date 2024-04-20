@@ -37,8 +37,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
+/**
+ * To get token and refresh token.
+ */
 public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
+    /**
+     * The M call.
+     */
     Call mCall;
+    /**
+     * The constant mOkHttpClient.
+     */
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
 
 
@@ -73,15 +82,14 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
             public void onFailure(Call call, IOException e) {
                 System.out.println("here654");
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                //Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
-                //        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println("This is the GetTokenAndRefreshToken response:\n" + responseStre);
+                    System.out.println("This is the GetTokenAndRefreshToken response:\n"
+                            + responseStre);
                     if (responseStre.contains("401")) {
                         System.out.println("fail");
                     } else {
@@ -94,14 +102,8 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
                     if (GetUserAsync.usedRefresh) {
                         new GetUserAsync().execute();
                     }
-                    //MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
-
-                    //check if user in database
-                    //MainActivity.newUser(MainActivity.currUser);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    //Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
-                    // Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -116,6 +118,7 @@ public class GetTokenAndRefreshToken extends AsyncTask<Void, Void, Void>  {
 
     /**
      * Once all information has been obtained, transfers to next fragment.
+     *
      * @param result Void.
      */
     @Override

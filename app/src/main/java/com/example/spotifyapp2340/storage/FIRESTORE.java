@@ -28,6 +28,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class for handling interactions with fetching and saving data to Firestore.
+ */
 public class FIRESTORE {
     /**
      * Please pass in a formatted string in the following way.
@@ -44,7 +47,9 @@ public class FIRESTORE {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         System.out.println(document.getData().toString().substring(11));
-                        MainActivity.currUser = HANDLE_JSON.createBasicUserFromJSON(document.getId(), document.getData().toString().substring(11));
+                        MainActivity.currUser =
+                                HANDLE_JSON.createBasicUserFromJSON(document.getId(),
+                                        document.getData().toString().substring(11));
                         if (MainActivity.mAccessToken == null) {
                             MainActivity.mAccessToken = MainActivity.currUser.getAccessToken();
                         }
@@ -57,8 +62,13 @@ public class FIRESTORE {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                HANDLE_JSON.addWrappedFromJSON(MainActivity.currUser, (String) document.getData().get("wrap_data"), document.getId());
+                                            for (QueryDocumentSnapshot document
+                                                    : task.getResult()) {
+                                                HANDLE_JSON.addWrappedFromJSON(
+                                                        MainActivity.currUser,
+                                                        (String) document.getData()
+                                                                .get("wrap_data"),
+                                                        document.getId());
                                             }
                                         } else {
                                             System.out.println("failed");
@@ -68,7 +78,8 @@ public class FIRESTORE {
                                             public void run() {
                                                 System.out.println("MOVING");
                                                 if (!MainActivity.comingFromRefresh) {
-                                                    MainActivity.navController.navigate(R.id.navigation_newWrapped);
+                                                    MainActivity.navController
+                                                            .navigate(R.id.navigation_newWrapped);
                                                 }
                                                 TimeMachineFragment.updateUser();
                                                 SettingsFragment.updateUser();
@@ -81,9 +92,9 @@ public class FIRESTORE {
                         //needs to be done
                         System.out.println(MainActivity.userJSON);
                         try {
-                            MainActivity.currUser = HANDLE_JSON.createUserFromJSON(MainActivity.userJSON.toString());
+                            MainActivity.currUser = HANDLE_JSON.createUserFromJSON(
+                                    MainActivity.userJSON.toString());
 //                        Map<String, String> user = new HashMap<>();
-//                        user.put("user_data", HANDLE_JSON.exportUser(MainActivity.currUser).toString());
 ////        usersWrapped.document(s.substring(0, s.indexOf(";" + SPLITTER))).set(user);
 //                        CollectionReference usersWrapped = MainActivity.db.collection("users");
 //                        usersWrapped.document(id).set(user);
@@ -94,7 +105,8 @@ public class FIRESTORE {
                                 public void run() {
                                     System.out.println("MOVING");
                                     if (!MainActivity.comingFromRefresh) {
-                                        MainActivity.navController.navigate(R.id.navigation_newWrapped);
+                                        MainActivity.navController
+                                                .navigate(R.id.navigation_newWrapped);
                                     }
                                     TimeMachineFragment.updateUser();
                                     SettingsFragment.updateUser();
@@ -118,6 +130,11 @@ public class FIRESTORE {
 //        CollectionReference usersWrapped = db.collection("users");
     }
 
+    /**
+     * Export data.
+     *
+     * @param user the user
+     */
     public static void exportData(User user) {
         Map<String, String> userMap = new HashMap<>();
         userMap.put("user_data", HANDLE_JSON.exportUserBasic(user).toString());
@@ -125,7 +142,8 @@ public class FIRESTORE {
         basicUser.document(user.getId()).set(userMap);
 
         //add wraps
-        CollectionReference  userWrapped = MainActivity.db.collection("users/" + user.getId() + "/wraps");
+        CollectionReference  userWrapped =
+                MainActivity.db.collection("users/" + user.getId() + "/wraps");
         for (Wrapped w : user.getWraps()) {
             Map<String, String> wrapMap = new HashMap<>();
             wrapMap.put("wrap_data", HANDLE_JSON.exportWrapped(w).toString());
@@ -147,7 +165,8 @@ public class FIRESTORE {
         updateUserInfo(user);
 
         //add wraps
-        CollectionReference  userWrapped = MainActivity.db.collection("users/" + user.getId() + "/wraps");
+        CollectionReference  userWrapped =
+                MainActivity.db.collection("users/" + user.getId() + "/wraps");
         for (int i = 0; i < user.getWraps().size(); i++) {
             Wrapped w = user.getWraps().get(i);
             Map<String, String> wrapMap = new HashMap<>();

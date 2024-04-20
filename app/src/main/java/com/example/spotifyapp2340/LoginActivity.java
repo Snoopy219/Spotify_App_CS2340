@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        MainActivity.tokenTime = 3600000000l;
+        MainActivity.tokenTime = 3600000000L;
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * When the app leaves this activity to momentarily get a token/code, this function
-     * fetches the result of that external activity to get the response from Spotify
+     * fetches the result of that external activity to get the response from Spotify.
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

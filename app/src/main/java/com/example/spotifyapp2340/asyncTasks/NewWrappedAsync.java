@@ -32,15 +32,28 @@ import okhttp3.Response;
  * @version 11.0.20
  */
 public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
+    /**
+     * The M call 1.
+     */
     Call mCall1;
+    /**
+     * The M call 2.
+     */
     Call mCall2;
-    WrappedFragment fragment;
+    /**
+     * The constant controller.
+     */
     public static NavController controller;
-    Wrapped wrapped;
+    /**
+     * The constant activity.
+     */
     public static Activity activity;
     private int numFail = 0;
 
-    /* 0 for short term
+    /**
+     * The constant timePhase.
+     */
+/* 0 for short term
        1 for medium term
        2 for long term
      */
@@ -50,6 +63,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
      * Constructor that takes in a controller.
      *
      * @param controller controller used to navigate to next screen
+     * @param activity   the activity
      */
     public NewWrappedAsync(NavController controller, Activity activity) {
         if (controller == null) {
@@ -121,10 +135,12 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                     numGot[0]++;
                     JSONTrack[0] = track;
                     if (numGot[0] == 2) {
-                        wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
+                        wrapped[0] = HANDLE_JSON.createWrappedFromJSON(
+                                JSONArt[0], JSONTrack[0], new Date());
                         System.out.println(wrapped[0].getArtists().size());
                         MainActivity.currUser.addWrapped(wrapped[0]);
-                        System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
+                        System.out.println("BEFORE UPDATE"
+                                + MainActivity.currUser.getWraps().size());
                         FIRESTORE.updateUser(MainActivity.currUser);
                         MainActivity.comingFromRefresh = false;
                         activity.runOnUiThread(new Runnable() {
@@ -147,7 +163,7 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                     .addHeader("Authorization",
                             "Bearer " + MainActivity.mAccessToken)
                     .build();
-        } else if (timePhase == 1){
+        } else if (timePhase == 1) {
             req2 = new Request.Builder().url("https://api.spotify.com/v1/me/top/artists?time_range=medium_term")
                     .addHeader("Authorization",
                             "Bearer " + MainActivity.mAccessToken)
@@ -188,9 +204,11 @@ public class NewWrappedAsync extends AsyncTask<Void, Void, Void>  {
                     numGot[0]++;
                     JSONArt[0] = art;
                     if (numGot[0] == 2) {
-                        wrapped[0] = HANDLE_JSON.createWrappedFromJSON(JSONArt[0], JSONTrack[0], new Date());
+                        wrapped[0] = HANDLE_JSON.createWrappedFromJSON(
+                                JSONArt[0], JSONTrack[0], new Date());
                         MainActivity.currUser.addWrapped(wrapped[0]);
-                        System.out.println("BEFORE UPDATE" + MainActivity.currUser.getWraps().size());
+                        System.out.println("BEFORE UPDATE"
+                                + MainActivity.currUser.getWraps().size());
                         FIRESTORE.updateUser(MainActivity.currUser);
                         MainActivity.comingFromRefresh = false;
                         activity.runOnUiThread(new Runnable() {

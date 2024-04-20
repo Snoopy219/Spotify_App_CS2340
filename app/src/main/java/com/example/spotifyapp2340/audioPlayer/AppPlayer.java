@@ -15,8 +15,6 @@ import java.io.IOException;
  * @version 11.0.20
  */
 public class AppPlayer {
-    //URL for the mp3 file being played.
-    static String sourceURL;
     //Media player.
     private static MediaPlayer player;
 
@@ -25,7 +23,6 @@ public class AppPlayer {
      * Does not play until play() is called.
      */
     public AppPlayer() {
-//        if (sourceURL == null) throw new IllegalArgumentException("sourceURL is null; Preview not available.");
         player = new MediaPlayer();
 //        try {
 //            player.setDataSource(sourceURL);
@@ -59,6 +56,9 @@ public class AppPlayer {
         return true;
     }
 
+    /**
+     * Method to stop playback.
+     */
     public void stop() {
         if (player != null) {
             player.stop();

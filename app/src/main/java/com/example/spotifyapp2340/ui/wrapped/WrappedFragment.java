@@ -42,7 +42,7 @@ public class WrappedFragment extends Fragment {
     private static final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Thread playSong;
 
-    public final static AppPlayer player = new AppPlayer();
+    public static final AppPlayer player = new AppPlayer();
 
     private static boolean onWrapped = false;
 
@@ -62,22 +62,25 @@ public class WrappedFragment extends Fragment {
         onWrapped = true;
         time = 0;
         if (!MainActivity.currUser.isPremium() && MainActivity.remindPremium) {
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            MainActivity.remindPremium = false;
-                        case DialogInterface.BUTTON_POSITIVE:
-                            dialog.dismiss();
-                            break;
-                        case DialogInterface.BUTTON_NEUTRAL:
-                            Intent httpIntent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse("https://www.spotify.com/us/premium/"));
-                            startActivity(httpIntent);
+            DialogInterface.OnClickListener dialogClickListener =
+                    new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                MainActivity.remindPremium = false;
+                            case DialogInterface.BUTTON_POSITIVE:
+                                dialog.dismiss();
+                                break;
+                            case DialogInterface.BUTTON_NEUTRAL:
+                                Intent httpIntent = new Intent(Intent.ACTION_VIEW,
+                                        Uri.parse("https://www.spotify.com/us/premium/"));
+                                startActivity(httpIntent);
+                                break;
+                            default:
+                        }
                     }
-                }
-            };
+                };
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             // on below line we are setting message for our dialog box.
             builder.setMessage("Audio playback is unavailable to non-Premium users.")
@@ -139,21 +142,24 @@ public class WrappedFragment extends Fragment {
         }
         RecyclerView trackCards = root.findViewById(R.id.recyclerViewTopSongs);
         songAdapter = new SongAdapter(getContext(), thisWrap.getTracks());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         trackCards.setLayoutManager(linearLayoutManager);
         trackCards.setAdapter(songAdapter);
 
 //        setup artists
         RecyclerView artistCards = root.findViewById(R.id.recyclerViewTopArtists);
         artistAdapter = new ArtistAdapter(getContext(), thisWrap.getArtists());
-        LinearLayoutManager linearLayoutManagerArtist = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManagerArtist =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         artistCards.setLayoutManager(linearLayoutManagerArtist);
         artistCards.setAdapter(artistAdapter);
 
         //        setup genre
         RecyclerView genreCards = root.findViewById(R.id.recyclerViewTopGenres);
         genreAdapter = new GenreAdapter(getContext(), thisWrap.getTopGenres());
-        LinearLayoutManager linearLayoutManagerGenre = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManagerGenre =
+                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         genreCards.setLayoutManager(linearLayoutManagerGenre);
         genreCards.setAdapter(genreAdapter);
         if (MainActivity.currUser.isPremium()) {
