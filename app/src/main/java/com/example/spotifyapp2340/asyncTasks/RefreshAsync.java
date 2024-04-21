@@ -99,6 +99,7 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
                             GetUserAsync.usedRefresh = false;
                         //If NewWrappedAsync triggers this async, does it again
                         } else if (RefreshProductAsync.usedRefresh) {
+                            System.out.println("Refreshing Product");
                             new RefreshProductAsync().execute();
                             RefreshProductAsync.usedRefresh = false;
                         } else {
