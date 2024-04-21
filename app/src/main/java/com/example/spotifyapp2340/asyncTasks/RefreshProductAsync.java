@@ -76,11 +76,12 @@ public class RefreshProductAsync extends AsyncTask<Void, Void, Void>  {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println("USER" + responseStre);
+                    System.out.println("PRODUCT" + responseStre);
                     if (responseStre.contains("401")) {
                         System.out.println("Need to refresh.");
                         if (MainActivity.currUser != null && !usedRefresh) {
-                            new RefreshAsync();
+                            System.out.println("refreshing");
+                            new RefreshAsync().execute();
                             usedRefresh = true;
                         } else {
                             SpotifyCalls.getToken(MainActivity.currActivity);
