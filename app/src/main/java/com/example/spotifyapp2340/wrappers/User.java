@@ -63,6 +63,15 @@ public class User {
     }
 
     /**
+     * Sets product.
+     *
+     * @param product the product
+     */
+    public void setProduct(String product) {
+        this.product = product;
+    }
+
+    /**
      * Sets wraps.
      *
      * @param wraps the wraps

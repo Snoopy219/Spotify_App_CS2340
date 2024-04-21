@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
+import com.example.spotifyapp2340.asyncTasks.RefreshProductAsync;
 import com.example.spotifyapp2340.audioPlayer.AppPlayer;
 import com.example.spotifyapp2340.databinding.FragmentWrappedBinding;
 import com.example.spotifyapp2340.wrappers.ArtistObject;
