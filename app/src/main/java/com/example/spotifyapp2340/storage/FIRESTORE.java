@@ -12,6 +12,7 @@ import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
 import com.example.spotifyapp2340.asyncTasks.GetTokenAndRefreshToken;
 import com.example.spotifyapp2340.asyncTasks.GetUserAsync;
 import com.example.spotifyapp2340.asyncTasks.RefreshAsync;
+import com.example.spotifyapp2340.asyncTasks.RefreshProductAsync;
 import com.example.spotifyapp2340.handleJSON.HANDLE_JSON;
 import com.example.spotifyapp2340.ui.settings.SettingsFragment;
 import com.example.spotifyapp2340.ui.timeMachine.TimeMachineFragment;
@@ -46,6 +47,7 @@ public class FIRESTORE {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        new RefreshProductAsync().execute();
                         System.out.println(document.getData().toString().substring(11));
                         MainActivity.currUser =
                                 HANDLE_JSON.createBasicUserFromJSON(document.getId(),

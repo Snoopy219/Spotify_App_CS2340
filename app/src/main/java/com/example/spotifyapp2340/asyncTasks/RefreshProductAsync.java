@@ -7,7 +7,6 @@ import android.util.Log;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.spotifyapp2340.LoginActivity;
 import com.example.spotifyapp2340.MainActivity;
 import com.example.spotifyapp2340.R;
 import com.example.spotifyapp2340.SpotifyCalls.SpotifyCalls;
@@ -28,16 +27,15 @@ import java.util.Date;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 
 /**
- * To refresh the token.
+ * To get user info.
  */
-public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
+public class RefreshProductAsync extends AsyncTask<Void, Void, Void>  {
     /**
      * The M call.
      */
@@ -46,6 +44,10 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
      * The constant mOkHttpClient.
      */
     public static final OkHttpClient mOkHttpClient = new OkHttpClient();
+    /**
+     * The constant usedRefresh.
+     */
+    public static boolean usedRefresh = false;
 
 
     /**
@@ -56,18 +58,9 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
      */
     @Override
     protected Void doInBackground(Void... params) {
-//        Log.d("RefreshAsync Test", "It's running doInBackGround");
-        final FormBody formBody = new FormBody.Builder()
-                .add("grant_type", "refresh_token")
-                .add("refresh_token", MainActivity.refreshToken)
-                .build();
-
         final Request request = new Request.Builder()
-                .url("https://accounts.spotify.com/api/token")
-                .addHeader("Content-Type", "application/x-www-form-urlencoded")
-                .addHeader("Authorization", "Basic NWZjNzAyYzcyZTVkNGM5NzljMDM2ODU"
-                        + "wMzdhYjczN2Q6NWQwYjA4YTJiNzYwNDc4ODk1ODQyY2NlY2FmNzA2Nzk=")
-                .post(formBody)
+                .url("https://api.spotify.com/v1/me")
+                .addHeader("Authorization", "Bearer " + MainActivity.mAccessToken)
                 .build();
 
         cancelCall();
@@ -76,7 +69,6 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
         mCall.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                System.out.println("here654");
                 Log.d("HTTP", "Failed to fetch data: " + e);
             }
 
@@ -84,31 +76,22 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     String responseStre = response.body().string();
-                    System.out.println("RefreshAsync response: " + responseStre);
+                    System.out.println("USER" + responseStre);
                     if (responseStre.contains("401")) {
-                        System.out.println("fail");
+                        System.out.println("Need to refresh.");
+                        if (MainActivity.currUser != null && !usedRefresh) {
+                            new RefreshAsync();
+                            usedRefresh = true;
+                        } else {
+                            SpotifyCalls.getToken(MainActivity.currActivity);
+                        }
                     } else {
                         System.out.println(responseStre);
+                        usedRefresh = false;
                         final JSONObject jsonObject = new JSONObject(responseStre);
-                        MainActivity.mAccessToken = jsonObject.getString("access_token");
-//                        new GetUserAsync().execute();
-                        //If GetUserAsync triggers refresh async, does GetUserAsync again
-                        if (GetUserAsync.usedRefresh) {
-                            System.out.println("HERE AT USER");
-                            new GetUserAsync().execute();
-                            GetUserAsync.usedRefresh = false;
-                        //If NewWrappedAsync triggers this async, does it again
-                        } else if (RefreshProductAsync.usedRefresh) {
-                            new RefreshProductAsync().execute();
-                            RefreshProductAsync.usedRefresh = false;
-                        } else {
-                            System.out.println("HERE AT TRIGGER");
-                            new NewWrappedAsync(NewWrappedAsync.controller,
-                                    NewWrappedAsync.activity).execute();
-                            MainActivity.FAILED_CALL = false;
-                        }
+                        MainActivity.currUser.setProduct(jsonObject.getString("product"));
                         FIRESTORE.updateUserInfo(MainActivity.currUser);
-                        LoginActivity.onCallback();
+//                        new GetTokenAndRefreshToken().execute();
                     }
 
                     //check if user in database
@@ -121,9 +104,6 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
         return null;
     }
 
-    /**
-     * Cancels the current call on mCall.
-     */
     private void cancelCall() {
         if (mCall != null) {
             mCall.cancel();
@@ -131,7 +111,8 @@ public class RefreshAsync extends AsyncTask<Void, Void, Void>  {
     }
 
     /**
-     * Nothing.
+     * Once all information has been obtained, transfers to next fragment.
+     * @param result Void.
      */
     @Override
     protected void onPostExecute(Void result) {
